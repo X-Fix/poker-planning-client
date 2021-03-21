@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --config webpack.dist.js",
     "check-types": "tsc --noEmit",
-    "watch": "webpack --watch",
+    "lint": "eslint src/ && stylelint src/",
     "start": "webpack serve --config webpack.serve.js"
   },
   "dependencies": {
