@@ -14,6 +14,7 @@ const babelRule = {
             targets: 'defaults',
           },
         ],
+        '@babel/preset-react',
         '@babel/preset-typescript',
       ],
       cacheDirectory: true,
@@ -26,7 +27,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   resolve: {
     symlinks: false,
   },
