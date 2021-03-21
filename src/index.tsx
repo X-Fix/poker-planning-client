@@ -5,16 +5,18 @@ import styled from '@emotion/styled';
 import printMe from './print';
 
 const Body: React.FC = () => {
-  const Body = styled.div`
+  const StyledBody = styled.div`
     color: red;
     margin-top: 4px;
   `;
 
   return (
-    <Body>
+    <StyledBody>
       Hello webpack
-      <button onClick={printMe}>Click me and check the console</button>
-    </Body>
+      <button onClick={printMe} type="button">
+        Click me and check the console
+      </button>
+    </StyledBody>
   );
 };
 
