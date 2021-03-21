@@ -7,7 +7,9 @@ import printMe from './print';
 const Body: React.FC = () => {
   const Body = styled.div`
     color: red;
+    margin-top: 4px;
   `;
+
   return (
     <Body>
       Hello webpack

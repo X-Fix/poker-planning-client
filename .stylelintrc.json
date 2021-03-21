@@ -1,0 +1,15 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "indentation": 2,
+    "no-eol-whitespace": [
+      true,
+      {
+        "ignore": ["empty-lines"]
+      }
+    ],
+    "no-missing-end-of-source-newline": null,
+    "order/properties-alphabetical-order": true
+  }
+}
