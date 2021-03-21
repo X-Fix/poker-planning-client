@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const babelRule = {
-  test: /\.js$/,
+  test: /\.ts(x?)$/,
   include: /src/,
   use: {
     loader: 'babel-loader',
@@ -14,6 +14,7 @@ const babelRule = {
             targets: 'defaults',
           },
         ],
+        '@babel/preset-typescript',
       ],
       cacheDirectory: true,
     },
@@ -25,7 +26,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.ts',
   resolve: {
     symlinks: false,
   },
@@ -33,4 +34,7 @@ module.exports = {
     rules: [babelRule],
   },
   plugins: [htmlWebpackPlugin],
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+  },
 };
