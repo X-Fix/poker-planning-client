@@ -1,0 +1,25 @@
+{
+  "name": "poker-planning-client",
+  "version": "0.0.1",
+  "author": "Cameron Stroebel <cameron.stroebel08@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack --config webpack.dist.js",
+    "watch": "webpack --watch",
+    "start": "webpack serve --open --config webpack.serve.js"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.3.1",
+    "webpack": "^5.27.1",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "resolutions": {
+    "chokidar": "^3"
+  }
+}
