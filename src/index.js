@@ -4,7 +4,9 @@ function component() {
   const element = document.createElement('div');
   const button = document.createElement('button');
 
-  element.innerText = 'Hello webpack';
+  const { hello } = Object.assign({}, { hello: 'Hello webpack' });
+
+  element.innerText = hello;
 
   button.innerText = 'Click me and check the console';
   button.onclick = printMe;
