@@ -11,10 +11,10 @@ import InputText from './components/02-molecules/InputText';
 import InputRadio from './components/02-molecules/InputRadio';
 import InputSwitch from './components/02-molecules/InputSwitch';
 import PokerCard from './components/02-molecules/PokerCard';
+import Header from './components/03-organisms/Header';
 
 const StyledBody = styled.div`
   font-family: ${fontFamily};
-  margin-top: 4px;
 `;
 
 const RadioGroup = styled.fieldset`
@@ -40,6 +40,7 @@ const IconSnooze = styled(Icon)`
 const Body: React.FC = () => {
   return (
     <StyledBody>
+      <Header />
       <Font size='title' tag='h1'>
         Hello webpack
       </Font>
