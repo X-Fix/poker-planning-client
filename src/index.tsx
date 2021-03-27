@@ -9,9 +9,11 @@ import Button from './components/02-molecules/Button';
 import Font from './components/00-base/Font';
 import InputText from './components/02-molecules/InputText';
 import InputRadio from './components/02-molecules/InputRadio';
+import InputSwitch from './components/02-molecules/InputSwitch';
 
-const IconSnooze = styled(Icon)`
-  margin-right: 1rem;
+const StyledBody = styled.div`
+  font-family: ${fontFamily};
+  margin-top: 4px;
 `;
 
 const RadioGroup = styled.fieldset`
@@ -22,20 +24,19 @@ const Legend = styled.legend`
   font-size: ${fontSize.title};
 `;
 
+const StyledInputText = styled(InputText)`
+  margin-bottom: 0.5rem;
+`;
+
+const StyledButton = styled(Button)`
+  margin-left: 0.5rem;
+`;
+
+const IconSnooze = styled(Icon)`
+  margin-right: 1rem;
+`;
+
 const Body: React.FC = () => {
-  const StyledBody = styled.div`
-    font-family: ${fontFamily};
-    margin-top: 4px;
-  `;
-
-  const StyledInputText = styled(InputText)`
-    margin-bottom: 0.5rem;
-  `;
-
-  const StyledButton = styled(Button)`
-    margin-left: 0.5rem;
-  `;
-
   return (
     <StyledBody>
       <Font size='title' tag='h1'>
@@ -56,6 +57,7 @@ const Body: React.FC = () => {
         />
         <Font size='body'>Click me and check the console</Font>
       </StyledButton>
+      <InputSwitch label='Check Me' name='checkMe' />
     </StyledBody>
   );
 };
