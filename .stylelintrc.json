@@ -3,6 +3,7 @@
   "plugins": ["stylelint-order"],
   "rules": {
     "indentation": 2,
+    "function-name-case": null,
     "no-eol-whitespace": [
       true,
       {
@@ -10,6 +11,7 @@
       }
     ],
     "no-missing-end-of-source-newline": null,
-    "order/properties-alphabetical-order": true
+    "order/properties-alphabetical-order": true,
+    "value-keyword-case": null
   }
 }

@@ -3,31 +3,38 @@ import ReactDOM from 'react-dom';
 import styled from '@emotion/styled';
 
 import printMe from './print';
-import Icon from './components/01-atoms/Icon';
-import { colorIconGrey } from './components/00-base/variables';
+import { Icon } from './components/01-atoms';
+import { fontFamily } from './components/00-base/variables';
+import Button from './components/02-molecules/Button';
+import Font from './components/00-base/Font';
 
 const IconSnooze = styled(Icon)`
-  color: ${colorIconGrey};
   margin-right: 1rem;
 `;
 
 const Body: React.FC = () => {
   const StyledBody = styled.div`
-    color: red;
+    font-family: ${fontFamily};
     margin-top: 4px;
+  `;
+
+  const StyledButton = styled(Button)`
+    margin-left: 0.5rem;
   `;
 
   return (
     <StyledBody>
-      Hello webpack
-      <button onClick={printMe} type='button'>
+      <Font size='title' tag='h1'>
+        Hello webpack
+      </Font>
+      <StyledButton onClick={printMe} type='button'>
         <IconSnooze
           aria-hidden
           description='This participant has temprarily disconnected'
           xlink='snooze'
         />
-        Click me and check the console
-      </button>
+        <Font size='body'>Click me and check the console</Font>
+      </StyledButton>
     </StyledBody>
   );
 };
