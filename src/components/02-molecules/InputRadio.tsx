@@ -70,7 +70,9 @@ const Radio = styled.span`
     outline-color: -webkit-focus-ring-color;
     outline-style: auto;
     outline-width: 3px;
+  }
 
+  input[type='radio']:checked + & {
     &::before {
       background: ${blue800};
       border: none;
