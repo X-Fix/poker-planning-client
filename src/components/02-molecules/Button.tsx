@@ -7,21 +7,21 @@ const { buttonPrimary, buttonSecondary } = shadows;
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isDark?: boolean;
-  butonStyle?: 'header' | 'primary' | 'secondary' | 'square' | 'wide';
+  buttonStyle?: 'header' | 'primary' | 'secondary' | 'square' | 'wide';
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
   isDark = false,
-  butonStyle = 'primary',
+  buttonStyle = 'primary',
   ...props
 }) => {
   const StyledButton = styled.button`
     align-items: center;
-    background-color: ${butonStyle === 'secondary' ? neutral0 : blue800};
+    background-color: ${buttonStyle === 'secondary' ? neutral0 : blue800};
     border: none;
     border-radius: 2px;
-    color: ${butonStyle === 'secondary' ? blue800 : neutral0};
+    color: ${buttonStyle === 'secondary' ? blue800 : neutral0};
     cursor: pointer;
     display: inline-flex;
     height: 3rem;
@@ -53,12 +53,12 @@ const Button: React.FC<ButtonProps> = ({
 
       & > svg {
         filter: drop-shadow(
-          ${butonStyle === 'secondary' ? buttonSecondary : buttonPrimary}
+          ${buttonStyle === 'secondary' ? buttonSecondary : buttonPrimary}
         );
       }
 
       & > span {
-        text-shadow: ${butonStyle === 'secondary'
+        text-shadow: ${buttonStyle === 'secondary'
           ? buttonSecondary
           : buttonPrimary};
       }
@@ -69,12 +69,12 @@ const Button: React.FC<ButtonProps> = ({
       background-color: ${blue900};
     `}
 
-    ${butonStyle === 'wide' &&
+    ${buttonStyle === 'wide' &&
     `
       width: 322px;
     `}
 
-    ${butonStyle === 'header' &&
+    ${buttonStyle === 'header' &&
     `
       border-radius: 50%;
       padding: 0.5rem;
@@ -84,7 +84,7 @@ const Button: React.FC<ButtonProps> = ({
       }
     `}
 
-    ${butonStyle === 'square' &&
+    ${buttonStyle === 'square' &&
     `
       border-radius: 16px;
       display: inline;
