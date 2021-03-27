@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 import { color, fontSize, shadows } from '../00-base/variables';
@@ -8,7 +8,7 @@ const { title } = fontSize;
 const { tertiary } = shadows;
 
 interface InputTextProps
-  extends Omit<HtmlHTMLAttributes<HTMLInputElement>, 'placeholder' | 'type'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'placeholder' | 'type'> {
   label: string;
   placeholder: string; // Manually including here to ensure it is required
 }

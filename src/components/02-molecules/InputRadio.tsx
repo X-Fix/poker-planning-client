@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 import { srOnly } from '../00-base/utils';
@@ -9,7 +9,7 @@ const { body } = fontSize;
 const { primary, tertiary } = shadows;
 
 interface InputRadioProps
-  extends Omit<HtmlHTMLAttributes<HTMLInputElement>, 'type'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label: string;
   name: string;
 }
