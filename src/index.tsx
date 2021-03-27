@@ -4,13 +4,22 @@ import styled from '@emotion/styled';
 
 import printMe from './print';
 import { Icon } from './components/01-atoms';
-import { fontFamily } from './components/00-base/variables';
+import { fontFamily, fontSize } from './components/00-base/variables';
 import Button from './components/02-molecules/Button';
 import Font from './components/00-base/Font';
 import InputText from './components/02-molecules/InputText';
+import InputRadio from './components/02-molecules/InputRadio';
 
 const IconSnooze = styled(Icon)`
   margin-right: 1rem;
+`;
+
+const RadioGroup = styled.fieldset`
+  margin: 2rem;
+`;
+
+const Legend = styled.legend`
+  font-size: ${fontSize.title};
 `;
 
 const Body: React.FC = () => {
@@ -32,6 +41,12 @@ const Body: React.FC = () => {
       <Font size='title' tag='h1'>
         Hello webpack
       </Font>
+      <RadioGroup>
+        <Legend>An example radio selection</Legend>
+        <InputRadio name='example' label='Option A' />
+        <InputRadio name='example' label='Option B' />
+        <InputRadio name='example' label='Option Last' />
+      </RadioGroup>
       <StyledInputText label='example' placeholder='Whatever you like' />
       <StyledButton onClick={printMe} type='button'>
         <IconSnooze
