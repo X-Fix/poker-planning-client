@@ -10,6 +10,7 @@ import Font from './components/00-base/Font';
 import InputText from './components/02-molecules/InputText';
 import InputRadio from './components/02-molecules/InputRadio';
 import InputSwitch from './components/02-molecules/InputSwitch';
+import PokerCard from './components/02-molecules/PokerCard';
 
 const StyledBody = styled.div`
   font-family: ${fontFamily};
@@ -58,6 +59,12 @@ const Body: React.FC = () => {
         <Font size='body'>Click me and check the console</Font>
       </StyledButton>
       <InputSwitch label='Check Me' name='checkMe' />
+
+      <RadioGroup>
+        <PokerCard value='?' name='poker-card' />
+        <PokerCard value='100' name='poker-card' />
+        <PokerCard value='☕' name='poker-card' />
+      </RadioGroup>
     </StyledBody>
   );
 };
