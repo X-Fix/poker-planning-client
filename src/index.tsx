@@ -7,6 +7,7 @@ import { Icon } from './components/01-atoms';
 import { fontFamily } from './components/00-base/variables';
 import Button from './components/02-molecules/Button';
 import Font from './components/00-base/Font';
+import InputText from './components/02-molecules/InputText';
 
 const IconSnooze = styled(Icon)`
   margin-right: 1rem;
@@ -18,6 +19,10 @@ const Body: React.FC = () => {
     margin-top: 4px;
   `;
 
+  const StyledInputText = styled(InputText)`
+    margin-bottom: 0.5rem;
+  `;
+
   const StyledButton = styled(Button)`
     margin-left: 0.5rem;
   `;
@@ -27,6 +32,7 @@ const Body: React.FC = () => {
       <Font size='title' tag='h1'>
         Hello webpack
       </Font>
+      <StyledInputText label='example' placeholder='Whatever you like' />
       <StyledButton onClick={printMe} type='button'>
         <IconSnooze
           aria-hidden
