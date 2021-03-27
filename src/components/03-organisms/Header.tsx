@@ -2,12 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Button from '../02-molecules/Button';
 import { Icon } from '../01-atoms';
-import { color, fontSize, shadows } from '../00-base/variables';
-import Font from '../00-base/Font';
-import { srOnly } from '../00-base/utils';
+import { color, shadows } from '../00-base/variables';
+import { font, srOnly } from '../00-base/utils';
 
 const { blue800, neutral0 } = color;
-const { body, title } = fontSize;
 const { header } = shadows;
 
 const Container = styled.header`
@@ -31,20 +29,20 @@ const Wrapper = styled.section`
 `;
 
 const Heading = styled.h1`
+  ${font('title')};
+
   color: ${neutral0};
   flex: 1;
-  font-size: ${title};
   font-weight: bold;
-  line-height: ${title};
 `;
 
 const ButtonText = styled.span`
-  font-size: ${body};
-  line-height: ${body};
+  ${font('body')};
+
   margin-left: 0.25rem;
 
-  @media screen and (max-width: 769px) {
-    ${srOnly()}
+  @media screen and (max-width: 767px) {
+    ${srOnly()};
   }
 `;
 

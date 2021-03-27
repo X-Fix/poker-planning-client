@@ -1,11 +1,10 @@
 import React, { InputHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
-import { srOnly } from '../00-base/utils';
-import { color, fontSize, shadows } from '../00-base/variables';
+import { font, srOnly } from '../00-base/utils';
+import { color, shadows } from '../00-base/variables';
 
 const { blue800, green100, green700, neutral0 } = color;
-const { body, title } = fontSize;
 const { form } = shadows;
 
 interface PokerCardProps
@@ -65,15 +64,14 @@ const Content = styled.span`
 `;
 
 const Top = styled.span`
+  ${font('body')};
+
   /* Ensure siblings take up full width of parent */
   flex: 1;
-  font-size: ${body};
-  line-height: ${body};
   margin: 0.25rem;
 
   @media screen and (min-width: 768px) {
-    font-size: ${title};
-    line-height: ${title};
+    ${font('title')};
   }
 
   input[type='radio']:checked + p & {

@@ -1,11 +1,10 @@
 import React, { InputHTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
-import { srOnly } from '../00-base/utils';
-import { color, fontSize, shadows } from '../00-base/variables';
+import { font, srOnly } from '../00-base/utils';
+import { color, shadows } from '../00-base/variables';
 
 const { blue800, neutral0 } = color;
-const { body } = fontSize;
 const { primary, tertiary } = shadows;
 
 interface InputRadioProps
@@ -91,9 +90,9 @@ const Radio = styled.span`
 `;
 
 const Label = styled.p`
-  font-size: ${body};
-  height: ${body};
-  line-height: ${body};
+  ${font('body')};
+
+  height: 1.125rem;
   margin: 0;
 `;
 

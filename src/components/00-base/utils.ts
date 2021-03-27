@@ -1,3 +1,5 @@
+import { fontSize } from './variables';
+
 export function srOnly() {
   // Copied from https://gist.github.com/ffoodd/000b59f431e3e64e4ce1a24d5bb36034
 
@@ -41,5 +43,14 @@ export function srOnly() {
     position: absolute !important;
     width: 1px !important;
     white-space: nowrap !important;            /* 3 */
+  `;
+}
+
+export function font(
+  size: 'body' | 'title' | 'headline' | 'cardSmall' | 'cardLarge'
+): string {
+  return `
+    font-size: ${fontSize[size]};
+    line-height: ${fontSize[size]};
   `;
 }

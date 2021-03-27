@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { color, fontSize, shadows } from '../00-base/variables';
+import { color, shadows } from '../00-base/variables';
+import { font } from '../00-base/utils';
 
 type ChatBubbleProps = {
   isSelf?: boolean;
@@ -10,7 +11,6 @@ type ChatBubbleProps = {
 };
 
 const { blue50, blue900, neutral100 } = color;
-const { body } = fontSize;
 const { chatBubble } = shadows;
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({
@@ -19,10 +19,11 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
   participant,
 }) => {
   const Container = styled.li`
+    ${font('body')};
+
     background-color: ${neutral100};
     border-radius: 8px;
     box-shadow: 1px 1px 0 ${chatBubble};
-    font-size: ${body};
     margin: 0 1.5rem 0.5rem 1rem;
     padding: 0.5rem;
     position: relative; /* Necessary to use position: absolute; in pseudo-elements */
