@@ -76,8 +76,10 @@ const Button: React.FC<ButtonProps> = ({
 
     ${buttonStyle === 'header' &&
     `
-      border-radius: 50%;
-      padding: 0.5rem;
+      @media screen and (max-width: 767px) {
+        border-radius: 50%;
+        padding: 0.5rem;
+      }
 
       @media screen and (min-width: 768px) {
         height: 2.5rem;
