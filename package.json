@@ -11,6 +11,7 @@
     "start": "webpack serve --env NODE_ENV=development"
   },
   "dependencies": {
+    "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
     "react": "^17.0.1",
