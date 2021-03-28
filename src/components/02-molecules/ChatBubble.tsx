@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 import { color, shadows } from '../00-base/variables';
@@ -13,11 +13,11 @@ type ChatBubbleProps = {
 const { blue50, blue900, neutral100 } = color;
 const { chatBubble } = shadows;
 
-const ChatBubble: React.FC<ChatBubbleProps> = ({
+function ChatBubble({
   isSelf = false,
   message,
   participant,
-}) => {
+}: ChatBubbleProps): ReactElement {
   const Container = styled.li`
     ${font('body')};
 
@@ -85,6 +85,6 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
       {message}
     </Container>
   );
-};
+}
 
 export default ChatBubble;

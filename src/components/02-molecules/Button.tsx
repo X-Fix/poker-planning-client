@@ -103,4 +103,4 @@ const Button: React.FC<ButtonProps> = ({
   return <StyledButton {...props}>{children}</StyledButton>;
 };
 
-export default Button;
+export default React.memo(Button);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
 import Button from '../02-molecules/Button';
 import { Icon } from '../01-atoms';
@@ -53,22 +53,20 @@ const ButtonIcon = styled(Icon)`
   }
 `;
 
-const Header: React.FC = () => {
-  return (
-    <Container>
-      <Wrapper>
-        <Button buttonStyle='header' type='button'>
-          <ButtonIcon xlink='menu' aria-hidden />
-          <ButtonText>Menu</ButtonText>
-        </Button>
-        <Heading>Poker Planning</Heading>
-        <Button buttonStyle='header' type='button'>
-          <ButtonIcon xlink='chat' aria-hidden />
-          <ButtonText>Chat</ButtonText>
-        </Button>
-      </Wrapper>
-    </Container>
-  );
-};
+const Header = (): ReactElement => (
+  <Container>
+    <Wrapper>
+      <Button buttonStyle='header' type='button'>
+        <ButtonIcon xlink='menu' aria-hidden />
+        <ButtonText>Menu</ButtonText>
+      </Button>
+      <Heading>Poker Planning</Heading>
+      <Button buttonStyle='header' type='button'>
+        <ButtonIcon xlink='chat' aria-hidden />
+        <ButtonText>Chat</ButtonText>
+      </Button>
+    </Wrapper>
+  </Container>
+);
 
-export default Header;
+export default React.memo(Header);

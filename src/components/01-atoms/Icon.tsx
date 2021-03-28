@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 type IconProps = {
@@ -13,13 +13,11 @@ const StyledIcon = styled.svg`
   width: 2rem;
 `;
 
-const Icon: React.FC<IconProps> = ({ description, xlink, ...props }) => {
-  return (
-    <StyledIcon {...props} aria-label={description}>
-      {description && <title>{description}</title>}
-      <use xlinkHref={`#${xlink}`} />
-    </StyledIcon>
-  );
-};
+const Icon = ({ description, xlink, ...props }: IconProps): ReactElement => (
+  <StyledIcon {...props} aria-label={description}>
+    {description && <title>{description}</title>}
+    <use xlinkHref={`#${xlink}`} />
+  </StyledIcon>
+);
 
-export default Icon;
+export default React.memo(Icon);

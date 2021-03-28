@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 import { font, srOnly } from '../00-base/utils';
@@ -103,19 +103,17 @@ const Bottom = styled(Top)`
   transform: rotate(180deg);
 `;
 
-const PokerCard: React.FC<PokerCardProps> = ({ value, ...props }) => {
-  return (
-    <Container>
-      <Input type='radio' value={value} {...props} />
-      <Card>
-        <Content>
-          <Top aria-hidden>{value}</Top>
-          <Center>{value}</Center>
-          <Bottom aria-hidden>{value}</Bottom>
-        </Content>
-      </Card>
-    </Container>
-  );
-};
+const PokerCard = ({ value, ...props }: PokerCardProps): ReactElement => (
+  <Container>
+    <Input type='radio' value={value} {...props} />
+    <Card>
+      <Content>
+        <Top aria-hidden>{value}</Top>
+        <Center>{value}</Center>
+        <Bottom aria-hidden>{value}</Bottom>
+      </Content>
+    </Card>
+  </Container>
+);
 
-export default PokerCard;
+export default React.memo(PokerCard);

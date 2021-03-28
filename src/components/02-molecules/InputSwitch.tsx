@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 import { font, srOnly } from '../00-base/utils';
@@ -88,14 +88,12 @@ const Switch = styled.span`
   }
 `;
 
-const InputSwitch: React.FC<InputSwitchProps> = ({ label, ...props }) => {
-  return (
-    <Field>
-      <Label>{label}</Label>
-      <Input type='checkbox' {...props} />
-      <Switch aria-hidden />
-    </Field>
-  );
-};
+const InputSwitch = ({ label, ...props }: InputSwitchProps): ReactElement => (
+  <Field>
+    <Label>{label}</Label>
+    <Input type='checkbox' {...props} />
+    <Switch aria-hidden />
+  </Field>
+);
 
-export default InputSwitch;
+export default React.memo(InputSwitch);

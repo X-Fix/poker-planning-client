@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 import { font, srOnly } from '../00-base/utils';
@@ -96,7 +96,7 @@ const Label = styled.p`
   margin: 0;
 `;
 
-const InputRadio: React.FC<InputRadioProps> = ({ label, name, ...props }) => {
+function InputRadio({ label, name, ...props }: InputRadioProps): ReactElement {
   return (
     <Field>
       <Input type='radio' name={name} {...props} />
@@ -104,6 +104,6 @@ const InputRadio: React.FC<InputRadioProps> = ({ label, name, ...props }) => {
       <Label>{label}</Label>
     </Field>
   );
-};
+}
 
-export default InputRadio;
+export default React.memo(InputRadio);
