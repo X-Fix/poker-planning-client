@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import styled, { CreateStyledComponent } from '@emotion/styled';
+import styled from '@emotion/styled';
 import { color, shadows } from '../00-base/variables';
 
 const { blue800, blue900, neutral0, neutral100, neutral700 } = color;
@@ -22,11 +22,7 @@ const StyledButton = styled.button<ButtonProps>`
   justify-content: center;
   padding: 0 1rem;
 
-  ${({ dark }) =>
-    dark &&
-    `
-    background-color: ${blue900};
-  `}
+  ${({ dark }) => dark && `background-color: ${blue900};`}
 
   &:disabled {
     background-color: ${neutral100};
