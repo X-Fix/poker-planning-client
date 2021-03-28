@@ -19,11 +19,6 @@ const Form = styled.form`
     background-color: ${neutral0};
     box-shadow: ${form};
   }
-
-  & > label:nth-child(2),
-  & > label:nth-child(3) {
-    margin: 0 0 1rem;
-  }
 `;
 
 const Heading = styled.h2`
@@ -31,6 +26,10 @@ const Heading = styled.h2`
 
   font-weight: normal;
   margin: 0.5rem 0 2rem;
+`;
+
+const StyledInputText = styled(InputText)`
+  margin: 0 0 1rem;
 `;
 
 const Legend = styled.legend`
@@ -41,11 +40,11 @@ const Fieldset = styled.fieldset`
   border: none;
   margin: 2rem 0;
   padding: 0;
+`;
 
-  & > label {
-    margin: 0.5rem 0 0 0.5rem;
-    padding: 0.25rem;
-  }
+const StyledInputRadio = styled(InputRadio)`
+  margin: 0.5rem 0 0 0.5rem;
+  padding: 0.25rem;
 `;
 
 const WideButton = styled(Button)`
@@ -61,20 +60,26 @@ const ButtonText = styled.span`
 const CreateSessionForm = (): ReactElement => (
   <Form onSubmit={() => false}>
     <Heading>Create New Session</Heading>
-    <InputText label='Your Name' placeholder='Eg. "John Johnson"' />
-    <InputText
+    <StyledInputText label='Your Name' placeholder='Eg. "John Johnson"' />
+    <StyledInputText
       label='Session Name (optional)'
       placeholder='Eg. "Fuzzy Wumpus"'
     />
     <Fieldset>
       <Legend>Card Sequence</Legend>
-      <InputRadio
+      <StyledInputRadio
         label='½, 1, 2, 3, 5, 8, 13, 20, 40, 100'
         name='card-sequence'
       />
-      <InputRadio label='1, 2, 5, 10, 20, 50, 100' name='card-sequence' />
-      <InputRadio label='1, 2, 4, 8, 12, 16, 24, 40, 80' name='card-sequence' />
-      <InputRadio label='XXS, XS, S, M, L, XL, XXL' name='card-sequence' />
+      <StyledInputRadio label='1, 2, 5, 10, 20, 50, 100' name='card-sequence' />
+      <StyledInputRadio
+        label='1, 2, 4, 8, 12, 16, 24, 40, 80'
+        name='card-sequence'
+      />
+      <StyledInputRadio
+        label='XXS, XS, S, M, L, XL, XXL'
+        name='card-sequence'
+      />
     </Fieldset>
     <WideButton>
       <Icon xlink='create' aria-hidden />
