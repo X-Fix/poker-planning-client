@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
-import Button from '../02-molecules/Button';
+import { Button } from '../02-molecules';
 import { Icon } from '../01-atoms';
 import { color, shadows } from '../00-base/variables';
 import { font, srOnly } from '../00-base/utils';

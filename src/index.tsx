@@ -6,11 +6,13 @@ import printMe from './print';
 import { Icon } from './components/01-atoms';
 import { fontFamily } from './components/00-base/variables';
 import { font } from './components/00-base/utils';
-import Button from './components/02-molecules/Button';
-import InputText from './components/02-molecules/InputText';
-import InputRadio from './components/02-molecules/InputRadio';
-import InputSwitch from './components/02-molecules/InputSwitch';
-import PokerCard from './components/02-molecules/PokerCard';
+import {
+  Button,
+  InputRadio,
+  InputSwitch,
+  InputText,
+  PokerCard,
+} from './components/02-molecules';
 import Header from './components/03-organisms/Header';
 import ChooseForm from './components/03-organisms/ChooseForm';
 
