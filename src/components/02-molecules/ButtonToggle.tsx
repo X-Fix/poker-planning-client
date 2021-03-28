@@ -1,0 +1,103 @@
+// https://inclusive-components.design/toggle-button/
+import React, { ReactElement, useCallback, useState } from 'react';
+import styled from '@emotion/styled';
+import { color, shadows } from '../00-base/variables';
+import { font } from '../00-base/utils';
+
+type ButtonToggleProps = {
+  className?: string;
+  initialState?: boolean;
+  label: string;
+  onChange: ({ state, value }: { state: boolean; value: string }) => void;
+  role?: 'button' | 'menuitem';
+  value: string;
+};
+
+const Button = styled.button`
+  align-items: center;
+  background-color: ${color.neutral0};
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  position: relative; /* Allow 'position: absolute' children to scroll with this element */
+  width: 100%;
+`;
+
+const Label = styled.span`
+  ${font('body')};
+
+  height: 1.125rem;
+  margin: 0;
+`;
+
+const Switch = styled.span`
+  align-items: center;
+  display: flex;
+  height: 1.5rem;
+  justify-content: center;
+  width: 3rem;
+
+  &::before {
+    background-color: ${color.neutral300};
+    border-radius: 0.375rem;
+    content: '';
+    display: block;
+    height: 0.75rem;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.6, 1);
+    width: 2.5rem;
+
+    ${Button}[aria-pressed="true"] & {
+      background-color: ${color.blue700};
+    }
+  }
+
+  &::after {
+    background-color: ${color.neutral0};
+    border-radius: 50%;
+    box-shadow: ${shadows.secondary};
+    content: '';
+    height: 1.5rem;
+    position: absolute;
+    transform: translateX(-0.75rem);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.6, 1);
+    width: 1.5rem;
+
+    ${Button}[aria-pressed="true"] & {
+      background-color: ${color.blue800};
+      transform: translateX(0.75rem);
+    }
+  }
+`;
+
+const ButtonToggle = ({
+  className,
+  initialState = false,
+  label,
+  onChange,
+  role = 'button',
+  value,
+}: ButtonToggleProps): ReactElement => {
+  const [state, setState] = useState(initialState);
+  const handleClick = useCallback(() => {
+    setState(!state);
+    typeof onChange === 'function' && onChange({ state: !state, value });
+  }, [state]);
+
+  return (
+    <Button
+      aria-pressed={state}
+      className={className}
+      onClick={handleClick}
+      role={role}
+      type='button'
+      value={value}
+    >
+      <Label>{label}</Label>
+      <Switch aria-hidden />
+    </Button>
+  );
+};
+
+export default React.memo(ButtonToggle);

@@ -1,4 +1,5 @@
 export { default as Button } from './Button';
+export { default as ButtonToggle } from './ButtonToggle';
 export { default as ChatBubble } from './ChatBubble';
 export { default as InputRadio } from './InputRadio';
 export { default as InputSwitch } from './InputSwitch';
