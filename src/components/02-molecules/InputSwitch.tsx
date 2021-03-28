@@ -88,8 +88,12 @@ const Switch = styled.span`
   }
 `;
 
-const InputSwitch = ({ label, ...props }: InputSwitchProps): ReactElement => (
-  <Field>
+const InputSwitch = ({
+  className,
+  label,
+  ...props
+}: InputSwitchProps): ReactElement => (
+  <Field className={className}>
     <Label>{label}</Label>
     <Input type='checkbox' {...props} />
     <Switch aria-hidden />

@@ -52,8 +52,12 @@ const Input = styled.input`
   }
 `;
 
-const InputText = ({ label, ...props }: InputTextProps): ReactElement => (
-  <Field>
+const InputText = ({
+  className,
+  label,
+  ...props
+}: InputTextProps): ReactElement => (
+  <Field className={className}>
     <Label>{label}</Label>
     <Input type='text' {...props} />
   </Field>

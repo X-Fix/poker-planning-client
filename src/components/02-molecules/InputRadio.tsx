@@ -96,9 +96,14 @@ const Label = styled.p`
   margin: 0;
 `;
 
-function InputRadio({ label, name, ...props }: InputRadioProps): ReactElement {
+function InputRadio({
+  className,
+  label,
+  name,
+  ...props
+}: InputRadioProps): ReactElement {
   return (
-    <Field>
+    <Field className={className}>
       <Input type='radio' name={name} {...props} />
       <Radio aria-hidden />
       <Label>{label}</Label>
