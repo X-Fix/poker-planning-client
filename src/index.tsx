@@ -12,6 +12,7 @@ import InputRadio from './components/02-molecules/InputRadio';
 import InputSwitch from './components/02-molecules/InputSwitch';
 import PokerCard from './components/02-molecules/PokerCard';
 import Header from './components/03-organisms/Header';
+import ChooseForm from './components/03-organisms/ChooseForm';
 
 const StyledBody = styled.div`
   font-family: ${fontFamily};
@@ -72,6 +73,8 @@ const Body: React.FC = () => {
         <PokerCard value='100' name='poker-card' />
         <PokerCard value='☕' name='poker-card' />
       </RadioGroup>
+
+      <ChooseForm />
     </StyledBody>
   );
 };
