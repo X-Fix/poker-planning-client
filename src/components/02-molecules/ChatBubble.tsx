@@ -4,16 +4,19 @@ import styled from '@emotion/styled';
 import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 
+type ContainerProps = {
+  self?: boolean;
+};
+
 type ChatBubbleProps = {
-  isSelf?: boolean;
   message: string;
   participant: string;
-};
+} & ContainerProps;
 
 const { blue50, blue900, neutral100 } = color;
 const { chatBubble } = shadows;
 
-const BaseContainer = styled.li`
+const Container = styled.li<ContainerProps>`
   ${font('body')};
 
   background-color: ${neutral100};
@@ -49,6 +52,24 @@ const BaseContainer = styled.li`
     position: absolute;
     width: 16px;
   }
+
+  ${({ self }) =>
+    self &&
+    `
+    background-color: ${blue50}
+    margin: 0 1rem 0.5rem 1.5rem;
+
+    &::before {
+      border-bottom: 8px solid ${blue50};
+      left: auto;
+      right: -8px;
+    }
+
+    &::after {
+      left: auto;
+      right: -9px;
+    }
+  `}
 `;
 
 const Participant = styled.span`
@@ -57,36 +78,15 @@ const Participant = styled.span`
   margin-bottom: 0.25rem;
 `;
 
-function ChatBubble({
-  isSelf = false,
+const ChatBubble = ({
+  self = false,
   message,
   participant,
-}: ChatBubbleProps): ReactElement {
-  const Container = styled(BaseContainer)`
-    ${isSelf &&
-    `
-      background-color: ${blue50}
-      margin: 0 1rem 0.5rem 1.5rem;
-
-      &::before {
-        border-bottom: 8px solid ${blue50};
-        left: auto;
-        right: -8px;
-      }
-
-      &::after {
-        left: auto;
-        right: -9px;
-      }
-    `}
-  `;
-
-  return (
-    <Container>
-      <Participant>{participant}</Participant>
-      {message}
-    </Container>
-  );
-}
+}: ChatBubbleProps): ReactElement => (
+  <Container self={self}>
+    <Participant>{participant}</Participant>
+    {message}
+  </Container>
+);
 
 export default ChatBubble;

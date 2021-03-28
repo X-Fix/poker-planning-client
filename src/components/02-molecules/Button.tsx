@@ -1,24 +1,32 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import styled from '@emotion/styled';
+import styled, { CreateStyledComponent } from '@emotion/styled';
 import { color, shadows } from '../00-base/variables';
 
 const { blue800, blue900, neutral0, neutral100, neutral700 } = color;
 const { buttonPrimary, buttonSecondary } = shadows;
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isDark?: boolean;
-  buttonStyle?: 'primary' | 'secondary' | 'wide';
+  dark?: boolean;
+  secondary?: boolean;
 }
 
-const BaseButton = styled.button`
+const StyledButton = styled.button<ButtonProps>`
   align-items: center;
+  background-color: ${({ secondary }) => (secondary ? neutral0 : blue800)};
   border: none;
   border-radius: 2px;
+  color: ${({ secondary }) => (secondary ? blue800 : neutral0)};
   cursor: pointer;
   display: inline-flex;
   height: 3rem;
   justify-content: center;
   padding: 0 1rem;
+
+  ${({ dark }) =>
+    dark &&
+    `
+    background-color: ${blue900};
+  `}
 
   &:disabled {
     background-color: ${neutral100};
@@ -42,40 +50,29 @@ const BaseButton = styled.button`
         rgba(0, 0, 0, 0.05)
       );
     }
+
+    & > svg {
+      filter: drop-shadow(
+        ${({ secondary }) => (secondary ? buttonSecondary : buttonPrimary)}
+      );
+    }
+
+    & > span {
+      text-shadow: ${({ secondary }) =>
+        secondary ? buttonSecondary : buttonPrimary};
+    }
   }
 `;
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  isDark = false,
-  buttonStyle = 'primary',
+  dark = false,
+  secondary = false,
   ...props
-}) => {
-  const StyledButton = styled(BaseButton)`
-    background-color: ${buttonStyle === 'secondary' ? neutral0 : blue800};
-    color: ${buttonStyle === 'secondary' ? blue800 : neutral0};
-
-    &:not(:disabled) {
-      & > svg {
-        filter: drop-shadow(
-          ${buttonStyle === 'secondary' ? buttonSecondary : buttonPrimary}
-        );
-      }
-
-      & > span {
-        text-shadow: ${buttonStyle === 'secondary'
-          ? buttonSecondary
-          : buttonPrimary};
-      }
-    }
-
-    ${isDark &&
-    `
-      background-color: ${blue900};
-    `}
-  `;
-
-  return <StyledButton {...props}>{children}</StyledButton>;
-};
+}) => (
+  <StyledButton dark={dark} secondary={secondary} {...props}>
+    {children}
+  </StyledButton>
+);
 
 export default React.memo(Button);
