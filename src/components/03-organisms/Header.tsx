@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button } from '../02-molecules';
 import { Icon } from '../01-atoms';
 import { color, shadows } from '../00-base/variables';
 import { font, srOnly } from '../00-base/utils';
+import { Menu } from '.';
 
 const { blue800, neutral0 } = color;
 const { header } = shadows;
@@ -64,20 +65,28 @@ const ButtonIcon = styled(Icon)`
   }
 `;
 
-const Header = (): ReactElement => (
-  <Container>
-    <Wrapper>
-      <StyledButton type='button'>
-        <ButtonIcon xlink='menu' aria-hidden />
-        <ButtonText>Menu</ButtonText>
-      </StyledButton>
-      <Heading>Poker Planning</Heading>
-      <StyledButton type='button'>
-        <ButtonIcon xlink='chat' aria-hidden />
-        <ButtonText>Chat</ButtonText>
-      </StyledButton>
-    </Wrapper>
-  </Container>
-);
+const Header = (): ReactElement => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = useCallback(() => setMenuOpen(!isMenuOpen), [isMenuOpen]);
+
+  return (
+    <>
+      <Container>
+        <Wrapper>
+          <StyledButton onClick={toggleMenu} type='button' dark={isMenuOpen}>
+            <ButtonIcon xlink='menu' aria-hidden />
+            <ButtonText>Menu</ButtonText>
+          </StyledButton>
+          <Heading>Poker Planning</Heading>
+          <StyledButton type='button'>
+            <ButtonIcon xlink='chat' aria-hidden />
+            <ButtonText>Chat</ButtonText>
+          </StyledButton>
+        </Wrapper>
+      </Container>
+      <Menu isOpen={isMenuOpen} />
+    </>
+  );
+};
 
 export default React.memo(Header);
