@@ -65,7 +65,7 @@ const Switch = styled.span`
     width: 24px;
   }
 
-  input[type='checkbox']:focus + & {
+  ${Input}:focus + & {
     /*
       Copy default outline behavior to the custom switch
       https://ghinda.net/article/mimic-native-focus-css/
@@ -76,7 +76,7 @@ const Switch = styled.span`
     outline-width: 3px;
   }
 
-  input[type='checkbox']:checked + & {
+  ${Input}:checked + & {
     &::before {
       background-color: ${blue700};
     }

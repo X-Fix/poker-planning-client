@@ -60,7 +60,7 @@ const Radio = styled.span`
     width: 12px;
   }
 
-  input[type='radio']:focus + & {
+  ${Input}:focus + & {
     /*
       Copy default outline behavior to the custom radio
       https://ghinda.net/article/mimic-native-focus-css/
@@ -71,7 +71,7 @@ const Radio = styled.span`
     outline-width: 3px;
   }
 
-  input[type='radio']:checked + & {
+  ${Input}:checked + & {
     &::before {
       background: ${blue800};
       border: none;
