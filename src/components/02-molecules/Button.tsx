@@ -73,11 +73,6 @@ const Button: React.FC<ButtonProps> = ({
     `
       background-color: ${blue900};
     `}
-
-    ${buttonStyle === 'wide' &&
-    `
-      width: 322px;
-    `}
   `;
 
   return <StyledButton {...props}>{children}</StyledButton>;
