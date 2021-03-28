@@ -36,6 +36,17 @@ const Heading = styled.h1`
   font-weight: bold;
 `;
 
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 767px) {
+    border-radius: 50%;
+    padding: 0.5rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    height: 2.5rem;
+  }
+`;
+
 const ButtonText = styled.span`
   ${font('body')};
 
@@ -56,15 +67,15 @@ const ButtonIcon = styled(Icon)`
 const Header = (): ReactElement => (
   <Container>
     <Wrapper>
-      <Button buttonStyle='header' type='button'>
+      <StyledButton type='button'>
         <ButtonIcon xlink='menu' aria-hidden />
         <ButtonText>Menu</ButtonText>
-      </Button>
+      </StyledButton>
       <Heading>Poker Planning</Heading>
-      <Button buttonStyle='header' type='button'>
+      <StyledButton type='button'>
         <ButtonIcon xlink='chat' aria-hidden />
         <ButtonText>Chat</ButtonText>
-      </Button>
+      </StyledButton>
     </Wrapper>
   </Container>
 );
