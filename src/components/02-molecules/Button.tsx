@@ -1,4 +1,8 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  forwardRef,
+  MutableRefObject,
+} from 'react';
 import styled from '@emotion/styled';
 import { color, shadows } from '../00-base/variables';
 
@@ -8,6 +12,7 @@ const { buttonPrimary, buttonSecondary } = shadows;
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   dark?: boolean;
   secondary?: boolean;
+  ref?: MutableRefObject<HTMLButtonElement>;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -60,15 +65,15 @@ const StyledButton = styled.button<ButtonProps>`
   }
 `;
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  dark = false,
-  secondary = false,
-  ...props
-}) => (
-  <StyledButton dark={dark} secondary={secondary} {...props}>
-    {children}
-  </StyledButton>
+const Button = forwardRef(
+  (
+    { children, dark = false, secondary = false, ...props }: ButtonProps,
+    ref: MutableRefObject<HTMLButtonElement>
+  ) => (
+    <StyledButton dark={dark} secondary={secondary} ref={ref} {...props}>
+      {children}
+    </StyledButton>
+  )
 );
 
 export default React.memo(Button);

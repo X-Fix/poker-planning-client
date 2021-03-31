@@ -1,5 +1,7 @@
 import React, { ReactElement, useCallback, useState } from 'react';
 import styled from '@emotion/styled';
+
+import { setupMenuActions } from '../../a11y';
 import { Button } from '../02-molecules';
 import { Icon } from '../01-atoms';
 import { color, shadows } from '../00-base/variables';
@@ -65,18 +67,64 @@ const ButtonIcon = styled(Icon)`
   }
 `;
 
+const {
+  menuRef,
+  menuButtonRef,
+  menuItemRefs,
+  menuItemNavigationHandler,
+  menuButtonNavigationHandler,
+} = setupMenuActions(5);
+
 const Header = (): ReactElement => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const toggleMenu = useCallback(() => setMenuOpen(!isMenuOpen), [isMenuOpen]);
+  const [isMenuItemLastActive, setIsMenuItemLastActive] = useState(false);
+
+  const toggleMenu = useCallback(() => {
+    setIsMenuItemLastActive(false);
+
+    // If last active element was a MenuItem, don't toggle the menu state. The menu will have closed
+    // When it lost focus, so don't re-open it with this click
+    if (!isMenuItemLastActive) {
+      setMenuOpen(!isMenuOpen);
+
+      // If toggling from close -> open, also focus first MenuItem
+      !isMenuOpen && menuItemRefs[0]?.current?.focus();
+    }
+  }, [isMenuOpen, isMenuItemLastActive]);
+
+  const focusHandler = useCallback(() => {
+    setMenuOpen(true);
+    setIsMenuItemLastActive(true);
+  }, []);
+
+  const blurHandler = useCallback(() => {
+    setMenuOpen(false);
+  }, []);
 
   return (
     <>
       <Container>
         <Wrapper>
-          <StyledButton onClick={toggleMenu} type='button' dark={isMenuOpen}>
+          <StyledButton
+            onMouseUp={toggleMenu}
+            onKeyUp={menuButtonNavigationHandler}
+            type='button'
+            dark={isMenuOpen}
+            ref={menuButtonRef}
+            aria-expanded={isMenuOpen}
+            aria-haspopup
+          >
             <ButtonIcon xlink='menu' aria-hidden />
             <ButtonText>Menu</ButtonText>
           </StyledButton>
+          <Menu
+            isOpen={isMenuOpen}
+            menuItemRefs={menuItemRefs}
+            menuRef={menuRef}
+            navigationHandler={menuItemNavigationHandler}
+            onFocus={focusHandler}
+            onBlur={blurHandler}
+          />
           <Heading>Poker Planning</Heading>
           <StyledButton type='button'>
             <ButtonIcon xlink='chat' aria-hidden />
@@ -84,7 +132,6 @@ const Header = (): ReactElement => {
           </StyledButton>
         </Wrapper>
       </Container>
-      <Menu isOpen={isMenuOpen} />
     </>
   );
 };

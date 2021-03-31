@@ -1,4 +1,11 @@
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, {
+  FocusEventHandler,
+  KeyboardEventHandler,
+  MutableRefObject,
+  ReactElement,
+  useCallback,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 
 import { color, shadows } from '../00-base/variables';
@@ -6,11 +13,19 @@ import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { ButtonToggle } from '../02-molecules';
 
-type MenuProps = {
+type ContainerProps = {
   isOpen?: boolean;
+  onFocus: FocusEventHandler;
+  onBlur: FocusEventHandler;
 };
 
-const Container = styled.div<MenuProps>`
+type MenuProps = {
+  menuRef: MutableRefObject<HTMLDivElement>;
+  menuItemRefs: MutableRefObject<HTMLButtonElement>[];
+  navigationHandler: KeyboardEventHandler;
+} & ContainerProps;
+
+const Container = styled.div<ContainerProps>`
   background-color: ${color.neutral0};
   box-sizing: border-box;
   height: 0;
@@ -19,7 +34,7 @@ const Container = styled.div<MenuProps>`
   padding-right: 1rem;
   position: absolute;
   top: 4rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.6, 1);
+  transition: height 0.25s cubic-bezier(0.4, 0, 0.6, 1);
   width: 100%;
 
   @media screen and (min-width: 35.5rem) {
@@ -30,7 +45,8 @@ const Container = styled.div<MenuProps>`
     isOpen &&
     `
     border-bottom: 0.125rem solid ${color.blue800};
-    height: 16.5rem;
+    box-shadow: ${shadows.header};
+    height: 17rem;
     padding-bottom: 0.5rem;
     padding-top: 0.5rem;
   `}
@@ -43,19 +59,19 @@ const Heading = styled.h2`
 `;
 
 const StyledButtonToggle = styled(ButtonToggle)`
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.375rem;
   padding: 0.125rem;
 `;
 
 const MenuAction = styled.button`
+  align-items: center;
   background-color: transparent;
   border: none;
   color: ${color.blue800};
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.25rem;
-  padding: 0;
+  margin-bottom: 0.5rem;
+  padding: 0.125rem;
   width: 100%;
 `;
 
@@ -68,6 +84,7 @@ const ActionText = styled.span`
 const ActionIcon = styled(Icon)`
   filter: drop-shadow(${shadows.buttonSecondary});
   height: 1.5rem;
+  margin-right: 0.5rem;
   width: 1.5rem;
 `;
 
@@ -94,7 +111,14 @@ appSettings.forEach(({ initialState, value }) => {
   initialSettings[value] = initialState;
 });
 
-const Menu = ({ isOpen = false }: MenuProps): ReactElement => {
+const Menu = ({
+  isOpen = false,
+  menuRef,
+  menuItemRefs,
+  navigationHandler,
+  onFocus,
+  onBlur,
+}: MenuProps): ReactElement => {
   const [settings, setSettings] = useState(initialSettings);
   const toggleSetting = useCallback(
     ({ state, value }) => {
@@ -107,24 +131,46 @@ const Menu = ({ isOpen = false }: MenuProps): ReactElement => {
   );
 
   return (
-    <Container role='menu' isOpen={isOpen}>
+    <Container
+      role='menu'
+      isOpen={isOpen}
+      aria-hidden={isOpen}
+      ref={menuRef}
+      onFocus={onFocus}
+      onBlur={onBlur}
+    >
       <Heading>Settings</Heading>
-      {appSettings.map((props) => (
+      {appSettings.map((props, index) => (
         <StyledButtonToggle
           key={props.value}
           onChange={toggleSetting}
+          onKeyDown={navigationHandler}
           role='menuitem'
+          tabIndex={-1}
+          ref={menuItemRefs[index]}
           {...props}
         />
       ))}
       <Heading>Actions</Heading>
-      <MenuAction type='button'>
-        <ActionText>Copy session link</ActionText>
+      <MenuAction
+        onKeyDown={navigationHandler}
+        role='menuitem'
+        type='button'
+        tabIndex={-1}
+        ref={menuItemRefs[3]}
+      >
         <ActionIcon xlink='copy' aria-hidden />
+        <ActionText>Copy session link</ActionText>
       </MenuAction>
-      <MenuAction type='button'>
-        <ActionText>Leave session</ActionText>
+      <MenuAction
+        onKeyDown={navigationHandler}
+        role='menuitem'
+        type='button'
+        tabIndex={-1}
+        ref={menuItemRefs[4]}
+      >
         <ActionIcon xlink='leave' aria-hidden />
+        <ActionText>Leave session</ActionText>
       </MenuAction>
     </Container>
   );

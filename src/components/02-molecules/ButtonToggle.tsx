@@ -1,17 +1,26 @@
 // https://inclusive-components.design/toggle-button/
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  forwardRef,
+  MutableRefObject,
+  ReactElement,
+  useCallback,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 
-type ButtonToggleProps = {
+interface ButtonToggleProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   className?: string;
   initialState?: boolean;
   label: string;
   onChange: ({ state, value }: { state: boolean; value: string }) => void;
+  ref: MutableRefObject<HTMLButtonElement>;
   role?: 'button' | 'menuitem';
   value: string;
-};
+}
 
 const Button = styled.button`
   align-items: center;
@@ -71,33 +80,39 @@ const Switch = styled.span`
   }
 `;
 
-const ButtonToggle = ({
-  className,
-  initialState = false,
-  label,
-  onChange,
-  role = 'button',
-  value,
-}: ButtonToggleProps): ReactElement => {
-  const [state, setState] = useState(initialState);
-  const handleClick = useCallback(() => {
-    setState(!state);
-    typeof onChange === 'function' && onChange({ state: !state, value });
-  }, [state]);
+const ButtonToggle = forwardRef(
+  (
+    {
+      initialState = false,
+      label,
+      onChange,
+      role = 'button',
+      value,
+      ...props
+    }: ButtonToggleProps,
+    ref: MutableRefObject<HTMLButtonElement>
+  ): ReactElement => {
+    const [state, setState] = useState(initialState);
+    const handleClick = useCallback(() => {
+      setState(!state);
+      typeof onChange === 'function' && onChange({ state: !state, value });
+    }, [state]);
 
-  return (
-    <Button
-      aria-pressed={state}
-      className={className}
-      onClick={handleClick}
-      role={role}
-      type='button'
-      value={value}
-    >
-      <Label>{label}</Label>
-      <Switch aria-hidden />
-    </Button>
-  );
-};
+    return (
+      <Button
+        aria-pressed={state}
+        onClick={handleClick}
+        role={role}
+        type='button'
+        value={value}
+        ref={ref}
+        {...props}
+      >
+        <Label>{label}</Label>
+        <Switch aria-hidden />
+      </Button>
+    );
+  }
+);
 
 export default React.memo(ButtonToggle);
