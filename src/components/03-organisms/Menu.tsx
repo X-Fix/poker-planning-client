@@ -30,11 +30,11 @@ const Container = styled.div<ContainerProps>`
   box-sizing: border-box;
   height: 0;
   overflow: hidden;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
   position: absolute;
   top: 4rem;
-  transition: height 0.25s cubic-bezier(0.4, 0, 0.6, 1);
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.6, 1);
   width: 100%;
 
   @media screen and (min-width: 35.5rem) {
@@ -46,7 +46,7 @@ const Container = styled.div<ContainerProps>`
     `
     border-bottom: 0.125rem solid ${color.blue800};
     box-shadow: ${shadows.header};
-    height: 17rem;
+    height: 17.675rem;
     padding-bottom: 0.5rem;
     padding-top: 0.5rem;
   `}
@@ -59,8 +59,8 @@ const Heading = styled.h2`
 `;
 
 const StyledButtonToggle = styled(ButtonToggle)`
-  margin-bottom: 0.375rem;
-  padding: 0.125rem;
+  margin-bottom: 0.125rem;
+  padding: 0.25rem 0.75rem;
 `;
 
 const MenuAction = styled.button`
@@ -70,9 +70,12 @@ const MenuAction = styled.button`
   color: ${color.blue800};
   cursor: pointer;
   display: flex;
-  margin-bottom: 0.5rem;
-  padding: 0.125rem;
+  padding: 0.25rem 0.75rem;
   width: 100%;
+
+  &:not(:last-child) {
+    margin-bottom: 0.125rem;
+  }
 `;
 
 const ActionText = styled.span`
