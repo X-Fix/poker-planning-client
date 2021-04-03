@@ -115,7 +115,11 @@ const Header = (): ReactElement => {
 
   useEffect(() => {
     window.addEventListener('click', closeMenuOnBlur);
-    return () => window.removeEventListener('click', closeMenuOnBlur);
+    window.addEventListener('focusin', closeMenuOnBlur);
+    return () => {
+      window.removeEventListener('click', closeMenuOnBlur);
+      window.removeEventListener('focusin', closeMenuOnBlur);
+    };
   }, []);
 
   return (

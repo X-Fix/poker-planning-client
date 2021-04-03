@@ -45,7 +45,7 @@ test('Opening and closing the menu with mouse', async (t) => {
   await assertMenuClosed(t);
 });
 
-test('Opening and closing the menu with keyboard', async (t) => {
+test.only('Opening and closing the menu with keyboard', async (t) => {
   // Check default state
   await assertMenuClosed(t);
 
@@ -85,6 +85,10 @@ test('Opening and closing the menu with keyboard', async (t) => {
   await t.pressKey('up');
   await assertMenuOpen(t);
   await t.expect(getLastMenuItem().focused).eql(true);
+
+  // Close by moving focus away with 'Tab' key
+  await t.pressKey('tab tab'); // Press tab twice cos testcafe incorrectly focuses the menu button the first time
+  await assertMenuClosed(t);
 });
 
 test('navigating the menu with a keyboard', async (t) => {
