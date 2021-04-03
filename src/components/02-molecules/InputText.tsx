@@ -39,6 +39,10 @@ const Input = styled.input`
   text-align: left;
   width: 324px;
 
+  @media screen and (max-width: 359px) {
+    width: 288px;
+  }
+
   &:hover,
   &:focus {
     border-color: ${blue800};

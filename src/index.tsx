@@ -1,22 +1,35 @@
 import React from 'react';
-import { Global, css } from '@emotion/react';
 import ReactDOM from 'react-dom';
-import { Header, Menu } from './components/03-organisms';
-import { fontFamily } from './components/00-base/variables';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Global, css } from '@emotion/react';
 
-const Body: React.FC = () => {
+import { color, fontFamily } from './components/00-base/variables';
+import {
+  CreateSessionPage,
+  HomePage,
+  JoinSessionPage,
+} from './components/04-layouts';
+
+const App: React.FC = () => {
   return (
     <>
       <Global
         styles={css`
           body {
+            background-color: ${color.neutral50};
             font-family: ${fontFamily};
           }
         `}
       />
-      <Header />
+      <Router>
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/create-session' component={CreateSessionPage} />
+          <Route path='/join-session' component={JoinSessionPage} />
+        </Switch>
+      </Router>
     </>
   );
 };
 
-ReactDOM.render(<Body />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

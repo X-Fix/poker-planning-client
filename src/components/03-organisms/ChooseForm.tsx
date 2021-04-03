@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { color, shadows } from '../00-base/variables';
@@ -10,7 +11,6 @@ const { buttonPrimary, primary } = shadows;
 
 const Navigation = styled.nav`
   align-items: center;
-  background-color: ${neutral50};
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -22,7 +22,7 @@ const Navigation = styled.nav`
   }
 `;
 
-const Link = styled.a`
+const StyledLink = styled(Link)`
   background-color: ${blue800};
   border-radius: 16px;
   box-shadow: ${primary};
@@ -77,19 +77,20 @@ const HugeIcon = styled(Icon)`
 const ButtonText = styled.span`
   ${font('body')};
 
-  margin: 0 auto;
+  display: block;
+  margin: 0.25rem auto 0;
 `;
 
 const ChooseForm = (): ReactElement => (
   <Navigation>
-    <Link href='/create-session'>
+    <StyledLink to='/create-session'>
       <HugeIcon xlink='create' aria-hidden />
       <ButtonText>Create Session</ButtonText>
-    </Link>
-    <Link href='/join-session'>
+    </StyledLink>
+    <StyledLink to='/join-session'>
       <HugeIcon xlink='join' aria-hidden />
       <ButtonText>Join Session</ButtonText>
-    </Link>
+    </StyledLink>
   </Navigation>
 );
 

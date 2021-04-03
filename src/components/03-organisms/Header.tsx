@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { setupMenuActions } from '../../a11y';
@@ -23,10 +24,11 @@ const Container = styled.header`
   font-weight: 400;
   height: 64px;
   left: 0;
-  position: fixed;
+  position: absolute;
   text-align: center;
   top: 0;
   width: 100%;
+  z-index: 1;
 `;
 
 const Wrapper = styled.section`
@@ -78,6 +80,9 @@ const { menuRef, menuButtonRef, menuItems, menuItemRefs } = setupMenuActions(5);
 const Header = (): ReactElement => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const isMenuOpenRef = useRef(isMenuOpen);
+  const location = useLocation();
+  console.log(location.pathname);
+  const shouldShowButtons = location.pathname === '/session';
 
   const toggleMenu = useCallback(() => {
     setMenuOpen(!isMenuOpen);
@@ -126,30 +131,38 @@ const Header = (): ReactElement => {
     <>
       <Container>
         <Wrapper>
-          <StyledButton
-            onMouseUp={toggleMenu}
-            onKeyUp={keyUpHandler}
-            type='button'
-            dark={isMenuOpen}
-            ref={menuButtonRef}
-            aria-expanded={isMenuOpen}
-            aria-haspopup
-          >
-            <ButtonIcon xlink='menu' aria-hidden />
-            <ButtonText>Menu</ButtonText>
-          </StyledButton>
-          <Menu
-            isOpen={isMenuOpen}
-            menuItems={menuItems}
-            menuItemRefs={menuItemRefs}
-            menuRef={menuRef}
-            setMenuOpen={setMenuOpen}
-          />
+          {shouldShowButtons && (
+            <>
+              <StyledButton
+                onMouseUp={toggleMenu}
+                onKeyUp={keyUpHandler}
+                type='button'
+                dark={isMenuOpen}
+                ref={menuButtonRef}
+                aria-expanded={isMenuOpen}
+                aria-haspopup
+              >
+                <ButtonIcon xlink='menu' aria-hidden />
+                <ButtonText>Menu</ButtonText>
+              </StyledButton>
+              <Menu
+                isOpen={isMenuOpen}
+                menuItems={menuItems}
+                menuItemRefs={menuItemRefs}
+                menuRef={menuRef}
+                setMenuOpen={setMenuOpen}
+              />
+            </>
+          )}
           <Heading>Poker Planning</Heading>
-          <StyledButton type='button'>
-            <ButtonIcon xlink='chat' aria-hidden />
-            <ButtonText>Chat</ButtonText>
-          </StyledButton>
+          {shouldShowButtons && (
+            <>
+              <StyledButton type='button'>
+                <ButtonIcon xlink='chat' aria-hidden />
+                <ButtonText>Chat</ButtonText>
+              </StyledButton>
+            </>
+          )}
         </Wrapper>
       </Container>
     </>

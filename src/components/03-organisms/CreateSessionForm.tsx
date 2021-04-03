@@ -12,6 +12,7 @@ const { form } = shadows;
 const Form = styled.form`
   box-sizing: border-box;
   height: 580px;
+  margin: 0 auto;
   padding: 1rem;
   width: 360px;
 
@@ -49,6 +50,10 @@ const StyledInputRadio = styled(InputRadio)`
 
 const WideButton = styled(Button)`
   width: 322px;
+
+  @media screen and (max-width: 359px) {
+    width: 288px;
+  }
 `;
 
 const ButtonText = styled.span`

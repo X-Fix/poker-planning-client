@@ -12,6 +12,7 @@ const { form } = shadows;
 const Form = styled.form`
   box-sizing: border-box;
   height: 360px;
+  margin: 0 auto;
   padding: 1rem;
   width: 360px;
 
@@ -35,6 +36,10 @@ const StyledInputText = styled(InputText)`
 const WideButton = styled(Button)`
   margin-top: 1rem;
   width: 322px;
+
+  @media screen and (max-width: 359px) {
+    width: 288px;
+  }
 `;
 
 const ButtonText = styled.span`
