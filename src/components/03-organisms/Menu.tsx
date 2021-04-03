@@ -1,6 +1,4 @@
 import React, {
-  FocusEventHandler,
-  KeyboardEventHandler,
   MutableRefObject,
   ReactElement,
   useCallback,
@@ -12,17 +10,17 @@ import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { ButtonToggle } from '../02-molecules';
+import { MenuItem } from '../../a11y/setupMenuActions';
 
 type ContainerProps = {
   isOpen?: boolean;
-  onFocus: FocusEventHandler;
-  onBlur: FocusEventHandler;
 };
 
 type MenuProps = {
   menuRef: MutableRefObject<HTMLDivElement>;
+  menuItems: MenuItem[];
   menuItemRefs: MutableRefObject<HTMLButtonElement>[];
-  navigationHandler: KeyboardEventHandler;
+  setMenuOpen: (state: boolean) => void;
 } & ContainerProps;
 
 const Container = styled.div<ContainerProps>`
@@ -117,10 +115,9 @@ appSettings.forEach(({ initialState, value }) => {
 const Menu = ({
   isOpen = false,
   menuRef,
+  menuItems,
   menuItemRefs,
-  navigationHandler,
-  onFocus,
-  onBlur,
+  setMenuOpen,
 }: MenuProps): ReactElement => {
   const [settings, setSettings] = useState(initialSettings);
   const toggleSetting = useCallback(
@@ -133,21 +130,36 @@ const Menu = ({
     [setSettings]
   );
 
+  const keyDownHandler = useCallback(
+    ({ key, currentTarget }): void => {
+      const { nextItem, previousItem, escapeMenu } = menuItems.find(
+        ({ ref }) => ref.current === currentTarget
+      );
+
+      if (key === 'ArrowDown') {
+        return nextItem();
+      }
+
+      if (key === 'ArrowUp') {
+        return previousItem();
+      }
+
+      if (key === 'Escape' || key === 'ArrowLeft') {
+        setMenuOpen(false);
+        return escapeMenu();
+      }
+    },
+    [setMenuOpen, menuItems]
+  );
+
   return (
-    <Container
-      role='menu'
-      isOpen={isOpen}
-      aria-hidden={isOpen}
-      ref={menuRef}
-      onFocus={onFocus}
-      onBlur={onBlur}
-    >
+    <Container role='menu' isOpen={isOpen} aria-hidden={!isOpen} ref={menuRef}>
       <Heading>Settings</Heading>
       {appSettings.map((props, index) => (
         <StyledButtonToggle
           key={props.value}
           onChange={toggleSetting}
-          onKeyDown={navigationHandler}
+          onKeyDown={keyDownHandler}
           role='menuitem'
           tabIndex={-1}
           ref={menuItemRefs[index]}
@@ -156,7 +168,7 @@ const Menu = ({
       ))}
       <Heading>Actions</Heading>
       <MenuAction
-        onKeyDown={navigationHandler}
+        onKeyDown={keyDownHandler}
         role='menuitem'
         type='button'
         tabIndex={-1}
@@ -166,7 +178,7 @@ const Menu = ({
         <ActionText>Copy session link</ActionText>
       </MenuAction>
       <MenuAction
-        onKeyDown={navigationHandler}
+        onKeyDown={keyDownHandler}
         role='menuitem'
         type='button'
         tabIndex={-1}

@@ -1,6 +1,6 @@
-import { createRef, KeyboardEventHandler, MutableRefObject } from 'react';
+import { createRef, MutableRefObject } from 'react';
 
-type MenuItem = {
+export type MenuItem = {
   isFirst: boolean;
   isLast: boolean;
   ref: MutableRefObject<HTMLButtonElement>;
@@ -16,17 +16,12 @@ function setupMenuActions(totalMenuItems: number) {
   const menuItems = generateMenuItems(totalMenuItems);
   const menuItemRefs = menuItems.map(({ ref }) => ref);
   attachNavigationHandlers(menuItems, menuButtonRef);
-  const menuItemNavigationHandler = getMenuItemNavigationHandler(menuItems);
-  const menuButtonNavigationHandler = getMenuButtonNavigationHandler(
-    menuItemRefs
-  );
 
   return {
     menuRef,
     menuButtonRef,
+    menuItems,
     menuItemRefs,
-    menuItemNavigationHandler,
-    menuButtonNavigationHandler,
   };
 }
 
@@ -71,42 +66,6 @@ function attachNavigationHandlers(
       target?.ref.current?.focus();
     };
   });
-}
-
-function getMenuItemNavigationHandler(
-  menuItems: MenuItem[]
-): KeyboardEventHandler {
-  return ({ key, currentTarget }): void => {
-    const { nextItem, previousItem, escapeMenu } = menuItems.find(
-      ({ ref }) => ref.current === currentTarget
-    );
-
-    if (key === 'ArrowDown') {
-      return nextItem();
-    }
-
-    if (key === 'ArrowUp') {
-      return previousItem();
-    }
-
-    if (key === 'Escape' || key === 'ArrowLeft') {
-      return escapeMenu();
-    }
-  };
-}
-
-function getMenuButtonNavigationHandler(
-  menuItemRefs: MutableRefObject<HTMLButtonElement>[]
-): KeyboardEventHandler {
-  return ({ key }): void => {
-    if (key === 'ArrowDown' || key === ' ' || key === 'Enter') {
-      return menuItemRefs[0]?.current?.focus();
-    }
-
-    if (key === 'ArrowUp') {
-      return menuItemRefs[menuItemRefs.length - 1]?.current?.focus();
-    }
-  };
 }
 
 export default setupMenuActions;

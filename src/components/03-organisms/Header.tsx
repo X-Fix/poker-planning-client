@@ -1,4 +1,10 @@
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 
 import { setupMenuActions } from '../../a11y';
@@ -67,38 +73,49 @@ const ButtonIcon = styled(Icon)`
   }
 `;
 
-const {
-  menuRef,
-  menuButtonRef,
-  menuItemRefs,
-  menuItemNavigationHandler,
-  menuButtonNavigationHandler,
-} = setupMenuActions(5);
+const { menuRef, menuButtonRef, menuItems, menuItemRefs } = setupMenuActions(5);
 
 const Header = (): ReactElement => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isMenuItemLastActive, setIsMenuItemLastActive] = useState(false);
+  const isMenuOpenRef = useRef(isMenuOpen);
 
   const toggleMenu = useCallback(() => {
-    setIsMenuItemLastActive(false);
+    setMenuOpen(!isMenuOpen);
 
-    // If last active element was a MenuItem, don't toggle the menu state. The menu will have closed
-    // When it lost focus, so don't re-open it with this click
-    if (!isMenuItemLastActive) {
-      setMenuOpen(!isMenuOpen);
+    // If toggling from close -> open, also focus first MenuItem
+    !isMenuOpen && menuItemRefs[0]?.current?.focus();
+  }, [isMenuOpen]);
 
-      // If toggling from close -> open, also focus first MenuItem
-      !isMenuOpen && menuItemRefs[0]?.current?.focus();
+  const keyUpHandler = useCallback(
+    ({ key }): void => {
+      if (key === 'ArrowDown' || key === ' ' || key === 'Enter') {
+        setMenuOpen(true);
+        return menuItemRefs[0]?.current?.focus();
+      }
+
+      if (key === 'ArrowUp') {
+        setMenuOpen(true);
+        return menuItemRefs[menuItemRefs.length - 1]?.current?.focus();
+      }
+    },
+    [setMenuOpen, menuItemRefs]
+  );
+
+  console.log({ isMenuOpen });
+
+  const closeMenuOnBlur: EventHandlerNonNull = ({ target }) => {
+    if (
+      isMenuOpenRef &&
+      !menuButtonRef.current?.contains(target as Element) &&
+      !menuRef.current?.contains(target as Element)
+    ) {
+      setMenuOpen(false);
     }
-  }, [isMenuOpen, isMenuItemLastActive]);
+  };
 
-  const focusHandler = useCallback(() => {
-    setMenuOpen(true);
-    setIsMenuItemLastActive(true);
-  }, []);
-
-  const blurHandler = useCallback(() => {
-    setMenuOpen(false);
+  useEffect(() => {
+    window.addEventListener('click', closeMenuOnBlur);
+    return () => window.removeEventListener('click', closeMenuOnBlur);
   }, []);
 
   return (
@@ -107,7 +124,7 @@ const Header = (): ReactElement => {
         <Wrapper>
           <StyledButton
             onMouseUp={toggleMenu}
-            onKeyUp={menuButtonNavigationHandler}
+            onKeyUp={keyUpHandler}
             type='button'
             dark={isMenuOpen}
             ref={menuButtonRef}
@@ -119,11 +136,10 @@ const Header = (): ReactElement => {
           </StyledButton>
           <Menu
             isOpen={isMenuOpen}
+            menuItems={menuItems}
             menuItemRefs={menuItemRefs}
             menuRef={menuRef}
-            navigationHandler={menuItemNavigationHandler}
-            onFocus={focusHandler}
-            onBlur={blurHandler}
+            setMenuOpen={setMenuOpen}
           />
           <Heading>Poker Planning</Heading>
           <StyledButton type='button'>
