@@ -182,6 +182,7 @@ const Menu = ({
         role='menuitem'
         type='button'
         tabIndex={-1}
+        title='Coming soon...'
         ref={menuItemRefs[4]}
       >
         <ActionIcon xlink='leave' aria-hidden />
