@@ -27,6 +27,8 @@ module.exports = (env) => {
             {
               modules: 'auto',
               targets: 'defaults',
+              useBuiltIns: 'usage',
+              corejs: '3',
             },
           ],
           '@babel/preset-react',
