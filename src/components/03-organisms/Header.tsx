@@ -81,7 +81,7 @@ const Header = (): ReactElement => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const isMenuOpenRef = useRef(isMenuOpen);
   const location = useLocation();
-  console.log(location.pathname);
+
   const shouldShowButtons = location.pathname === '/session';
 
   const toggleMenu = useCallback(() => {
@@ -105,8 +105,6 @@ const Header = (): ReactElement => {
     },
     [setMenuOpen, menuItemRefs]
   );
-
-  console.log({ isMenuOpen });
 
   const closeMenuOnBlur: EventHandlerNonNull = ({ target }) => {
     if (
