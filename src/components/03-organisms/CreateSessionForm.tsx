@@ -1,10 +1,18 @@
-import React, { ReactElement } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  ReactElement,
+  useCallback,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 
 import { color, shadows } from '../00-base/variables';
 import { Icon } from '../01-atoms';
 import { Button, InputRadio, InputText } from '../02-molecules';
 import { font } from '../00-base/utils';
+import { createSession } from '../../services/http';
+import { useHistory } from 'react-router';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -62,35 +70,90 @@ const ButtonText = styled.span`
   margin-left: 0.25rem;
 `;
 
-const CreateSessionForm = (): ReactElement => (
-  <Form onSubmit={() => false}>
-    <Heading>Create New Session</Heading>
-    <StyledInputText label='Your Name' placeholder='Eg. "John Johnson"' />
-    <StyledInputText
-      label='Session Name (optional)'
-      placeholder='Eg. "Fuzzy Wumpus"'
-    />
-    <Fieldset>
-      <Legend>Card Sequence</Legend>
-      <StyledInputRadio
-        label='½, 1, 2, 3, 5, 8, 13, 20, 40, 100'
-        name='card-sequence'
+const cardSequenceOptions = [
+  ['½', '1', '2', '3', '5', '8', '13', '20', '40', '100'],
+  ['1', '2', '5', '10', '20', '50', '100'],
+  ['1', '2', '4', '8', '12', '16', '24', '40', '80'],
+  ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'],
+];
+
+const CreateSessionForm = (): ReactElement => {
+  const history = useHistory();
+  const [participantName, setParticipantName] = useState('');
+  const [sessionName, setSessionName] = useState('');
+  const [cardSequence, setCardSequence] = useState(cardSequenceOptions[0]);
+
+  const submitHandler = useCallback(
+    async (event: FormEvent) => {
+      event.preventDefault();
+
+      const sessionData = await createSession({
+        cardSequence,
+        participantName,
+        sessionName,
+      });
+
+      window.sessionStorage.setItem('sessionData', JSON.stringify(sessionData));
+      history.push(`/session/${sessionData.session.id}`);
+    },
+    [participantName, sessionName, cardSequence]
+  );
+
+  const participantNameChangeHandler = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+      setParticipantName(value);
+    },
+    []
+  );
+
+  const sessionNameChangeHandler = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+      setSessionName(value);
+    },
+    []
+  );
+
+  const radioOnChangeHandler = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+      setCardSequence(cardSequenceOptions[Number(value)]);
+    },
+    []
+  );
+
+  return (
+    <Form onSubmit={submitHandler}>
+      <Heading>Create New Session</Heading>
+      <StyledInputText
+        label='Your Name'
+        placeholder='Eg. "John Johnson"'
+        onChange={participantNameChangeHandler}
+        value={participantName}
       />
-      <StyledInputRadio label='1, 2, 5, 10, 20, 50, 100' name='card-sequence' />
-      <StyledInputRadio
-        label='1, 2, 4, 8, 12, 16, 24, 40, 80'
-        name='card-sequence'
+      <StyledInputText
+        label='Session Name (optional)'
+        placeholder='Eg. "Fuzzy Wumpus"'
+        onChange={sessionNameChangeHandler}
+        value={sessionName}
       />
-      <StyledInputRadio
-        label='XXS, XS, S, M, L, XL, XXL'
-        name='card-sequence'
-      />
-    </Fieldset>
-    <WideButton>
-      <Icon xlink='create' aria-hidden />
-      <ButtonText>Create New Session</ButtonText>
-    </WideButton>
-  </Form>
-);
+      <Fieldset>
+        <Legend>Card Sequence</Legend>
+        {cardSequenceOptions.map((cardSequenceOption: string[], index) => (
+          <StyledInputRadio
+            key={cardSequenceOption.join('')}
+            label={cardSequenceOption.join(', ')}
+            name='card-sequence'
+            value={index}
+            onChange={radioOnChangeHandler}
+            checked={cardSequenceOption === cardSequence}
+          />
+        ))}
+      </Fieldset>
+      <WideButton>
+        <Icon xlink='create' aria-hidden />
+        <ButtonText>Create New Session</ButtonText>
+      </WideButton>
+    </Form>
+  );
+};
 
 export default React.memo(CreateSessionForm);
