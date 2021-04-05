@@ -121,6 +121,7 @@ function VoteForm({
       <CardsContainer role='group' aria-label='Vote'>
         {cardValues.map((cardValue) => (
           <StyledPokerCard
+            key={cardValue}
             value={cardValue}
             onChange={changeHandler}
             checked={vote === cardValue}

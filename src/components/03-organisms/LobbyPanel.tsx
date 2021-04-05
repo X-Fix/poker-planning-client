@@ -149,6 +149,7 @@ function LobbyPanel({
       <ParticipantList>
         {participants.map(({ id, name, socketId }) => (
           <ParticipantWrapper
+            key={id}
             isMe={id === participantId}
             isOwner={id === ownerId}
             isActive={Boolean(socketId)}
