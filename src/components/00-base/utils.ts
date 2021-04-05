@@ -58,32 +58,35 @@ export const fixedInFooter = (position: 'left' | 'center' | 'right') => `
   z-index: 1;
 
   ${
-    position === 'center' &&
-    `
+    position === 'center'
+      ? `
     left: 50%;
     transform: translateX(-50%);
   `
+      : ''
   }
 
   ${
-    position === 'left' &&
-    `
+    position === 'left'
+      ? `
     left: 0;
 
     @media screen and (min-width: 64rem) {
       left: calc((100vw - 64rem) / 2);
     }
   `
+      : ''
   }
 
   ${
-    position === 'right' &&
-    `
+    position === 'right'
+      ? `
     right: 0;
 
     @media screen and (min-width: 64rem) {
       right: calc((100vw - 64rem) / 2);
     }
   `
+      : ''
   }
 `;
