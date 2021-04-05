@@ -6,7 +6,7 @@ import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 
-const { blue800, neutral0, neutral50, neutral100, neutral700 } = color;
+const { blue800, neutral0, neutral100, neutral700 } = color;
 const { buttonPrimary, primary } = shadows;
 
 const Navigation = styled.nav`
