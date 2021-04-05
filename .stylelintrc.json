@@ -1,6 +1,7 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
   "plugins": ["stylelint-order"],
+  "ignoreFiles": "./src/index.ejs",
   "rules": {
     "indentation": 2,
     "function-name-case": null,
