@@ -13,7 +13,11 @@ const StyledIcon = styled.svg`
   width: 2rem;
 `;
 
-const Icon = ({ description, xlink, ...props }: IconProps): ReactElement => (
+const Icon = ({
+  description,
+  xlink,
+  ...props
+}: IconProps): ReactElement<SVGElement> => (
   <StyledIcon {...props} aria-label={description} height='16px' width='16px'>
     {description && <title>{description}</title>}
     <use xlinkHref={`#${xlink}`} />
