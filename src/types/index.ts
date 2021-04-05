@@ -13,3 +13,8 @@ export type Session = {
   ownerId: string;
   participants: Participant[];
 } & Identifiable;
+
+export type SessionData = {
+  participantId: string;
+  session: Session;
+};
