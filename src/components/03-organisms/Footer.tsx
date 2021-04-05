@@ -1,16 +1,17 @@
 import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
+import { color, shadows } from '../00-base/variables';
 
 const StyledFooter = styled.footer`
   align-items: center;
-  background-color: $color-neutral-0;
+  background-color: ${color.neutral0};
   bottom: 0;
-  box-shadow: $shadow-footer;
+  box-shadow: ${shadows.footer};
   box-sizing: border-box;
   display: flex;
   height: 4rem;
   justify-content: center;
-  padding: 0 $spacing-md;
+  padding: 0 1rem;
   position: fixed;
 
   /* Ensure this fixed element remains centered on screens wider than its max-width */

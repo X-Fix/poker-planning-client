@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 type MainProps = {
-  children: ReactNode; // Apparently this is required? Seems like an @emotion bug...
+  children: ReactElement | ReactElement[];
   className?: string;
 };
 

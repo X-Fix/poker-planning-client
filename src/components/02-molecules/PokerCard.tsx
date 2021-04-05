@@ -4,9 +4,6 @@ import styled from '@emotion/styled';
 import { font, srOnly } from '../00-base/utils';
 import { color, shadows } from '../00-base/variables';
 
-const { blue800, green100, green700, neutral0 } = color;
-const { form } = shadows;
-
 interface PokerCardProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   value: string;
@@ -22,8 +19,9 @@ const Input = styled.input`
 `;
 
 const Card = styled.p`
+  background-color: ${color.neutral0};
   border-radius: 8px;
-  box-shadow: ${form};
+  box-shadow: ${shadows.form};
   box-sizing: border-box;
   display: block;
   height: 148px;
@@ -32,12 +30,12 @@ const Card = styled.p`
   width: 104px;
 
   &:hover {
-    background-color: ${green100};
+    background-color: ${color.green100};
     transition: all 0.15s cubic-bezier(0.4, 0, 0.6, 1);
   }
 
   input[type='radio']:checked + & {
-    background-color: ${green700};
+    background-color: ${color.green700};
   }
 
   @media screen and (min-width: 768px) {
@@ -49,7 +47,7 @@ const Card = styled.p`
 
 const Content = styled.span`
   background-color: transparent;
-  border: 1px solid ${blue800};
+  border: 1px solid ${color.blue800};
   box-sizing: border-box;
   display: flex;
   height: 100%;
@@ -59,7 +57,7 @@ const Content = styled.span`
   }
 
   input[type='radio']:checked + p & {
-    border-color: ${green100};
+    border-color: ${color.green100};
   }
 `;
 
@@ -75,7 +73,7 @@ const Top = styled.span`
   }
 
   input[type='radio']:checked + p & {
-    color: ${neutral0};
+    color: ${color.neutral0};
   }
 `;
 
@@ -94,7 +92,7 @@ const Center = styled.span`
   }
 
   input[type='radio']:checked + p & {
-    color: ${neutral0};
+    color: ${color.neutral0};
   }
 `;
 
@@ -103,8 +101,12 @@ const Bottom = styled(Top)`
   transform: rotate(180deg);
 `;
 
-const PokerCard = ({ value, ...props }: PokerCardProps): ReactElement => (
-  <Container>
+const PokerCard = ({
+  className,
+  value,
+  ...props
+}: PokerCardProps): ReactElement => (
+  <Container className={className}>
     <Input type='radio' value={value} {...props} />
     <Card>
       <Content>

@@ -6,9 +6,10 @@ import React, {
   useState,
 } from 'react';
 import styled from '@emotion/styled';
-import { Button, PokerCard } from '../02-molecules';
-import { Icon } from '../01-atoms';
+
 import { fixedInFooter, font, srOnly } from '../00-base/utils';
+import { Icon } from '../01-atoms';
+import { Button, PokerCard } from '../02-molecules';
 
 const Form = styled.form<{ isActive: boolean }>`
   height: calc(100vh - 8rem);
@@ -89,7 +90,7 @@ type VoteFormProps = {
   cardSequence: string[];
   heading?: string;
   isActive: boolean;
-  onChange: ChangeEventHandler;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 function VoteForm({
@@ -111,7 +112,11 @@ function VoteForm({
   const hasSelectedOption = Boolean(vote);
 
   return (
-    <Form aria-hidden={!isActive} isActive={isActive}>
+    <Form
+      aria-hidden={!isActive}
+      isActive={isActive}
+      tabIndex={!isActive && -1}
+    >
       {heading && <Heading>{heading}</Heading>}
       <CardsContainer role='group' aria-label='Vote'>
         {cardValues.map((cardValue) => (
@@ -119,17 +124,18 @@ function VoteForm({
             value={cardValue}
             onChange={changeHandler}
             checked={vote === cardValue}
+            disabled={!isActive}
           />
         ))}
       </CardsContainer>
       <WideButton
-        disabled={hasSelectedOption}
-        aria-disabled={hasSelectedOption}
+        disabled={!hasSelectedOption || !isActive}
+        aria-disabled={!hasSelectedOption || !isActive}
         type='submit'
         hasSelectedOption={hasSelectedOption}
       >
         <Icon xlink='confirm' aria-hidden />
-        <ButtonText>Confirm Vite</ButtonText>
+        <ButtonText>Confirm Vote</ButtonText>
       </WideButton>
     </Form>
   );
