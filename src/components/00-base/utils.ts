@@ -54,3 +54,41 @@ export function font(
     line-height: ${fontSize[size]};
   `;
 }
+
+export function fixedInFooter(position: 'left' | 'center' | 'right') {
+  return `
+    bottom: 0;
+    position: fixed;
+    z-index: 1;
+
+    ${
+      position === 'center' &&
+      `
+      left: 50%;
+      transform: translateX(-50%);
+    `
+    }
+
+    ${
+      position === 'left' &&
+      `
+      left: 0;
+
+      @media screen and (min-width: 64rem) {
+        left: calc((100vw - 64rem) / 2);
+      }
+    `
+    }
+
+    ${
+      position === 'right' &&
+      `
+      right: 0;
+
+      @media screen and (min-width: 64rem) {
+        right: calc((100vw - 64rem) / 2);
+      }
+    `
+    }
+  `;
+}
