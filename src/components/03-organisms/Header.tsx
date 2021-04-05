@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useLocation } from 'react-router-dom';
+import { matchPath, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { setupMenuActions } from '../../a11y';
@@ -80,9 +80,11 @@ const { menuRef, menuButtonRef, menuItems, menuItemRefs } = setupMenuActions(5);
 const Header = (): ReactElement => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const isMenuOpenRef = useRef(isMenuOpen);
-  const location = useLocation();
 
-  const shouldShowButtons = location.pathname === '/session';
+  const location = useLocation();
+  const shouldShowButtons = Boolean(
+    matchPath(location.pathname, { path: '/session/:sessionId' })
+  );
 
   const toggleMenu = useCallback(() => {
     setMenuOpen(!isMenuOpen);
