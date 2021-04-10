@@ -77,4 +77,4 @@ function SessionPage(): ReactElement {
   );
 }
 
-export default SessionPage;
+export default React.memo(SessionPage);

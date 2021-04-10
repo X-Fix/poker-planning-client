@@ -1,8 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 module.exports = (env) => {
-  console.log(env.NODE_ENV);
   const isProd = env.NODE_ENV === 'production';
 
   const emotionBabelPlugin = [
@@ -45,6 +46,18 @@ module.exports = (env) => {
     },
   });
 
+  const bundleAnalyzerPlugin = new BundleAnalyzerPlugin(
+    isProd
+      ? {
+          analyzerMode: 'static',
+          openAnalyzer: false,
+          reportFilename: 'bundle-report.html',
+        }
+      : {
+          openAnalyzer: false,
+        }
+  );
+
   return {
     mode: env.NODE_ENV,
     devtool: !isProd && 'inline-source-map',
@@ -73,7 +86,7 @@ module.exports = (env) => {
     module: {
       rules: [babelRule],
     },
-    plugins: [htmlWebpackPlugin],
+    plugins: [htmlWebpackPlugin, bundleAnalyzerPlugin],
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
     },
