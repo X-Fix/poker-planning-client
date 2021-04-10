@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { SessionContext } from '../../context';
 import { SessionToken, TSessionContext } from '../../types';
-import { emitSubscribe } from '../../services/socket';
+import { disconnectSocket, emitSubscribe } from '../../services/socket';
 import { color } from '../00-base/variables';
 import {
   Footer,
@@ -52,6 +52,8 @@ function SessionPage(): ReactElement {
         isSyncNeeded: isEmpty(sessionContext),
       });
     }
+
+    return disconnectSocket;
   }, [participantId, sessionId]);
 
   if (isEmpty(sessionContext)) {

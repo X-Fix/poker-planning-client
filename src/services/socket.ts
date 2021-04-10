@@ -92,6 +92,11 @@ export function emitSetVote(payload: EmitSetVotePayload): void {
   socket.emit('setVote', payload);
 }
 
+export function disconnectSocket() {
+  console.log('disconnected');
+  socket.disconnect();
+}
+
 // socket.on('connection', ({ id }: Socket) => {
 //   console.log(id);
 // });
