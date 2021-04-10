@@ -12,6 +12,7 @@ const { buttonPrimary, buttonSecondary } = shadows;
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   dark?: boolean;
   secondary?: boolean;
+  wide?: boolean;
   ref?: MutableRefObject<HTMLButtonElement>;
 }
 
@@ -28,6 +29,15 @@ const StyledButton = styled.button<ButtonProps>`
   padding: 0 1rem;
 
   ${({ dark }) => dark && `background-color: ${blue900};`}
+  ${({ wide }) =>
+    wide &&
+    `
+    width: 322px;
+
+    @media screen and (max-width: 359px) {
+      width: 288px;
+    }
+  `}
 
   &:disabled {
     background-color: ${neutral100};
@@ -67,10 +77,22 @@ const StyledButton = styled.button<ButtonProps>`
 
 const Button = forwardRef(
   (
-    { children, dark = false, secondary = false, ...props }: ButtonProps,
+    {
+      children,
+      dark = false,
+      secondary = false,
+      wide = false,
+      ...props
+    }: ButtonProps,
     ref: MutableRefObject<HTMLButtonElement>
   ) => (
-    <StyledButton dark={dark} secondary={secondary} ref={ref} {...props}>
+    <StyledButton
+      dark={dark}
+      secondary={secondary}
+      wide={wide}
+      ref={ref}
+      {...props}
+    >
       {children}
     </StyledButton>
   )

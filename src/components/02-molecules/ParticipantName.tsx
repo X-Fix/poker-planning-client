@@ -3,18 +3,28 @@ import styled from '@emotion/styled';
 
 import { font } from '../00-base/utils';
 
-const StyledName = styled.span`
+const StyledName = styled.span<{ isOwner?: boolean }>`
   ${font('body')};
 
   flex: 1;
+
+  ${({ isOwner }) =>
+    isOwner &&
+    `
+    text-decoration: underline;
+  `}
 `;
 
 type ParticipantNameProps = {
   name: string;
+  isOwner?: boolean;
 };
 
-const ParticipantName = ({ name }: ParticipantNameProps): ReactElement => (
-  <StyledName>{name}</StyledName>
+const ParticipantName = ({
+  isOwner,
+  name,
+}: ParticipantNameProps): ReactElement => (
+  <StyledName isOwner={isOwner}>{name}</StyledName>
 );
 
 export default React.memo(ParticipantName);

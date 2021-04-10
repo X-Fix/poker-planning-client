@@ -1,9 +1,12 @@
 export { default as ChooseForm } from './ChooseForm';
 export { default as CreateSessionForm } from './CreateSessionForm';
+export { default as CreateTopicForm } from './CreateTopicForm';
 export { default as Footer } from './Footer';
 export { default as Header } from './Header';
 export { default as JoinSessionForm } from './JoinSessionForm';
-export { default as LobbyPanel } from './LobbyPanel';
 export { default as Main } from './Main';
 export { default as Menu } from './Menu';
+export { default as NextTopicActions } from './NextTopicActions';
+export { default as ParticipantPanel } from './ParticipantPanel';
+export { default as SessionLobby } from './SessionLobby';
 export { default as VoteForm } from './VoteForm';

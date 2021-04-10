@@ -1,18 +1,30 @@
-import { Session } from '../types';
+import { TSessionContext } from '../types';
+import { parseToSessionContext } from './utils';
 
-type payload = {
-  cardSequence: string[];
+type JoinSessionPayload = {
+  participantName?: string;
+  sessionId: string;
+};
+
+type CreateSessionPayload = {
   participantName?: string;
   sessionName?: string;
+  cardSequence: string[];
 };
 
-type result = {
-  participantId: string;
-  session: Session;
+type Result = {
+  response: TSessionContext;
+  token: {
+    participantId: string;
+    sessionId: string;
+  };
 };
 
-export async function createSession(body: payload): Promise<result> {
-  const response = await fetch('http://localhost:3000/api/create-session', {
+async function post(
+  body: JoinSessionPayload | CreateSessionPayload,
+  endpoint: string
+): Promise<TSessionContext> {
+  const response = await fetch(`http://192.168.2.159:3000/api/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,12 +34,29 @@ export async function createSession(body: payload): Promise<result> {
 
   if (!response.ok) {
     alert('Oops, something went horribly wrong');
+    return;
   }
 
-  const { participant, session } = await response.json();
+  const { participantId, session } = await response.json();
+  return parseToSessionContext({ participantId, session });
+}
 
+function withToken(response: TSessionContext) {
   return {
-    participantId: participant.id,
-    session,
+    response,
+    token: {
+      participantId: response.self.id,
+      sessionId: response.sessionId,
+    },
   };
+}
+
+export async function createSession(
+  body: CreateSessionPayload
+): Promise<Result> {
+  return withToken(await post(body, 'create-session'));
+}
+
+export async function joinSession(body: JoinSessionPayload): Promise<Result> {
+  return withToken(await post(body, 'join-session'));
 }

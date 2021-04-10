@@ -1,98 +1,80 @@
-import React, {
-  ChangeEvent,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ReactElement, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { css, Global } from '@emotion/react';
+import isEmpty from 'lodash/isEmpty';
 
-import { SessionData } from '../../types';
+import { SessionContext } from '../../context';
+import { SessionToken, TSessionContext } from '../../types';
+import { emitSubscribe } from '../../services/socket';
 import { color } from '../00-base/variables';
-import { Footer, Header, LobbyPanel, Main, VoteForm } from '../03-organisms';
+import {
+  Footer,
+  Header,
+  ParticipantPanel,
+  Main,
+  VoteForm,
+} from '../03-organisms';
 
-type SessionState = 'lobby' | 'newVote' | 'voting' | 'result';
+function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
+  let sessionToken: SessionToken;
 
-let storedSessionData: SessionData;
-function fetchSessionData(): SessionData {
-  console.log('fetched!');
-  if (!storedSessionData) {
-    try {
-      // TODO (check for cookie instead in the event of SSR)
-      storedSessionData = JSON.parse(
-        window.sessionStorage.getItem('sessionData')
-      );
-    } catch (error) {
-      console.error(error);
-    }
+  if (sessionId && self?.id) {
+    return {
+      participantId: self.id,
+      sessionId,
+    };
   }
 
-  return storedSessionData;
+  try {
+    // TODO (check for cookie instead in the event of SSR)
+    sessionToken = JSON.parse(window.sessionStorage.getItem('sessionToken'));
+    console.log('getting sessionToken', { sessionToken });
+  } catch (error) {
+    console.error(error);
+  }
+
+  return sessionToken || {};
 }
 
 function SessionPage(): ReactElement {
-  const [sessionData] = useState<SessionData>(fetchSessionData());
-  const [sessionState, setSessionState] = useState<SessionState>('lobby');
-  const [vote, setVote] = useState<string | undefined>();
+  const { setSessionContext, ...sessionContext } = useContext(SessionContext);
+  const { sessionId, participantId } = fetchSessionToken(sessionContext);
+  const history = useHistory();
 
   useEffect(() => {
-    console.log('mounted');
-    if (!sessionData) {
-      useHistory().push('/');
+    if (!sessionId || !participantId) {
+      history.push('/');
+    } else {
+      emitSubscribe({
+        participantId,
+        sessionId,
+        setSessionContext,
+        isSyncNeeded: isEmpty(sessionContext),
+      });
     }
-  }, []);
+  }, [participantId, sessionId]);
 
-  const changeHandler = useCallback(
-    ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-      setVote(value);
-    },
-    []
-  );
-
-  const {
-    participantId,
-    session: {
-      cardSequence,
-      id: sessionId,
-      name: sessionName,
-      ownerId,
-      participants,
-    },
-  } = sessionData;
+  if (isEmpty(sessionContext)) {
+    return null;
+  }
 
   return (
-    cardSequence.length && (
-      <>
-        <Global
-          styles={css`
-            body {
-              background-color: ${color.blue25};
-            }
-          `}
-        />
-        <Header />
-        <Main>
-          <VoteForm
-            cardSequence={cardSequence}
-            isActive={sessionState === 'voting'}
-            onChange={changeHandler}
-          />
-          {sessionState === 'lobby' && (
-            <LobbyPanel
-              ownerId={ownerId}
-              participantId={participantId}
-              participants={participants}
-              sessionId={sessionId}
-              sessionName={sessionName}
-              transitionState={() => setSessionState('newVote')}
-            />
-          )}
-        </Main>
-        <Footer />
-      </>
-    )
+    <>
+      <Global
+        styles={css`
+          body {
+            background-color: ${color.blue25};
+          }
+        `}
+      />
+      <Header />
+      <Main>
+        <VoteForm />
+        <ParticipantPanel />
+      </Main>
+      <Footer />
+    </>
   );
 }
 
-export default React.memo(SessionPage);
+export default SessionPage;

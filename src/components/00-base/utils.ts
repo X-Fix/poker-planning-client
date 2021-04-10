@@ -61,6 +61,7 @@ export const fixedInFooter = (position: 'left' | 'center' | 'right') => `
     position === 'center'
       ? `
     left: 50%;
+    right: unset;
     transform: translateX(-50%);
   `
       : ''
@@ -70,6 +71,8 @@ export const fixedInFooter = (position: 'left' | 'center' | 'right') => `
     position === 'left'
       ? `
     left: 0;
+    right: unset;
+    transform: none;
 
     @media screen and (min-width: 64rem) {
       left: calc((100vw - 64rem) / 2);
@@ -82,6 +85,8 @@ export const fixedInFooter = (position: 'left' | 'center' | 'right') => `
     position === 'right'
       ? `
     right: 0;
+    left: unset;
+    transform: none;
 
     @media screen and (min-width: 64rem) {
       right: calc((100vw - 64rem) / 2);

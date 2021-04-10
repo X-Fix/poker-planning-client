@@ -83,7 +83,7 @@ const Header = (): ReactElement => {
 
   const location = useLocation();
   const shouldShowButtons = Boolean(
-    matchPath(location.pathname, { path: '/session/:sessionId' })
+    matchPath(location.pathname, { path: '/session' })
   );
 
   const toggleMenu = useCallback(() => {

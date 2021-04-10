@@ -25,25 +25,19 @@ const Wrapper = styled.li<ParticipantProps>`
     padding-right: 0.5rem;
   `}
 
-  ${({ isOwner }) =>
-    isOwner &&
-    `
-    text-decoration: underline;
-  `}
-
   ${({ isActive }) =>
     !isActive &&
     `
-    color: ${color.neutral700};
+    color: ${color.neutral600};
+    font-style: italic;
   `}
 `;
 
 type ParticipantProps = {
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
   isActive?: boolean;
   isMe?: boolean;
   isOutlier?: boolean;
-  isOwner?: boolean;
 };
 
 const ParticipantWrapper: React.FC<ParticipantProps> = ({

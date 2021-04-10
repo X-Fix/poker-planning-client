@@ -53,6 +53,7 @@ module.exports = (env) => {
       : {
           // Only log to browser console if there's an error
           clientLogLevel: 'error',
+          historyApiFallback: true,
           // Open in browser once server has started
           open: false,
           // Show an overlay in the browser on compile error

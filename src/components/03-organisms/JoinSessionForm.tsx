@@ -1,10 +1,20 @@
-import React, { ReactElement } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  ReactElement,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 
 import { font } from '../00-base/utils';
 import { color, shadows } from '../00-base/variables';
 import { Button, InputText } from '../02-molecules';
 import { Icon } from '../01-atoms';
+import { joinSession } from '../../services/http';
+import { useHistory } from 'react-router';
+import { SessionContext } from '../../context';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -33,31 +43,80 @@ const StyledInputText = styled(InputText)`
   margin: 0 0 1rem;
 `;
 
-const WideButton = styled(Button)`
+const JoinSessionButton = styled(Button)`
   margin-top: 1rem;
-  width: 322px;
-
-  @media screen and (max-width: 359px) {
-    width: 288px;
-  }
 `;
 
-const ButtonText = styled.span`
+const JoinSessionButtonText = styled.span`
   ${font('title')};
 
   margin-left: 0.25rem;
 `;
 
-const JoinSessionForm = (): ReactElement => (
-  <Form onSubmit={() => false}>
-    <Heading>Join Session</Heading>
-    <StyledInputText label='Your Name' placeholder='Eg. "John Johnson"' />
-    <StyledInputText label='Session ID' placeholder='Eg. "27y2k"' />
-    <WideButton>
-      <Icon xlink='join' aria-hidden />
-      <ButtonText>Join Session</ButtonText>
-    </WideButton>
-  </Form>
-);
+const JoinSessionForm = (): ReactElement => {
+  const history = useHistory();
+  const [participantName, setParticipantName] = useState('');
+  const [sessionId, setSessionId] = useState('');
+  const { setSessionContext } = useContext(SessionContext);
+
+  const submitHandler = useCallback(
+    async (event: FormEvent) => {
+      event.preventDefault();
+      const result = await joinSession({
+        participantName,
+        sessionId,
+      });
+
+      if (!result) return;
+
+      const { response, token } = result;
+      console.log({ response });
+      setSessionContext(response);
+
+      window.sessionStorage.setItem('sessionToken', JSON.stringify(token));
+
+      history.push(`/session?id=${sessionId}`);
+    },
+    [participantName, sessionId]
+  );
+
+  const participantNameChangeHandler = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+      setParticipantName(value);
+    },
+    []
+  );
+
+  const sessionIdChangeHandler = useCallback(
+    ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+      setSessionId(value);
+    },
+    []
+  );
+
+  const isValidSessionId = sessionId.length === 6;
+
+  return (
+    <Form onSubmit={submitHandler} aria-labelledby='heading'>
+      <Heading id='heading'>Join Session</Heading>
+      <StyledInputText
+        label='Your Name'
+        placeholder='Eg. "John Johnson"'
+        onChange={participantNameChangeHandler}
+        value={participantName}
+      />
+      <StyledInputText
+        label='Session ID'
+        placeholder='Eg. "27y2k"'
+        onChange={sessionIdChangeHandler}
+        value={sessionId}
+      />
+      <JoinSessionButton type='submit' disabled={!isValidSessionId} wide>
+        <Icon xlink='join' aria-hidden />
+        <JoinSessionButtonText>Join Session</JoinSessionButtonText>
+      </JoinSessionButton>
+    </Form>
+  );
+};
 
 export default React.memo(JoinSessionForm);

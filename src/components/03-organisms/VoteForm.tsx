@@ -1,8 +1,10 @@
 import React, {
   ChangeEvent,
-  ChangeEventHandler,
   ReactElement,
   useCallback,
+  useContext,
+  useEffect,
+  useRef,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -10,9 +12,13 @@ import styled from '@emotion/styled';
 import { fixedInFooter, font, srOnly } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { Button, PokerCard } from '../02-molecules';
+import { SessionContext } from '../../context';
+import { emitSetVote } from '../../services/socket';
+import { SessionPhase } from '../../types';
 
 const Form = styled.form<{ isActive: boolean }>`
   height: calc(100vh - 8rem);
+  outline: none;
   overflow-y: scroll;
 
   ${({ isActive }) =>
@@ -25,7 +31,11 @@ const Form = styled.form<{ isActive: boolean }>`
   `}
 `;
 
-const Heading = styled.h2`
+const Topic = styled.h2<{ sessionPhase: SessionPhase }>`
+  ${({ sessionPhase }) =>
+    fixedInFooter(sessionPhase === 'result' ? 'left' : 'center')};
+  ${font('title')};
+
   box-sizing: border-box;
   font-weight: normal;
   margin-bottom: 1.25rem;
@@ -69,75 +79,100 @@ const StyledPokerCard = styled(PokerCard)`
   }
 `;
 
-const WideButton = styled(Button)<{ hasSelectedOption: boolean }>`
-  ${({ hasSelectedOption }) => !hasSelectedOption && srOnly()};
+const ConfirmVoteButton = styled(Button)<{ hasSelectedVote: boolean }>`
+  ${({ hasSelectedVote }) => !hasSelectedVote && srOnly()};
   ${fixedInFooter('center')};
 
-  width: 322px;
-
-  @media screen and (max-width: 359px) {
-    width: 288px;
-  }
+  margin-bottom: 0.5rem;
 `;
 
-const ButtonText = styled.span`
+const ConfirmVoteButtonText = styled.span`
   ${font('title')};
 
   margin-left: 0.25rem;
 `;
 
-type VoteFormProps = {
-  cardSequence: string[];
-  heading?: string;
-  isActive: boolean;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-};
-
-function VoteForm({
-  cardSequence,
-  heading,
-  isActive,
-  onChange,
-}: VoteFormProps): ReactElement {
+function VoteForm(): ReactElement {
+  const { cardSequence, self, sessionId, sessionPhase, topic } = useContext(
+    SessionContext
+  );
   const cardValues = ['☕', ...cardSequence, '?'];
-
   const [vote, setVote] = useState('');
-  const changeHandler = useCallback(
+  const formRef = useRef<HTMLFormElement>();
+
+  const hasSelectedVote = Boolean(vote);
+  const hasConfirmedVote = Boolean(self.vote);
+  const shouldShowTopic =
+    sessionPhase === 'voting' && self.isActive && !hasSelectedVote;
+  const isFormActive =
+    sessionPhase === 'voting' && self.isActive && !hasConfirmedVote;
+
+  useEffect(() => {
+    if (isFormActive && formRef) {
+      console.log('resetting');
+      setVote('');
+      formRef?.current?.focus();
+    }
+  }, [isFormActive]);
+
+  const changeVote = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       setVote(event.target.value);
-      onChange(event);
+
+      // TODO: If one-touch vote, emitConfirm too
     },
     [vote]
   );
-  const hasSelectedOption = Boolean(vote);
+
+  const confirmVote = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      emitSetVote({
+        sessionId,
+        vote,
+      });
+    },
+    [vote]
+  );
 
   return (
     <Form
-      aria-hidden={!isActive}
-      isActive={isActive}
-      tabIndex={!isActive && -1}
+      onSubmit={confirmVote}
+      ref={formRef}
+      aria-hidden={!isFormActive}
+      aria-describedby='topic'
+      isActive={isFormActive}
+      tabIndex={isFormActive ? -1 : undefined}
     >
-      {heading && <Heading>{heading}</Heading>}
+      {shouldShowTopic && (
+        <Topic sessionPhase={sessionPhase} title={topic} id='topic'>
+          {topic}
+        </Topic>
+      )}
       <CardsContainer role='group' aria-label='Vote'>
         {cardValues.map((cardValue) => (
           <StyledPokerCard
             key={cardValue}
             value={cardValue}
-            onChange={changeHandler}
+            onChange={changeVote}
             checked={vote === cardValue}
-            disabled={!isActive}
+            disabled={!isFormActive}
           />
         ))}
       </CardsContainer>
-      <WideButton
-        disabled={!hasSelectedOption || !isActive}
-        aria-disabled={!hasSelectedOption || !isActive}
-        type='submit'
-        hasSelectedOption={hasSelectedOption}
-      >
-        <Icon xlink='confirm' aria-hidden />
-        <ButtonText>Confirm Vote</ButtonText>
-      </WideButton>
+      {!hasConfirmedVote && (
+        <ConfirmVoteButton
+          disabled={!hasSelectedVote || !isFormActive}
+          aria-disabled={!hasSelectedVote || !isFormActive}
+          hasSelectedVote={hasSelectedVote}
+          type='submit'
+          wide
+        >
+          <Icon xlink='confirm' aria-hidden />
+          <ConfirmVoteButtonText>Confirm Vote</ConfirmVoteButtonText>
+        </ConfirmVoteButton>
+      )}
     </Form>
   );
 }

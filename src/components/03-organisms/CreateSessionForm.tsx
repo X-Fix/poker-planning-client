@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   ReactElement,
   useCallback,
+  useContext,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -13,6 +14,7 @@ import { Button, InputRadio, InputText } from '../02-molecules';
 import { font } from '../00-base/utils';
 import { createSession } from '../../services/http';
 import { useHistory } from 'react-router';
+import { SessionContext } from '../../context';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -56,15 +58,7 @@ const StyledInputRadio = styled(InputRadio)`
   padding: 0.25rem;
 `;
 
-const WideButton = styled(Button)`
-  width: 322px;
-
-  @media screen and (max-width: 359px) {
-    width: 288px;
-  }
-`;
-
-const ButtonText = styled.span`
+const CreateSessionButtonText = styled.span`
   ${font('title')};
 
   margin-left: 0.25rem;
@@ -82,19 +76,24 @@ const CreateSessionForm = (): ReactElement => {
   const [participantName, setParticipantName] = useState('');
   const [sessionName, setSessionName] = useState('');
   const [cardSequence, setCardSequence] = useState(cardSequenceOptions[0]);
+  const { setSessionContext } = useContext(SessionContext);
 
   const submitHandler = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-
-      const sessionData = await createSession({
+      const result = await createSession({
         cardSequence,
         participantName,
         sessionName,
       });
 
-      window.sessionStorage.setItem('sessionData', JSON.stringify(sessionData));
-      history.push(`/session/${sessionData.session.id}`);
+      if (!result) return;
+
+      const { response, token } = result;
+      window.sessionStorage.setItem('sessionToken', JSON.stringify(token));
+
+      setSessionContext(response);
+      history.push(`/session?id=${response.sessionId}`);
     },
     [participantName, sessionName, cardSequence]
   );
@@ -121,8 +120,8 @@ const CreateSessionForm = (): ReactElement => {
   );
 
   return (
-    <Form onSubmit={submitHandler}>
-      <Heading>Create New Session</Heading>
+    <Form onSubmit={submitHandler} aria-labelledby='heading'>
+      <Heading id='heading'>Create New Session</Heading>
       <StyledInputText
         label='Your Name'
         placeholder='Eg. "John Johnson"'
@@ -148,10 +147,10 @@ const CreateSessionForm = (): ReactElement => {
           />
         ))}
       </Fieldset>
-      <WideButton>
+      <Button wide>
         <Icon xlink='create' aria-hidden />
-        <ButtonText>Create New Session</ButtonText>
-      </WideButton>
+        <CreateSessionButtonText>Create New Session</CreateSessionButtonText>
+      </Button>
     </Form>
   );
 };

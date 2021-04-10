@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { MouseEventHandler, ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 import { Icon } from '../01-atoms';
@@ -34,31 +34,32 @@ const RemoveIcon = styled(Icon)`
   }
 `;
 
-const ParticipantScore = styled.span`
+const ParticipantVote = styled.span`
   ${font('headline')};
 
   color: ${color.blue800};
+  text-decoration: none;
 `;
 
 type ParticipantStatusProps = {
+  canRemove: boolean;
+  isActive: boolean;
   isConnected: boolean;
-  isOwner: boolean;
-  handleKick: () => void;
-  hasVoted: boolean;
+  handleRemove: MouseEventHandler;
   participantName: string;
-  participantScore: string;
+  shouldDisplayVote: boolean;
+  vote: string;
 };
 
 function ParticipantStatus({
+  canRemove,
+  isActive,
   isConnected,
-  isOwner,
-  handleKick,
-  hasVoted,
-  participantScore,
+  handleRemove,
+  shouldDisplayVote,
+  vote,
 }: ParticipantStatusProps): ReactElement {
-  return participantScore ? (
-    <ParticipantScore>{participantScore}</ParticipantScore>
-  ) : (
+  const StatusIcon = () => (
     <>
       {!isConnected && (
         <SnoozeIcon
@@ -66,7 +67,7 @@ function ParticipantStatus({
           xlink='snooze'
         />
       )}
-      {hasVoted ? (
+      {Boolean(vote) ? (
         <DoneIcon
           description='This participant is finished voting'
           xlink='done'
@@ -77,11 +78,19 @@ function ParticipantStatus({
           xlink='busy'
         />
       )}
-      {!isOwner && (
-        <RemoveButton onClick={handleKick}>
+    </>
+  );
+
+  return shouldDisplayVote ? (
+    <ParticipantVote>{vote}</ParticipantVote>
+  ) : (
+    <>
+      {isActive && <StatusIcon />}
+      {canRemove && (
+        <RemoveButton onClick={handleRemove}>
           <RemoveIcon
             description='Click to remove this participant from the session'
-            xlink='kick'
+            xlink='remove'
           />
         </RemoveButton>
       )}

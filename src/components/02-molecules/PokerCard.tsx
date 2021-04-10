@@ -29,6 +29,17 @@ const Card = styled.p`
   padding: 0.5rem;
   width: 104px;
 
+  ${Input}:focus + & {
+    /*
+      Copy default outline behavior to the card
+      https://ghinda.net/article/mimic-native-focus-css/
+    */
+    outline-color: Highlight;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 3px;
+  }
+
   &:hover {
     background-color: ${color.green100};
     transition: all 0.15s cubic-bezier(0.4, 0, 0.6, 1);
@@ -51,6 +62,7 @@ const Content = styled.span`
   box-sizing: border-box;
   display: flex;
   height: 100%;
+  position: relative;
 
   @media screen and (min-width: 768px) {
     border-width: 2px;
