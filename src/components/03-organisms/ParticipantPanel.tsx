@@ -74,7 +74,7 @@ function ParticipantPanel(): ReactElement {
       ) : (
         <ParticipantList>
           {orderBy(participants, ['isActive', 'name'], ['desc', 'asc']).map(
-            ({ id, name, isActive, socketId, vote }) => (
+            ({ id, name, isActive, isConnected, vote }) => (
               <ParticipantWrapper
                 key={id}
                 isMe={id === self.id}
@@ -85,7 +85,7 @@ function ParticipantPanel(): ReactElement {
                   <ParticipantStatus
                     canRemove={self.id === ownerId && self.id !== id}
                     isActive={isActive}
-                    isConnected={Boolean(socketId)}
+                    isConnected={isConnected}
                     key={id}
                     participantName={name}
                     shouldDisplayVote={sessionPhase === 'result'}

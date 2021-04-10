@@ -5,7 +5,7 @@ type Identifiable = {
 
 export type Participant = {
   isActive: boolean;
-  socketId?: string; // presence or absence indicates isConnected status
+  isConnected: boolean;
   vote?: string;
 } & Identifiable;
 
