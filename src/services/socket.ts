@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import {
   EmitLeaveSessionPayload,
   EmitNewTopicPayload,
@@ -15,92 +15,75 @@ type SubscribePayload = {
   // onConnect: () => void;     TODO
   // onDisconnect: () => void;  TODO
   // onServerError: () => void; TODO
-  isSyncNeeded: boolean;
   participantId: string;
   sessionId: string;
-  setSessionContext: (sessionContext: TSessionContext) => void;
+  onRemoved: () => void;
+  onSyncSession: (session: Session) => void;
+  onSyncParticipants: (participants: Participant[]) => void;
 };
 
-const socket = io('http://192.168.2.159:3000', { autoConnect: false });
+let socket: Socket;
 
-export function emitSubscribe({
+export function connectSocket({
   // onConnect,
   // onDisconnect,
   // onServerError,
-  isSyncNeeded,
   participantId,
   sessionId,
-  setSessionContext,
+  onRemoved,
+  onSyncSession,
+  onSyncParticipants,
 }: SubscribePayload): void {
-  if (!socket.connected) {
-    socket.connect();
-    socket.on('syncSession', (session: Session) => {
-      setSessionContext(parseToSessionContext({ participantId, session }));
+  if (!socket) {
+    socket = io('http://192.168.2.159:3000', {
+      autoConnect: false,
+      query: {
+        sessionId,
+        participantId,
+      },
     });
-    socket.on('syncParticipants', (participants: Participant[]) => {
-      setSessionContext(parseToSessionContext({ participantId, participants }));
+    socket.on('connect', () => {
+      console.log('connected:', socket.id);
     });
-    socket.on('removed', () => {
-      window.sessionStorage.removeItem('sessionToken');
-      setSessionContext({});
-    });
+    socket.on('removed', onRemoved);
+    socket.on('syncSession', onSyncSession);
+    socket.on('syncParticipants', onSyncParticipants);
   }
 
-  socket.emit(
-    'subscribe',
-    { participantId, sessionId },
-    isSyncNeeded
-      ? (session: Session) =>
-          setSessionContext(parseToSessionContext({ participantId, session }))
-      : undefined
-  );
-
-  // socket.on('connection', onConnect);
-
-  // socket.io.on('reconnect_attempt', () => {
-  //   // TODO
-  //   console.log('attempting reconnect...');
-  // });
-
-  // socket.io.on('reconnect', () => {
-  //   // TODO
-  //   console.log('reconnect successful!');
-  // });
+  socket.connect();
 }
 
 export function emitLeaveSession(payload: EmitLeaveSessionPayload): void {
+  if (!socket) return;
   socket.emit('leaveSession', payload);
 }
 
 export function emitRemoveParticipant(
   payload: EmitRemoveParticipantPayload
 ): void {
+  if (!socket) return;
   socket.emit('removeParticipant', payload);
 }
 
 export function emitSetParticipantIsActive(
   payload: EmitSetParticipantIsActivePayload
 ): void {
+  if (!socket) return;
   socket.emit('setActive', payload);
 }
 
 export function emitNewTopic(payload: EmitNewTopicPayload): void {
+  if (!socket) return;
   socket.emit('newTopic', payload);
 }
 
 export function emitSetVote(payload: EmitSetVotePayload): void {
+  if (!socket) return;
   socket.emit('setVote', payload);
 }
 
 export function disconnectSocket() {
+  if (!socket || socket.disconnected) return;
   console.log('disconnected');
   socket.disconnect();
 }
-
-// socket.on('connection', ({ id }: Socket) => {
-//   console.log(id);
-// });
-
-// socket.on('pong', () => {
-//   console.log('pong!');
-// });

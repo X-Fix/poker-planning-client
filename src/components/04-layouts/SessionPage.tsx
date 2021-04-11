@@ -4,8 +4,14 @@ import { css, Global } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
 import { SessionContext } from '../../context';
-import { SessionToken, TSessionContext } from '../../types';
-import { disconnectSocket, emitSubscribe } from '../../services/socket';
+import {
+  Participant,
+  Session,
+  SessionToken,
+  TSessionContext,
+} from '../../types';
+import { disconnectSocket, connectSocket } from '../../services/socket';
+import { parseToSessionContext } from '../../services/utils';
 import { color } from '../00-base/variables';
 import {
   Footer,
@@ -45,11 +51,21 @@ function SessionPage(): ReactElement {
     if (!sessionId || !participantId) {
       history.push('/');
     } else {
-      emitSubscribe({
+      connectSocket({
         participantId,
         sessionId,
-        setSessionContext,
-        isSyncNeeded: isEmpty(sessionContext),
+        onRemoved: () => {
+          window.sessionStorage.removeItem('sessionToken');
+          setSessionContext({});
+        },
+        onSyncSession: (session: Session) => {
+          setSessionContext(parseToSessionContext({ participantId, session }));
+        },
+        onSyncParticipants: (participants: Participant[]) => {
+          setSessionContext(
+            parseToSessionContext({ participantId, participants })
+          );
+        },
       });
     }
 
