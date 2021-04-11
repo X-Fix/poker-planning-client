@@ -76,24 +76,23 @@ const CreateSessionForm = (): ReactElement => {
   const [participantName, setParticipantName] = useState('');
   const [sessionName, setSessionName] = useState('');
   const [cardSequence, setCardSequence] = useState(cardSequenceOptions[0]);
-  const { setSessionContext } = useContext(SessionContext);
 
   const submitHandler = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      const result = await createSession({
+      const sessionToken = await createSession({
         cardSequence,
         participantName,
         sessionName,
       });
 
-      if (!result) return;
+      if (!sessionToken) return;
 
-      const { response, token } = result;
-      window.sessionStorage.setItem('sessionToken', JSON.stringify(token));
-
-      setSessionContext(response);
-      history.push(`/session?id=${response.sessionId}`);
+      window.sessionStorage.setItem(
+        'sessionToken',
+        JSON.stringify(sessionToken)
+      );
+      history.push(`/session?id=${sessionToken.sessionId}`);
     },
     [participantName, sessionName, cardSequence]
   );

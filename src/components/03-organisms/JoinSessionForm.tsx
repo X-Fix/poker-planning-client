@@ -57,25 +57,22 @@ const JoinSessionForm = (): ReactElement => {
   const history = useHistory();
   const [participantName, setParticipantName] = useState('');
   const [sessionId, setSessionId] = useState('');
-  const { setSessionContext } = useContext(SessionContext);
 
   const submitHandler = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      const result = await joinSession({
+      const sessionToken = await joinSession({
         participantName,
         sessionId,
       });
 
-      if (!result) return;
+      if (!sessionToken) return;
 
-      const { response, token } = result;
-      console.log({ response });
-      setSessionContext(response);
-
-      window.sessionStorage.setItem('sessionToken', JSON.stringify(token));
-
-      history.push(`/session?id=${sessionId}`);
+      window.sessionStorage.setItem(
+        'sessionToken',
+        JSON.stringify(sessionToken)
+      );
+      history.push(`/session?id=${sessionToken.sessionId}`);
     },
     [participantName, sessionId]
   );
