@@ -1,6 +1,12 @@
 import { createContext } from 'react';
-import { SessionContextProps } from '../types';
+import { NotificationContextProps, SessionContextProps } from '../types';
 
 export const SessionContext = createContext<SessionContextProps>({
   setSessionContext: () => {},
+});
+
+export const NotificationContext = createContext<NotificationContextProps>({
+  notifications: [],
+  enqueue: () => {},
+  dequeue: () => null,
 });

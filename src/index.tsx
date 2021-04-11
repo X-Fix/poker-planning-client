@@ -1,11 +1,11 @@
-import React, { Reducer, useReducer } from 'react';
+import React, { Reducer, useReducer, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Global, css } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
-import { TSessionContext } from './types';
-import { SessionContext } from './context';
+import { NotificationMessage, TSessionContext } from './types';
+import { NotificationContext, SessionContext } from './context';
 import { color, fontFamily } from './components/00-base/variables';
 import {
   CreateSessionPage,
@@ -13,6 +13,8 @@ import {
   JoinSessionPage,
   SessionPage,
 } from './components/04-layouts';
+import { Notifications } from './components/03-organisms';
+import { useQueue } from './hooks';
 
 function sessionContextReducer(
   state: TSessionContext,
@@ -25,6 +27,11 @@ const App: React.FC = () => {
   const [sessionContext, setSessionContext] = useReducer<
     Reducer<TSessionContext, TSessionContext>
   >(sessionContextReducer, {});
+  const {
+    queue: notifications,
+    enqueue,
+    dequeue,
+  } = useQueue<NotificationMessage>([]);
 
   return (
     <SessionContext.Provider value={{ ...sessionContext, setSessionContext }}>
@@ -36,14 +43,23 @@ const App: React.FC = () => {
           }
         `}
       />
-      <Router>
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/create-session' component={CreateSessionPage} />
-          <Route path='/join-session' component={JoinSessionPage} />
-          <Route path='/session' component={SessionPage} />
-        </Switch>
-      </Router>
+      <NotificationContext.Provider
+        value={{
+          notifications,
+          enqueue,
+          dequeue,
+        }}
+      >
+        <Notifications />
+        <Router>
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/create-session' component={CreateSessionPage} />
+            <Route path='/join-session' component={JoinSessionPage} />
+            <Route path='/session' component={SessionPage} />
+          </Switch>
+        </Router>
+      </NotificationContext.Provider>
     </SessionContext.Provider>
   );
 };

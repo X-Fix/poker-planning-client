@@ -7,6 +7,7 @@ export { default as JoinSessionForm } from './JoinSessionForm';
 export { default as Main } from './Main';
 export { default as Menu } from './Menu';
 export { default as NextTopicActions } from './NextTopicActions';
+export { default as Notifications } from './Notifications';
 export { default as ParticipantPanel } from './ParticipantPanel';
 export { default as SessionLobby } from './SessionLobby';
 export { default as VoteForm } from './VoteForm';

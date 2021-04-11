@@ -39,6 +39,17 @@ export type SessionContextProps = TSessionContext & {
   setSessionContext: (sessionContext: TSessionContext) => void;
 };
 
+export type NotificationMessage = {
+  message: string;
+  type: 'success' | 'info';
+};
+
+export type NotificationContextProps = {
+  notifications: NotificationMessage[];
+  enqueue: (notificationMessage: NotificationMessage) => void;
+  dequeue: () => NotificationMessage;
+};
+
 export type EmitLeaveSessionPayload = {
   sessionId: string;
 };

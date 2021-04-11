@@ -30,20 +30,23 @@ export const color = {
 /* Shadows
  * ------------------------------------------------------------------
  */
-const shadow = 'rgba(0, 0, 0, 0.25)';
+const shadowLight = 'rgba(0, 0, 0, 0.25)';
+const shadowMedium = 'rgba(0, 0, 0, 0.35)';
+const shadowDark = 'rgba(0, 0, 0, 0.375)';
 
 export const shadows = {
-  buttonPrimary: '2px 3px 1px rgba(0, 0, 0, 0.35)',
-  buttonSecondary: `2px 3px 2px ${shadow}`,
-  buttonTertiary: '2px 3px 1px rgba(0, 0, 0, 0.375)',
+  buttonPrimary: `2px 3px 1px ${shadowMedium}`,
+  buttonSecondary: `2px 3px 2px ${shadowLight}`,
+  buttonTertiary: `2px 3px 1px ${shadowDark}`,
 
-  primary: `2px 3px 2px ${shadow}`,
-  secondary: `0px 2px 8px ${shadow}`,
-  tertiary: `inset 1px 1px 2px ${shadow}`,
+  primary: `2px 3px 2px ${shadowLight}`,
+  secondary: `0px 2px 8px ${shadowLight}`,
+  tertiary: `inset 1px 1px 2px ${shadowLight}`,
 
-  footer: `0 -2px 4px ${shadow}`,
-  header: `0 2px 4px ${shadow}`,
-  form: `0 2px 8px ${shadow}`,
+  footer: `0 -2px 4px ${shadowLight}`,
+  header: `0 2px 4px ${shadowLight}`,
+  form: `0 2px 8px ${shadowLight}`,
+  notification: `0 0 10px ${shadowDark}`,
 
   /* There is overlap between the chat-bubble shadow and the triangle's 'shadow', causing a darker
    * shadow where they overlap. To avoid this we make an exception in this instance, and use a solid
