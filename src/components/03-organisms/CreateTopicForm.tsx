@@ -3,6 +3,7 @@ import React, {
   ReactElement,
   useCallback,
   useContext,
+  useEffect,
   useReducer,
   useState,
 } from 'react';
@@ -111,12 +112,23 @@ function CreateTopicForm(): ReactElement {
     sessionId,
     setSessionContext,
   } = useContext(SessionContext);
-
   const [toggleState, setToggleState] = useReducer(
     toggleReducer,
     getInitialToggleState(participants)
   );
   const [topic, setTopic] = useState('');
+  const hasActiveParticipant = participants.some(({ isActive }) => isActive);
+
+  useEffect(() => {
+    // Append any new participants to the toggleState map
+    participants.forEach(({ id, isActive }) => {
+      if (toggleState[id] === isActive) return;
+      setToggleState({
+        checked: isActive,
+        value: id,
+      });
+    });
+  }, [participants]);
 
   const handleChange = useCallback(
     ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
@@ -141,14 +153,14 @@ function CreateTopicForm(): ReactElement {
   const handleClick = useCallback(
     (event) => {
       event.preventDefault();
-      if (!topic) return;
+      if (!topic || !hasActiveParticipant) return;
 
       emitNewTopic({
         sessionId,
         topic,
       });
 
-      // Pre-empt the update locally so response seems more immediate
+      // Pre-empt the update locally so response time seems more immediate
       setSessionContext({ sessionPhase: 'voting', topic });
     },
     [topic]
@@ -177,7 +189,14 @@ function CreateTopicForm(): ReactElement {
               label={name}
               name='participants'
               isOwner={id === ownerId}
-              checked={toggleState[id]}
+              /**
+               * When a participant joins mid-create-topic, the useEffect will update the
+               * toggleState when it sees the participants list update. This toggleState update will
+               * only take effect in the next render, so inbetween toggleState will return undefined
+               * for this checked value, causing React to complain about uncontrolled vs controlled
+               * components. Returning false during this interim seems harmless and keeps React happy
+               */
+              checked={toggleState[id] || false}
               onChange={handleToggle}
               value={id}
             />
@@ -186,7 +205,7 @@ function CreateTopicForm(): ReactElement {
       </StyledParticipantList>
       <StartVotingButton
         onClick={handleClick}
-        disabled={!Boolean(topic.length)}
+        disabled={!Boolean(topic.length) || !hasActiveParticipant}
         wide
       >
         <StartVotingIcon xlink='start' aria-hidden />
