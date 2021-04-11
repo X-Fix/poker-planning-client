@@ -7,9 +7,7 @@ import {
   EmitSetVotePayload,
   Participant,
   Session,
-  TSessionContext,
 } from '../types';
-import { parseToSessionContext } from './utils';
 
 type SubscribePayload = {
   // onConnect: () => void;     TODO
