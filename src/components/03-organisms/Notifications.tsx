@@ -99,17 +99,12 @@ const DismissIcon = styled(Icon)`
 let cachedTimeout: NodeJS.Timeout;
 
 function Notifications(): ReactElement {
+  const { notifications, dequeue } = useContext(NotificationContext);
   const [
     notification,
     setNotification,
   ] = useState<NotificationMessage | null>();
-  const { notifications, dequeue } = useContext(NotificationContext);
-
-  const hide = useCallback(() => {
-    clearTimeout(cachedTimeout);
-    setNotification(null);
-    cachedTimeout = null;
-  }, []);
+  const { message, type } = notification || {};
 
   useEffect(() => {
     if (!notifications.length) return;
@@ -125,10 +120,14 @@ function Notifications(): ReactElement {
     }
   }, [notifications, notification]);
 
-  const { message, type } = notification || {};
+  const hide = useCallback(() => {
+    clearTimeout(cachedTimeout);
+    setNotification(null);
+    cachedTimeout = null;
+  }, []);
 
   return (
-    <Container isShowing={Boolean(message)} onClick={hide}>
+    <Container isShowing={Boolean(message)} onClick={hide} aria-live='polite'>
       <NotificationIconWrapper type={type} aria-hidden>
         <NotificationIcon
           xlink={type === 'success' ? 'done' : 'info'}
