@@ -97,16 +97,20 @@ const JoinSessionForm = (): ReactElement => {
   const isValidSessionId = sessionId.length === 6;
 
   return (
-    <Form onSubmit={submitHandler} aria-labelledby='heading'>
+    <Form onSubmit={submitHandler} aria-labelledby='heading' autoComplete='on'>
       <Heading id='heading'>Join Session</Heading>
       <StyledInputText
         label='Your Name'
+        id='participant-name'
+        name='participant-name'
         placeholder='Eg. "John Johnson"'
         onChange={participantNameChangeHandler}
         value={participantName}
       />
       <StyledInputText
         label='Session ID'
+        id='session-id'
+        name='session-id'
         placeholder='Eg. "27y2k"'
         onChange={sessionIdChangeHandler}
         value={sessionId}

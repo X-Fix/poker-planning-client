@@ -120,16 +120,20 @@ const CreateSessionForm = (): ReactElement => {
   );
 
   return (
-    <Form onSubmit={submitHandler} aria-labelledby='heading'>
+    <Form onSubmit={submitHandler} aria-labelledby='heading' autoComplete='on'>
       <Heading id='heading'>Create New Session</Heading>
       <StyledInputText
         label='Your Name'
+        id='participant-name'
+        name='participant-name'
         placeholder='Eg. "John Johnson"'
         onChange={participantNameChangeHandler}
         value={participantName}
       />
       <StyledInputText
         label='Session Name (optional)'
+        id='session-name'
+        name='session-name'
         placeholder='Eg. "Fuzzy Wumpus"'
         onChange={sessionNameChangeHandler}
         value={sessionName}
