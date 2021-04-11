@@ -99,14 +99,15 @@ const DismissIcon = styled(Icon)`
 let cachedTimeout: NodeJS.Timeout;
 
 function Notifications(): ReactElement {
-  const [notification, setNotification] = useState<
-    NotificationMessage | undefined
-  >();
+  const [
+    notification,
+    setNotification,
+  ] = useState<NotificationMessage | null>();
   const { notifications, dequeue } = useContext(NotificationContext);
 
   const hide = useCallback(() => {
     clearTimeout(cachedTimeout);
-    setNotification(undefined);
+    setNotification(null);
     cachedTimeout = null;
   }, []);
 
@@ -118,7 +119,7 @@ function Notifications(): ReactElement {
       setNotification(newMessage);
 
       cachedTimeout = setTimeout(() => {
-        setNotification(undefined);
+        setNotification(null);
         cachedTimeout = null;
       }, 10000);
     }
