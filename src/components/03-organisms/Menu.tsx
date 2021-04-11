@@ -2,6 +2,7 @@ import React, {
   MutableRefObject,
   ReactElement,
   useCallback,
+  useContext,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -11,6 +12,7 @@ import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { ButtonToggle } from '../02-molecules';
 import { MenuItem } from '../../a11y/setupMenuActions';
+import { NotificationContext, SessionContext } from '../../context';
 
 type ContainerProps = {
   isOpen?: boolean;
@@ -120,6 +122,9 @@ const Menu = ({
   setMenuOpen,
 }: MenuProps): ReactElement => {
   const [settings, setSettings] = useState(initialSettings);
+  const { sessionId } = useContext(SessionContext);
+  const { enqueue } = useContext(NotificationContext);
+
   const toggleSetting = useCallback(
     ({ state, value }) => {
       setSettings({
@@ -152,6 +157,20 @@ const Menu = ({
     [setMenuOpen, menuItems]
   );
 
+  const copyToClipboard = useCallback(() => {
+    const { escapeMenu } = menuItems[4];
+    setMenuOpen(false);
+    escapeMenu();
+
+    navigator.clipboard.writeText(
+      `http://192.168.2.159:8080/join-session?id=${sessionId}`
+    );
+    enqueue({
+      message: 'Session link copied!',
+      type: 'success',
+    });
+  }, []);
+
   return (
     <Container role='menu' isOpen={isOpen} aria-hidden={!isOpen} ref={menuRef}>
       <Heading>Settings</Heading>
@@ -169,6 +188,7 @@ const Menu = ({
       <Heading>Actions</Heading>
       <MenuAction
         onKeyDown={keyDownHandler}
+        onClick={copyToClipboard}
         role='menuitem'
         type='button'
         tabIndex={-1}

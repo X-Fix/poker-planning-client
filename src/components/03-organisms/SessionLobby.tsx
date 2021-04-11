@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement, useCallback, useContext } from 'react';
 import styled from '@emotion/styled';
 
 import { color, shadows } from '../00-base/variables';
@@ -6,7 +6,7 @@ import { fixedInFooter, font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { Button } from '../02-molecules';
 import { Participant } from '../../types';
-import { SessionContext } from '../../context';
+import { NotificationContext, SessionContext } from '../../context';
 
 const Lobby = styled.div`
   border-bottom: 0.0625rem solid ${color.neutral200};
@@ -97,6 +97,17 @@ const SessionLobby = ({
   newTopic,
 }: LobbyProps): ReactElement => {
   const { self, ownerId } = useContext(SessionContext);
+  const { enqueue } = useContext(NotificationContext);
+
+  const copyToClipboard = useCallback(() => {
+    navigator.clipboard.writeText(
+      `http://192.168.2.159:8080/join-session?id=${sessionId}`
+    );
+    enqueue({
+      message: 'Session link copied!',
+      type: 'success',
+    });
+  }, []);
 
   return (
     <Lobby>
@@ -110,7 +121,7 @@ const SessionLobby = ({
         <dt>Session ID:</dt>
         <dd>{sessionId}</dd>
       </LobbyId>
-      <CopyButton>
+      <CopyButton onClick={copyToClipboard}>
         <CopyButtonIcon xlink='copy' aria-hidden />
         <CopyButtonText>Copy Session Link</CopyButtonText>
       </CopyButton>

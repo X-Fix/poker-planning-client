@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { css, Global } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
-import { SessionContext } from '../../context';
+import { NotificationContext, SessionContext } from '../../context';
 import {
   Participant,
   Session,
@@ -34,7 +34,6 @@ function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
   try {
     // TODO (check for cookie instead in the event of SSR)
     sessionToken = JSON.parse(window.sessionStorage.getItem('sessionToken'));
-    console.log('getting sessionToken', { sessionToken });
   } catch (error) {
     console.error(error);
   }
@@ -44,10 +43,19 @@ function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
 
 function SessionPage(): ReactElement {
   const { setSessionContext, ...sessionContext } = useContext(SessionContext);
+  const { enqueue } = useContext(NotificationContext);
   const { sessionId, participantId } = fetchSessionToken(sessionContext);
   const history = useHistory();
 
   useEffect(() => {
+    // enqueue({
+    //   message: 'hello',
+    //   type: 'info',
+    // });
+    // enqueue({
+    //   message: "It's working!",
+    //   type: 'success',
+    // });
     if (!sessionId || !participantId) {
       history.push('/');
     } else {
