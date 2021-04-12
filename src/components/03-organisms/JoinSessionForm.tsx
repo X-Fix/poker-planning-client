@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   ReactElement,
   useCallback,
+  useContext,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -13,7 +14,7 @@ import { Button, InputText } from '../02-molecules';
 import { Icon } from '../01-atoms';
 import { joinSession } from '../../services/http';
 import { useHistory } from 'react-router';
-import { SessionContext } from '../../context';
+import { NotificationContext } from '../../context';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -54,18 +55,29 @@ const JoinSessionButtonText = styled.span`
 
 const JoinSessionForm = (): ReactElement => {
   const history = useHistory();
+  const { enqueue } = useContext(NotificationContext);
   const [participantName, setParticipantName] = useState('');
   const [sessionId, setSessionId] = useState('');
 
   const submitHandler = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      const sessionToken = await joinSession({
-        participantName,
-        sessionId,
-      });
 
-      if (!sessionToken) return;
+      let sessionToken;
+      try {
+        sessionToken = await joinSession({
+          participantName,
+          sessionId,
+        });
+      } catch (error) {
+        const message =
+          error === 404 ? 'No matching session found' : 'Unknown server error';
+        enqueue({
+          message,
+          type: 'info',
+        });
+        return;
+      }
 
       window.sessionStorage.setItem(
         'sessionToken',

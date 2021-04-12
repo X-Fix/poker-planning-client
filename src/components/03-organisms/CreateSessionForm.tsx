@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   ReactElement,
   useCallback,
+  useContext,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -13,7 +14,7 @@ import { Button, InputRadio, InputText } from '../02-molecules';
 import { font } from '../00-base/utils';
 import { createSession } from '../../services/http';
 import { useHistory } from 'react-router';
-import { SessionContext } from '../../context';
+import { NotificationContext } from '../../context';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -72,6 +73,7 @@ const cardSequenceOptions = [
 
 const CreateSessionForm = (): ReactElement => {
   const history = useHistory();
+  const { enqueue } = useContext(NotificationContext);
   const [participantName, setParticipantName] = useState('');
   const [sessionName, setSessionName] = useState('');
   const [cardSequence, setCardSequence] = useState(cardSequenceOptions[0]);
@@ -79,13 +81,21 @@ const CreateSessionForm = (): ReactElement => {
   const submitHandler = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      const sessionToken = await createSession({
-        cardSequence,
-        participantName,
-        sessionName,
-      });
 
-      if (!sessionToken) return;
+      let sessionToken;
+      try {
+        sessionToken = await createSession({
+          cardSequence,
+          participantName,
+          sessionName,
+        });
+      } catch (error) {
+        enqueue({
+          message: 'Unknown server error',
+          type: 'info',
+        });
+        return;
+      }
 
       window.sessionStorage.setItem(
         'sessionToken',

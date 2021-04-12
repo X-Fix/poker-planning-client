@@ -27,8 +27,7 @@ async function post(
   });
 
   if (!response.ok) {
-    alert('Oops, something went horribly wrong');
-    return;
+    throw response.status;
   }
 
   return await response.json();
