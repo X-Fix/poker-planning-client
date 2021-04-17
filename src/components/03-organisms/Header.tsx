@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
+import { matchPath, useHistory, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { setupMenuActions } from '../../a11y';
@@ -47,7 +47,7 @@ const Heading = styled.h1`
   font-weight: bold;
 `;
 
-const StyledButton = styled(Button)`
+const sharedButtonStyles = `
   @media screen and (max-width: 767px) {
     border-radius: 50%;
     padding: 0.5rem;
@@ -56,6 +56,19 @@ const StyledButton = styled(Button)`
   @media screen and (min-width: 768px) {
     height: 2.5rem;
   }
+`;
+
+const BackButton = styled(Button)`
+  position: absolute;
+  ${sharedButtonStyles};
+`;
+
+const MenuButton = styled(Button)`
+  ${sharedButtonStyles};
+`;
+
+const ChatButton = styled(Button)`
+  ${sharedButtonStyles};
 `;
 
 const ButtonText = styled.span`
@@ -82,9 +95,11 @@ const Header = (): ReactElement => {
   const isMenuOpenRef = useRef(isMenuOpen);
 
   const location = useLocation();
-  const shouldShowButtons = Boolean(
+  const history = useHistory();
+  const isInSession = Boolean(
     matchPath(location.pathname, { path: '/session' })
   );
+  const isOnHomePage = location.pathname === '/';
 
   const toggleMenu = useCallback(() => {
     setMenuOpen(!isMenuOpen);
@@ -118,6 +133,8 @@ const Header = (): ReactElement => {
     }
   };
 
+  const goToHome = useCallback(() => history.push('/'), []);
+
   useEffect(() => {
     window.addEventListener('click', closeMenuOnBlur);
     window.addEventListener('focusin', closeMenuOnBlur);
@@ -131,9 +148,9 @@ const Header = (): ReactElement => {
     <>
       <Container>
         <Wrapper>
-          {shouldShowButtons && (
+          {isInSession && (
             <>
-              <StyledButton
+              <MenuButton
                 onMouseUp={toggleMenu}
                 onKeyUp={keyUpHandler}
                 type='button'
@@ -144,7 +161,7 @@ const Header = (): ReactElement => {
               >
                 <ButtonIcon xlink='menu' aria-hidden />
                 <ButtonText>Menu</ButtonText>
-              </StyledButton>
+              </MenuButton>
               <Menu
                 isOpen={isMenuOpen}
                 menuItems={menuItems}
@@ -154,13 +171,23 @@ const Header = (): ReactElement => {
               />
             </>
           )}
+          {!isInSession && !isOnHomePage && (
+            <BackButton
+              type='button'
+              title='Go back to home screen'
+              onClick={goToHome}
+            >
+              <ButtonIcon xlink='back' aria-hidden />
+              <ButtonText>Back</ButtonText>
+            </BackButton>
+          )}
           <Heading>Poker Planning</Heading>
-          {shouldShowButtons && (
+          {isInSession && (
             <>
-              <StyledButton type='button'>
+              <ChatButton type='button' title='Coming soon...'>
                 <ButtonIcon xlink='chat' aria-hidden />
                 <ButtonText>Chat</ButtonText>
-              </StyledButton>
+              </ChatButton>
             </>
           )}
         </Wrapper>
