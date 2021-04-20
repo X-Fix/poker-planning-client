@@ -20,6 +20,7 @@ import {
   Main,
   VoteForm,
 } from '../03-organisms';
+import { useQueryParams } from '../../hooks';
 
 function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
   let sessionToken: SessionToken;
@@ -45,10 +46,12 @@ function SessionPage(): ReactElement {
   const { setSessionContext, ...sessionContext } = useContext(SessionContext);
   const { sessionId, participantId } = fetchSessionToken(sessionContext);
   const history = useHistory();
+  const queryParams = useQueryParams();
 
   useEffect(() => {
     if (!sessionId || !participantId) {
-      history.push('/');
+      const sessionId = queryParams.get('id');
+      history.push(`/join-session${sessionId ? `?id=${sessionId}` : ''}`);
     } else {
       connectSocket({
         participantId,
@@ -56,6 +59,7 @@ function SessionPage(): ReactElement {
         onRemoved: () => {
           window.sessionStorage.clear();
           setSessionContext({});
+          history.push('/');
         },
         onSyncSession: (session: Session) => {
           setSessionContext(parseToSessionContext({ participantId, session }));
@@ -69,7 +73,7 @@ function SessionPage(): ReactElement {
     }
 
     return disconnectSocket;
-  }, [participantId, sessionId]);
+  }, []);
 
   if (isEmpty(sessionContext)) {
     return null;

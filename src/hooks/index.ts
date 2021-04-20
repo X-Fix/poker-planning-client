@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router';
 
 /**
  * Use a cached queue value outside of the hook. React useState has a caveat where if you call
@@ -29,4 +30,8 @@ export function useQueue<T = unknown>(initialArray: T[]) {
   }
 
   return { queue, enqueue, dequeue };
+}
+
+export function useQueryParams() {
+  return new URLSearchParams(useLocation().search);
 }

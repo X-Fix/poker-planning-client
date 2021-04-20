@@ -4,17 +4,19 @@ import React, {
   ReactElement,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
+import { useHistory, useLocation } from 'react-router';
 
 import { font } from '../00-base/utils';
 import { color, shadows } from '../00-base/variables';
 import { Button, InputText } from '../02-molecules';
 import { Icon } from '../01-atoms';
 import { joinSession } from '../../services/http';
-import { useHistory } from 'react-router';
 import { NotificationContext } from '../../context';
+import { useQueryParams } from '../../hooks';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -58,6 +60,11 @@ const JoinSessionForm = (): ReactElement => {
   const { enqueue } = useContext(NotificationContext);
   const [participantName, setParticipantName] = useState('');
   const [sessionId, setSessionId] = useState('');
+  const queryParams = useQueryParams();
+
+  useEffect(() => {
+    setSessionId(queryParams.get('id') ?? '');
+  }, []);
 
   const submitHandler = useCallback(
     async (event: FormEvent) => {
@@ -97,12 +104,12 @@ const JoinSessionForm = (): ReactElement => {
 
   const sessionIdChangeHandler = useCallback(
     ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-      setSessionId(value);
+      setSessionId(value.toLowerCase());
     },
     []
   );
 
-  const isValidSessionId = sessionId.length === 6;
+  const isValidSessionId = sessionId.length === 5;
 
   return (
     <Form onSubmit={submitHandler} aria-labelledby='heading' autoComplete='on'>
@@ -120,6 +127,7 @@ const JoinSessionForm = (): ReactElement => {
         id='session-id'
         name='session-id'
         placeholder='Eg. "27y2k"'
+        spellCheck='false'
         onChange={sessionIdChangeHandler}
         value={sessionId}
       />
