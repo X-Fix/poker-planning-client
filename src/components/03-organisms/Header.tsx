@@ -108,9 +108,9 @@ const Header = (): ReactElement => {
     !isMenuOpen && menuItemRefs[0]?.current?.focus();
   }, [isMenuOpen]);
 
-  const keyUpHandler = useCallback(
+  const keyDownHandler = useCallback(
     ({ key }): void => {
-      if (key === 'ArrowDown' || key === ' ' || key === 'Enter') {
+      if (key === 'ArrowDown') {
         setMenuOpen(true);
         return menuItemRefs[0]?.current?.focus();
       }
@@ -151,8 +151,8 @@ const Header = (): ReactElement => {
           {isInSession && (
             <>
               <MenuButton
-                onMouseUp={toggleMenu}
-                onKeyUp={keyUpHandler}
+                onClick={toggleMenu}
+                onKeyDown={keyDownHandler}
                 type='button'
                 dark={isMenuOpen}
                 ref={menuButtonRef}

@@ -93,9 +93,12 @@ const ButtonToggle = forwardRef(
     ref: MutableRefObject<HTMLButtonElement>
   ): ReactElement => {
     const [state, setState] = useState(initialState);
-    const handleClick = useCallback(() => {
+    const toggleState = useCallback(() => {
       setState(!state);
       typeof onChange === 'function' && onChange({ state: !state, value });
+    }, [state]);
+    const handleClick = useCallback(() => {
+      toggleState();
     }, [state]);
 
     return (
