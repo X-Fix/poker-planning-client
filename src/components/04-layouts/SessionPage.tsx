@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { css, Global } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
-import { SessionContext } from '../../context';
+import { NotificationContext, SessionContext } from '../../context';
 import {
   Participant,
   Session,
@@ -45,6 +45,7 @@ function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
 function SessionPage(): ReactElement {
   const { setSessionContext, ...sessionContext } = useContext(SessionContext);
   const { sessionId, participantId } = fetchSessionToken(sessionContext);
+  const { enqueue } = useContext(NotificationContext);
   const history = useHistory();
   const queryParams = useQueryParams();
 
@@ -56,7 +57,11 @@ function SessionPage(): ReactElement {
       connectSocket({
         participantId,
         sessionId,
-        onRemoved: () => {
+        onSessionEnd: (reason: string) => {
+          enqueue({
+            message: reason,
+            type: 'info',
+          });
           window.sessionStorage.clear();
           setSessionContext({});
           history.push('/');

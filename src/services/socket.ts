@@ -9,12 +9,9 @@ import {
 } from '../types';
 
 type SubscribePayload = {
-  // onConnect: () => void;     TODO
-  // onDisconnect: () => void;  TODO
-  // onServerError: () => void; TODO
   participantId: string;
   sessionId: string;
-  onRemoved: () => void;
+  onSessionEnd: (reason: string) => void;
   onSyncSession: (session: Session) => void;
   onSyncParticipants: (participants: Participant[]) => void;
 };
@@ -22,12 +19,9 @@ type SubscribePayload = {
 let socket: Socket;
 
 export function connectSocket({
-  // onConnect,
-  // onDisconnect,
-  // onServerError,
   participantId,
   sessionId,
-  onRemoved,
+  onSessionEnd,
   onSyncSession,
   onSyncParticipants,
 }: SubscribePayload): void {
@@ -42,9 +36,17 @@ export function connectSocket({
     socket.on('connect', () => {
       console.log('connected:', socket.id);
     });
-    socket.on('removed', onRemoved);
     socket.on('syncSession', onSyncSession);
     socket.on('syncParticipants', onSyncParticipants);
+    socket.on('removed', () => {
+      onSessionEnd('You were removed from the session');
+    });
+    socket.on('serverError', () => {
+      onSessionEnd('Unknown server error');
+    });
+    socket.on('sessionError', () => {
+      onSessionEnd('Session connection error. Please try again');
+    });
   }
 
   socket.connect();
