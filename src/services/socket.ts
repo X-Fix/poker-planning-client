@@ -1,6 +1,5 @@
 import io, { Socket } from 'socket.io-client';
 import {
-  EmitLeaveSessionPayload,
   EmitNewTopicPayload,
   EmitRemoveParticipantPayload,
   EmitSetParticipantIsActivePayload,
@@ -49,11 +48,6 @@ export function connectSocket({
   }
 
   socket.connect();
-}
-
-export function emitLeaveSession(payload: EmitLeaveSessionPayload): void {
-  if (!socket) return;
-  socket.emit('leaveSession', payload);
 }
 
 export function emitRemoveParticipant(

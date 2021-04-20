@@ -50,10 +50,6 @@ export type NotificationContextProps = {
   dequeue: () => NotificationMessage;
 };
 
-export type EmitLeaveSessionPayload = {
-  sessionId: string;
-};
-
 export type EmitRemoveParticipantPayload = {
   participantId: string;
   sessionId: string;
