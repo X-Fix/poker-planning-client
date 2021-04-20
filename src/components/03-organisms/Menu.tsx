@@ -13,6 +13,8 @@ import { Icon } from '../01-atoms';
 import { ButtonToggle } from '../02-molecules';
 import { MenuItem } from '../../a11y/setupMenuActions';
 import { NotificationContext, SessionContext } from '../../context';
+import { useHistory } from 'react-router';
+import { disconnectSocket } from '../../services/socket';
 
 type ContainerProps = {
   isOpen?: boolean;
@@ -122,8 +124,9 @@ const Menu = ({
   setMenuOpen,
 }: MenuProps): ReactElement => {
   const [settings, setSettings] = useState(initialSettings);
-  const { sessionId } = useContext(SessionContext);
+  const { sessionId, setSessionContext } = useContext(SessionContext);
   const { enqueue } = useContext(NotificationContext);
+  const history = useHistory();
 
   const toggleSetting = useCallback(
     ({ state, value }) => {
@@ -171,6 +174,13 @@ const Menu = ({
     });
   }, []);
 
+  const leaveSession = () => {
+    disconnectSocket();
+    window.sessionStorage.clear();
+    setSessionContext({});
+    history.push('/');
+  };
+
   return (
     <Container role='menu' isOpen={isOpen} aria-hidden={!isOpen} ref={menuRef}>
       <Heading>Settings</Heading>
@@ -199,6 +209,7 @@ const Menu = ({
       </MenuAction>
       <MenuAction
         onKeyDown={keyDownHandler}
+        onClick={leaveSession}
         role='menuitem'
         type='button'
         tabIndex={-1}
