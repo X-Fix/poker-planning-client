@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import styled from '@emotion/styled';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { font } from '../00-base/utils';
 import { color, shadows } from '../00-base/variables';

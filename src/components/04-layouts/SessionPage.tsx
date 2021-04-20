@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { css, Global } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
-import { NotificationContext, SessionContext } from '../../context';
+import { SessionContext } from '../../context';
 import {
   Participant,
   Session,
