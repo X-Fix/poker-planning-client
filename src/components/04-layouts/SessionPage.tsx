@@ -63,7 +63,7 @@ function SessionPage(): ReactElement {
         participantId,
         sessionId,
         onRemoved: () => {
-          window.sessionStorage.removeItem('sessionToken');
+          window.sessionStorage.clear();
           setSessionContext({});
         },
         onSyncSession: (session: Session) => {
