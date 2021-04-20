@@ -21,10 +21,10 @@ const { form } = shadows;
 
 const Form = styled.form`
   box-sizing: border-box;
-  height: 580px;
+  height: 560px;
   margin: 0 auto;
   padding: 1rem;
-  width: 360px;
+  width: 356px;
 
   @media screen and (min-width: 758px) {
     background-color: ${neutral0};
@@ -36,7 +36,7 @@ const Heading = styled.h2`
   ${font('headline')};
 
   font-weight: normal;
-  margin: 0.5rem 0 2rem;
+  margin: 0.5rem 0 1rem;
 `;
 
 const StyledInputText = styled(InputText)`
