@@ -4,13 +4,8 @@ import { css, Global } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
 import { NotificationContext, SessionContext } from '../../context';
-import {
-  Participant,
-  Session,
-  SessionToken,
-  TSessionContext,
-} from '../../types';
-import { disconnectSocket, connectSocket } from '../../services/socket';
+import { Participant, Session, SessionToken } from '../../types';
+import { connectSocket, disconnectSocket } from '../../services/socket';
 import { parseToSessionContext } from '../../services/utils';
 import { color } from '../00-base/variables';
 import {
@@ -22,15 +17,11 @@ import {
 } from '../03-organisms';
 import { useQueryParams } from '../../hooks';
 
-function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
-  let sessionToken: SessionToken;
+const TWO_MINUTES = 1000 * 60 * 2;
+let _condemnTimeout: NodeJS.Timeout;
 
-  if (sessionId && self?.id) {
-    return {
-      participantId: self.id,
-      sessionId,
-    };
-  }
+function fetchSessionToken(): SessionToken {
+  let sessionToken: SessionToken;
 
   try {
     // TODO (check for cookie instead in the event of SSR)
@@ -44,12 +35,22 @@ function fetchSessionToken({ self, sessionId }: TSessionContext): SessionToken {
 
 function SessionPage(): ReactElement {
   const { setSessionContext, ...sessionContext } = useContext(SessionContext);
-  const { sessionId, participantId } = fetchSessionToken(sessionContext);
+  const { sessionId, participantId } = fetchSessionToken();
   const { enqueue } = useContext(NotificationContext);
   const history = useHistory();
   const queryParams = useQueryParams();
 
   useEffect(() => {
+    if (_condemnTimeout) {
+      /**
+       * Cancel any scheduled socket and cache clearing. Cache will be cleared when joining/creating
+       * a new session, and an existing socket connections will be closed before the new one is
+       * established
+       */
+      clearTimeout(_condemnTimeout);
+      _condemnTimeout = null;
+    }
+
     if (!sessionId || !participantId) {
       const sessionId = queryParams.get('id');
       history.push(`/join-session${sessionId ? `?id=${sessionId}` : ''}`);
@@ -77,7 +78,19 @@ function SessionPage(): ReactElement {
       });
     }
 
-    return disconnectSocket;
+    return () => {
+      /**
+       * When navigating away from the SessionPage, give the client a small grace period in case of
+       * accidental back navigation, then disconnect the socket and clear cached data.
+       * This scheduled clean up should be canceled if the client rectifies the mistake (navigates
+       * forward again/rejoins the session)
+       */
+      _condemnTimeout = setTimeout(() => {
+        disconnectSocket();
+        window.sessionStorage.clear();
+        setSessionContext({});
+      }, TWO_MINUTES);
+    };
   }, []);
 
   if (isEmpty(sessionContext)) {

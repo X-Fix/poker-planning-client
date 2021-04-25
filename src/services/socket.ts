@@ -17,6 +17,7 @@ type SubscribePayload = {
 };
 
 let socket: Socket;
+let socketSessionId: string;
 
 export function connectSocket({
   participantId,
@@ -25,31 +26,43 @@ export function connectSocket({
   onSyncSession,
   onSyncParticipants,
 }: SubscribePayload): void {
-  if (!socket) {
-    socket = io('http://192.168.2.159:3000', {
-      autoConnect: false,
-      query: {
-        sessionId,
-        participantId,
-      },
-    });
-    socket.on('connect', () => {
-      console.log('connected:', socket.id);
-    });
-    socket.on('syncSession', onSyncSession);
-    socket.on('syncParticipants', onSyncParticipants);
-    socket.on('removed', () => {
-      onSessionEnd('You were removed from the session');
-    });
-    socket.on('serverError', () => {
-      onSessionEnd('Unknown server error');
-    });
-    socket.on('sessionError', () => {
-      onSessionEnd('Session connection error. Please try again');
-    });
+  // If connecting to a different session, close any existing socket connections
+  if (sessionId !== socketSessionId) {
+    socket?.disconnect();
   }
 
+  /**
+   * Keep a reference to any previous socket connection so we can disconnect it once the new one
+   * has been safely established
+   */
+  const staleSocket = socket;
+
+  socket = io('http://192.168.2.159:3000', {
+    autoConnect: false,
+    query: {
+      sessionId,
+      participantId,
+    },
+  });
+
+  socket.on('connect', () => {
+    console.log('connected:', socket.id);
+    staleSocket?.disconnect();
+  });
+  socket.on('syncSession', onSyncSession);
+  socket.on('syncParticipants', onSyncParticipants);
+  socket.on('removed', () => {
+    onSessionEnd('You were removed from the session');
+  });
+  socket.on('serverError', () => {
+    onSessionEnd('Unknown server error');
+  });
+  socket.on('sessionError', () => {
+    onSessionEnd('Session connection error. Please try again');
+  });
+
   socket.connect();
+  socketSessionId = sessionId;
 }
 
 export function emitRemoveParticipant(
@@ -78,6 +91,5 @@ export function emitSetVote(payload: EmitSetVotePayload): void {
 
 export function disconnectSocket() {
   if (!socket || socket.disconnected) return;
-  console.log('disconnected');
   socket.disconnect();
 }
