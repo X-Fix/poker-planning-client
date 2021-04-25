@@ -96,7 +96,7 @@ const DismissIcon = styled(Icon)`
   width: 1.5rem;
 `;
 
-let cachedTimeout: NodeJS.Timeout;
+let _cachedTimeout: NodeJS.Timeout;
 
 function Notifications(): ReactElement {
   const { notifications, dequeue } = useContext(NotificationContext);
@@ -109,21 +109,21 @@ function Notifications(): ReactElement {
   useEffect(() => {
     if (!notifications.length) return;
 
-    if (!cachedTimeout) {
+    if (!_cachedTimeout) {
       const newMessage = dequeue();
       setNotification(newMessage);
 
-      cachedTimeout = setTimeout(() => {
+      _cachedTimeout = setTimeout(() => {
         setNotification(null);
-        cachedTimeout = null;
+        _cachedTimeout = null;
       }, 10000);
     }
   }, [notifications, notification]);
 
   const hide = useCallback(() => {
-    clearTimeout(cachedTimeout);
+    clearTimeout(_cachedTimeout);
     setNotification(null);
-    cachedTimeout = null;
+    _cachedTimeout = null;
   }, []);
 
   return (

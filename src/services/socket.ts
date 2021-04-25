@@ -16,8 +16,8 @@ type SubscribePayload = {
   onSyncParticipants: (participants: Participant[]) => void;
 };
 
-let socket: Socket;
-let socketSessionId: string;
+let _socket: Socket;
+let _socketSessionId: string;
 
 export function connectSocket({
   participantId,
@@ -27,17 +27,17 @@ export function connectSocket({
   onSyncParticipants,
 }: SubscribePayload): void {
   // If connecting to a different session, close any existing socket connections
-  if (sessionId !== socketSessionId) {
-    socket?.disconnect();
+  if (sessionId !== _socketSessionId) {
+    _socket?.disconnect();
   }
 
   /**
-   * Keep a reference to any previous socket connection so we can disconnect it once the new one
+   * Keep a reference to any previous _socket connection so we can disconnect it once the new one
    * has been safely established
    */
-  const staleSocket = socket;
+  const staleSocket = _socket;
 
-  socket = io('http://192.168.2.159:3000', {
+  _socket = io('http://192.168.2.159:3000', {
     autoConnect: false,
     query: {
       sessionId,
@@ -45,50 +45,50 @@ export function connectSocket({
     },
   });
 
-  socket.on('connect', () => {
+  _socket.on('connect', () => {
     staleSocket?.disconnect();
   });
-  socket.on('syncSession', onSyncSession);
-  socket.on('syncParticipants', onSyncParticipants);
-  socket.on('removed', () => {
+  _socket.on('syncSession', onSyncSession);
+  _socket.on('syncParticipants', onSyncParticipants);
+  _socket.on('removed', () => {
     onSessionEnd('You were removed from the session');
   });
-  socket.on('serverError', () => {
+  _socket.on('serverError', () => {
     onSessionEnd('Unknown server error');
   });
-  socket.on('sessionError', () => {
+  _socket.on('sessionError', () => {
     onSessionEnd('Session connection error. Please try again');
   });
 
-  socket.connect();
-  socketSessionId = sessionId;
+  _socket.connect();
+  _socketSessionId = sessionId;
 }
 
 export function emitRemoveParticipant(
   payload: EmitRemoveParticipantPayload
 ): void {
-  if (!socket) return;
-  socket.emit('removeParticipant', payload);
+  if (!_socket) return;
+  _socket.emit('removeParticipant', payload);
 }
 
 export function emitSetParticipantIsActive(
   payload: EmitSetParticipantIsActivePayload
 ): void {
-  if (!socket) return;
-  socket.emit('setActive', payload);
+  if (!_socket) return;
+  _socket.emit('setActive', payload);
 }
 
 export function emitNewTopic(payload: EmitNewTopicPayload): void {
-  if (!socket) return;
-  socket.emit('newTopic', payload);
+  if (!_socket) return;
+  _socket.emit('newTopic', payload);
 }
 
 export function emitSetVote(payload: EmitSetVotePayload): void {
-  if (!socket) return;
-  socket.emit('setVote', payload);
+  if (!_socket) return;
+  _socket.emit('setVote', payload);
 }
 
 export function disconnectSocket() {
-  if (!socket || socket.disconnected) return;
-  socket.disconnect();
+  if (!_socket || _socket.disconnected) return;
+  _socket.disconnect();
 }
