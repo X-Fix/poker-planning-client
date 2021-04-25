@@ -41,6 +41,7 @@ const Switch = styled.span`
   display: flex;
   height: 24px;
   justify-content: center;
+  position: relative;
   width: 48px;
 
   &::before {
