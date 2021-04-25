@@ -67,28 +67,23 @@ export function connectSocket({
 export function emitRemoveParticipant(
   payload: EmitRemoveParticipantPayload
 ): void {
-  if (!_socket) return;
-  _socket.emit('removeParticipant', payload);
+  _socket?.emit('removeParticipant', payload);
 }
 
 export function emitSetParticipantIsActive(
   payload: EmitSetParticipantIsActivePayload
 ): void {
-  if (!_socket) return;
-  _socket.emit('setActive', payload);
+  _socket?.emit('setActive', payload);
 }
 
 export function emitNewTopic(payload: EmitNewTopicPayload): void {
-  if (!_socket) return;
-  _socket.emit('newTopic', payload);
+  _socket?.emit('newTopic', payload);
 }
 
 export function emitSetVote(payload: EmitSetVotePayload): void {
-  if (!_socket) return;
-  _socket.emit('setVote', payload);
+  _socket?.emit('setVote', payload);
 }
 
 export function disconnectSocket() {
-  if (!_socket || _socket.disconnected) return;
-  _socket.disconnect();
+  _socket?.disconnect();
 }
