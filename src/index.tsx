@@ -41,6 +41,11 @@ const App: React.FC = () => {
             background-color: ${color.neutral50};
             font-family: ${fontFamily};
           }
+
+          .root {
+            overflow: hidden;
+            position: relative;
+          }
         `}
       />
       <NotificationContext.Provider
