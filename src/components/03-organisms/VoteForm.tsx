@@ -109,7 +109,6 @@ function VoteForm(): ReactElement {
 
   useEffect(() => {
     if (isFormActive && formRef) {
-      console.log('resetting');
       setVote('');
       formRef?.current?.focus();
     }

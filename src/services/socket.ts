@@ -46,7 +46,6 @@ export function connectSocket({
   });
 
   socket.on('connect', () => {
-    console.log('connected:', socket.id);
     staleSocket?.disconnect();
   });
   socket.on('syncSession', onSyncSession);
