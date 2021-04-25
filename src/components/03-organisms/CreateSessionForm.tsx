@@ -4,6 +4,7 @@ import React, {
   ReactElement,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -78,6 +79,20 @@ const CreateSessionForm = (): ReactElement => {
   const [sessionName, setSessionName] = useState('');
   const [cardSequence, setCardSequence] = useState(cardSequenceOptions[0]);
 
+  useEffect(() => {
+    try {
+      const initialCardSequence =
+        cardSequenceOptions[
+          Number(window.localStorage.getItem('cardSequenceIndex')) || 0
+        ];
+      setCardSequence(initialCardSequence);
+      setParticipantName(window.localStorage.getItem('participantName') ?? '');
+      setSessionName(window.localStorage.getItem('sessionName') ?? '');
+    } catch (error) {
+      window.localStorage.clear();
+    }
+  }, []);
+
   const submitHandler = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
@@ -97,10 +112,19 @@ const CreateSessionForm = (): ReactElement => {
         return;
       }
 
+      const cardSequenceIndex = cardSequenceOptions
+        .findIndex((option) => option === cardSequence)
+        .toString();
+
+      window.localStorage.setItem('cardSequenceIndex', cardSequenceIndex);
+      window.localStorage.setItem('participantName', participantName);
+      window.localStorage.setItem('sessionName', sessionName);
+
       window.sessionStorage.setItem(
         'sessionToken',
         JSON.stringify(sessionToken)
       );
+
       history.push(`/session?id=${sessionToken.sessionId}`);
     },
     [participantName, sessionName, cardSequence]

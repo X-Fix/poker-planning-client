@@ -64,6 +64,7 @@ const JoinSessionForm = (): ReactElement => {
 
   useEffect(() => {
     setSessionId(queryParams.get('id') ?? '');
+    setParticipantName(window.localStorage.getItem('participantName') ?? '');
   }, []);
 
   const submitHandler = useCallback(
@@ -86,10 +87,12 @@ const JoinSessionForm = (): ReactElement => {
         return;
       }
 
+      window.localStorage.setItem('participantName', participantName);
       window.sessionStorage.setItem(
         'sessionToken',
         JSON.stringify(sessionToken)
       );
+
       history.push(`/session?id=${sessionToken.sessionId}`);
     },
     [participantName, sessionId]
