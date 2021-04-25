@@ -5,7 +5,7 @@ export { default as InputRadio } from './InputRadio';
 export { default as InputSwitch } from './InputSwitch';
 export { default as InputText } from './InputText';
 export { default as ParticipantList } from './ParticipantList';
-export { default as ParticipantName } from './ParticipantName';
+export { default as ParticipantListItem } from './ParticipantListItem';
 export { default as ParticipantStatus } from './ParticipantStatus';
 export { default as ParticipantWrapper } from './ParticipantWrapper';
 export { default as PokerCard } from './PokerCard';

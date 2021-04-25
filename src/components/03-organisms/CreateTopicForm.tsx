@@ -182,7 +182,7 @@ function CreateTopicForm(): ReactElement {
         {sortBy(participants, ['name']).map(({ id, name }) => (
           <ParticipantWrapper
             key={id}
-            isMe={id === self.id}
+            isSelf={id === self.id}
             isActive={toggleState[id]}
           >
             <StyledInputSwitch
