@@ -5,6 +5,7 @@ import { CreateSessionForm, Header, Main } from '../03-organisms';
 
 const StyledMain = styled(Main)`
   align-items: center;
+  overflow-y: scroll;
   padding-bottom: 0;
 `;
 
