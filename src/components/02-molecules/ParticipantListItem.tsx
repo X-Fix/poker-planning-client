@@ -9,6 +9,52 @@ import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { ParticipantStatus, ParticipantWrapper } from '.';
 
+function getVoteNumericValue(vote: string): number {
+  if (vote === '☕') {
+    return 0;
+  }
+
+  if (vote === '?') {
+    return 999;
+  }
+
+  return Number(vote);
+}
+
+function isOutlierVote(
+  participantId: string,
+  participantVote: string,
+  participants: Participant[]
+): boolean {
+  let isHighest = true;
+  let isLowest = true;
+  let isCommon = false;
+  const comparableVote = getVoteNumericValue(participantVote);
+
+  participants.forEach(({ id, vote, name }) => {
+    if (participantId === id) return;
+
+    const comparedVote = getVoteNumericValue(vote);
+
+    if (comparableVote < comparedVote) {
+      isHighest = false;
+    }
+
+    if (comparableVote > comparedVote) {
+      isLowest = false;
+    }
+
+    if (comparableVote === comparedVote) {
+      console.log('common with', name);
+      isCommon = true;
+    }
+  });
+
+  console.log({ isCommon, isHighest, isLowest });
+
+  return !isCommon && (isHighest || isLowest);
+}
+
 const ParticipantName = styled.span<{ isOwner?: boolean }>`
   ${font('body')};
 
@@ -52,9 +98,17 @@ type ParticipantListItemProps = {
 const ParticipantListItem: React.FC<ParticipantListItemProps> = ({
   participant,
 }): ReactElement => {
-  const { self, sessionId, sessionPhase, ownerId } = useContext(SessionContext);
+  const { participants, self, sessionId, sessionPhase, ownerId } = useContext(
+    SessionContext
+  );
   const { id, isActive, isConnected, name, vote } = participant;
-  const isOutlier = sessionPhase === 'result' && Number(vote) % 2 === 0; // TODO add isOutlier method
+  const isOutlier =
+    sessionPhase === 'result' &&
+    isOutlierVote(
+      id,
+      vote,
+      participants.filter(({ isActive }) => isActive)
+    );
   const isOwner = id === ownerId;
   const isSelf = id === self.id;
   const isSelfOwner = self.id === ownerId;
