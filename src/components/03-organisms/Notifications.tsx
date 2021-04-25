@@ -107,9 +107,7 @@ function Notifications(): ReactElement {
   const { message, type } = notification || {};
 
   useEffect(() => {
-    if (!notifications.length) return;
-
-    if (!_cachedTimeout) {
+    if (notifications.length && !_cachedTimeout) {
       const newMessage = dequeue();
       setNotification(newMessage);
 
