@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -78,6 +79,7 @@ const CreateSessionForm = (): ReactElement => {
   const [participantName, setParticipantName] = useState('');
   const [sessionName, setSessionName] = useState('');
   const [cardSequence, setCardSequence] = useState(cardSequenceOptions[0]);
+  const formRef = useRef<HTMLFormElement>();
 
   useEffect(() => {
     try {
@@ -89,8 +91,10 @@ const CreateSessionForm = (): ReactElement => {
       setParticipantName(window.localStorage.getItem('participantName') ?? '');
       setSessionName(window.localStorage.getItem('sessionName') ?? '');
     } catch (error) {
-      window.localStorage.clear();
+      window?.localStorage.clear();
     }
+
+    formRef?.current.focus();
   }, []);
 
   const submitHandler = useCallback(
@@ -152,7 +156,13 @@ const CreateSessionForm = (): ReactElement => {
   );
 
   return (
-    <Form onSubmit={submitHandler} aria-labelledby='heading' autoComplete='on'>
+    <Form
+      onSubmit={submitHandler}
+      aria-labelledby='heading'
+      autoComplete='on'
+      tabIndex={0}
+      ref={formRef}
+    >
       <Heading id='heading'>Create New Session</Heading>
       <StyledInputText
         label='Your Name'

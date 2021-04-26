@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useReducer,
+  useRef,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -118,6 +119,11 @@ function CreateTopicForm(): ReactElement {
   );
   const [topic, setTopic] = useState('');
   const hasActiveParticipant = participants.some(({ isActive }) => isActive);
+  const formRef = useRef<HTMLFormElement>();
+
+  useEffect(() => {
+    formRef?.current.focus();
+  }, []);
 
   useEffect(() => {
     // Append any new participants to the toggleState map
@@ -167,7 +173,7 @@ function CreateTopicForm(): ReactElement {
   );
 
   return (
-    <form>
+    <form tabIndex={0} ref={formRef}>
       <TextSection>
         <Heading>New Topic</Heading>
         <StyledInputText

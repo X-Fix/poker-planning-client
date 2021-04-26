@@ -2,9 +2,8 @@ import React, { ReactElement, useCallback, useContext } from 'react';
 import styled from '@emotion/styled';
 
 import { color, shadows } from '../00-base/variables';
-import { fixedInFooter, font } from '../00-base/utils';
+import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
-import { Button } from '../02-molecules';
 import { Participant } from '../../types';
 import { NotificationContext, SessionContext } from '../../context';
 
@@ -65,38 +64,17 @@ const ParticipantCount = styled.p`
   margin: 0 0 0.25rem;
 `;
 
-const NewTopicButton = styled(Button)`
-  ${fixedInFooter('center')};
-
-  margin: 0 0.5rem 0.5rem 0;
-
-  @media screen and (min-width: 768px) {
-    ${fixedInFooter('right')};
-  }
-`;
-
-const NewTopicText = styled.span`
-  ${font('title')};
-`;
-
-const NewTopicIcon = styled(Icon)`
-  margin-right: 0.25rem;
-`;
-
 type LobbyProps = {
   participants: Participant[];
   sessionId: string;
   sessionName: string;
-  newTopic: () => void;
 };
 
 const SessionLobby = ({
   participants,
   sessionId,
   sessionName,
-  newTopic,
 }: LobbyProps): ReactElement => {
-  const { self, ownerId } = useContext(SessionContext);
   const { enqueue } = useContext(NotificationContext);
 
   const copyToClipboard = useCallback(() => {
@@ -126,12 +104,6 @@ const SessionLobby = ({
         <CopyButtonText>Copy Session Link</CopyButtonText>
       </CopyButton>
       <ParticipantCount>{`Participants (${participants.length})`}</ParticipantCount>
-      {self.id === ownerId && (
-        <NewTopicButton wide onClick={newTopic}>
-          <NewTopicIcon xlink='create' aria-hidden />
-          <NewTopicText>New Topic</NewTopicText>
-        </NewTopicButton>
-      )}
     </Lobby>
   );
 };

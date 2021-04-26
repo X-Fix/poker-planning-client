@@ -3,25 +3,17 @@ import styled from '@emotion/styled';
 
 import { SessionContext } from '../../context';
 import { emitNewTopic } from '../../services/socket';
-import { fixedInFooter, font } from '../00-base/utils';
+import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { Button } from '../02-molecules';
 
 const Actions = styled.div`
-  ${fixedInFooter('right')};
-
   box-sizing: border-box;
   display: flex;
   height: 4rem;
   padding: 0.5rem 0.5rem 0.5rem 0;
-
-  /* Weird breakpoint here is to allow a little more room for the button texts to breathe before
-    increasing the spacing to the default button settings */
-  @media screen and (max-width: 366px) {
-    & button {
-      padding: 0 0.25rem;
-    }
-  }
+  position: fixed;
+  right: 0;
 
   @media screen and (max-width: 767px) {
     background-color: #fff;
@@ -30,16 +22,22 @@ const Actions = styled.div`
   }
 `;
 
-const RedoButtonText = styled.span`
+const ButtonText = styled.span`
   ${font('title')};
 
   margin-left: 0.25rem;
+
+  /**
+   * Weird breakpoint here is to allow a little more room for the button texts to breathe before
+   * increasing the spacing to the default button settings
+   */
+  @media screen and (max-width: 366px) {
+    ${font('body')};
+  }
 `;
 
-const NewTopicText = styled.span`
-  ${font('title')};
-
-  margin-left: 0.25rem;
+const ReversedIcon = styled(Icon)`
+  transform: scaleX(-1);
 `;
 
 function NextTopicActions(): ReactElement {
@@ -61,12 +59,12 @@ function NextTopicActions(): ReactElement {
   return (
     <Actions>
       <Button secondary onClick={onRedoVote}>
-        <Icon xlink='redo' aria-hidden />
-        <RedoButtonText>Redo Vote</RedoButtonText>
+        <ReversedIcon xlink='redo' aria-hidden />
+        <ButtonText>Redo Vote</ButtonText>
       </Button>
       <Button onClick={onNewTopic}>
         <Icon xlink='create' />
-        <NewTopicText>New Topic</NewTopicText>
+        <ButtonText>New Topic</ButtonText>
       </Button>
     </Actions>
   );

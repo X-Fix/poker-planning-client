@@ -13,7 +13,7 @@ import { Icon } from '../01-atoms';
 import { NotificationMessage } from '../../types';
 import { NotificationContext } from '../../context';
 
-const Container = styled.aside<{ isShowing: boolean }>`
+const Container = styled.aside<{ isVisible: boolean }>`
   align-items: center;
   background-color: ${color.neutral0};
   border-radius: 5px;
@@ -53,8 +53,8 @@ const Container = styled.aside<{ isShowing: boolean }>`
     }
   }
 
-  ${({ isShowing }) =>
-    isShowing &&
+  ${({ isVisible }) =>
+    isVisible &&
     `
     animation: displayNotification 9s 1 cubic-bezier(0.4, 0, 0.6, 1)
   `}
@@ -124,8 +124,10 @@ function Notifications(): ReactElement {
     _cachedTimeout = null;
   }, []);
 
+  const isVisible = Boolean(message);
+
   return (
-    <Container isShowing={Boolean(message)} onClick={hide} aria-live='polite'>
+    <Container isVisible={isVisible} onClick={hide} aria-live='polite'>
       <NotificationIconWrapper type={type} aria-hidden>
         <NotificationIcon
           xlink={type === 'success' ? 'done' : 'info'}
@@ -135,6 +137,7 @@ function Notifications(): ReactElement {
       <NotificationText>{message}</NotificationText>
       <DismissButton
         aria-label='Dismiss notification'
+        aria-hidden={!isVisible}
         title='Dismiss notification'
       >
         <DismissIcon xlink='close' aria-hidden />

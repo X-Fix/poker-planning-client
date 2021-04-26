@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
@@ -61,10 +62,13 @@ const JoinSessionForm = (): ReactElement => {
   const [participantName, setParticipantName] = useState('');
   const [sessionId, setSessionId] = useState('');
   const queryParams = useQueryParams();
+  const formRef = useRef<HTMLFormElement>();
 
   useEffect(() => {
     setSessionId(queryParams.get('id') ?? '');
     setParticipantName(window.localStorage.getItem('participantName') ?? '');
+
+    formRef?.current.focus();
   }, []);
 
   const submitHandler = useCallback(
@@ -115,7 +119,13 @@ const JoinSessionForm = (): ReactElement => {
   const isValidSessionId = sessionId.length === 5;
 
   return (
-    <Form onSubmit={submitHandler} aria-labelledby='heading' autoComplete='on'>
+    <Form
+      onSubmit={submitHandler}
+      aria-labelledby='heading'
+      autoComplete='on'
+      tabIndex={0}
+      ref={formRef}
+    >
       <Heading id='heading'>Join Session</Heading>
       <StyledInputText
         label='Your Name'
