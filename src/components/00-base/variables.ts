@@ -32,7 +32,7 @@ export const color = {
  */
 const shadowLight = 'rgba(0, 0, 0, 0.25)';
 const shadowMedium = 'rgba(0, 0, 0, 0.35)';
-const shadowDark = 'rgba(0, 0, 0, 0.375)';
+const shadowDark = 'rgba(0, 0, 0, 0.4)';
 
 export const shadows = {
   buttonPrimary: `2px 3px 1px ${shadowMedium}`,
