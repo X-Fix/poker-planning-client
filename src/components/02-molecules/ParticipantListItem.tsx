@@ -28,10 +28,9 @@ function isOutlierVote(
 ): boolean {
   let isHighest = true;
   let isLowest = true;
-  let isCommon = false;
   const comparableVote = getVoteNumericValue(participantVote);
 
-  participants.forEach(({ id, vote, name }) => {
+  const isCommon = participants.some(({ id, vote }) => {
     if (participantId === id) return;
 
     const comparedVote = getVoteNumericValue(vote);
@@ -44,13 +43,8 @@ function isOutlierVote(
       isLowest = false;
     }
 
-    if (comparableVote === comparedVote) {
-      console.log('common with', name);
-      isCommon = true;
-    }
+    return comparableVote === comparedVote;
   });
-
-  console.log({ isCommon, isHighest, isLowest });
 
   return !isCommon && (isHighest || isLowest);
 }
