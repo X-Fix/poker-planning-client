@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext } from 'react';
 import styled from '@emotion/styled';
+import { orderBy } from 'lodash';
 
 import { SessionContext } from '../../context';
-import { CreateTopicForm, SessionLobby } from '.';
 import { color } from '../00-base/variables';
 import { ParticipantList, ParticipantListItem } from '../02-molecules';
-import { orderBy } from 'lodash';
+import { CreateTopicForm, SessionLobby } from '.';
 
 const Panel = styled.section<{ isHiddenOnSmallScreens: boolean }>`
   background-color: ${color.neutral0};
