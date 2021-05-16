@@ -16,12 +16,10 @@ import {
 import { Notifications } from './components/03-organisms';
 import { useQueue } from './hooks';
 
-function sessionContextReducer(
+const sessionContextReducer = (
   state: TSessionContext,
   payload: TSessionContext
-) {
-  return isEmpty(payload) ? {} : { ...state, ...payload };
-}
+) => (isEmpty(payload) ? {} : { ...state, ...payload });
 
 const App: React.FC = () => {
   const [sessionContext, setSessionContext] = useReducer<
