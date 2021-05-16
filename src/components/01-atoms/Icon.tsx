@@ -24,4 +24,4 @@ const Icon = ({
   </StyledIcon>
 );
 
-export default React.memo(Icon);
+export default Icon;

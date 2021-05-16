@@ -18,4 +18,4 @@ const CreateSessionPage = (): ReactElement => (
   </>
 );
 
-export default React.memo(CreateSessionPage);
+export default CreateSessionPage;

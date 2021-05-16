@@ -9,14 +9,14 @@ import React, {
   useState,
 } from 'react';
 import styled from '@emotion/styled';
+import { useHistory } from 'react-router';
 
+import { createSession } from '../../services/http';
+import { NotificationContext } from '../../context';
 import { color, shadows } from '../00-base/variables';
+import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { Button, InputRadio, InputText } from '../02-molecules';
-import { font } from '../00-base/utils';
-import { createSession } from '../../services/http';
-import { useHistory } from 'react-router';
-import { NotificationContext } from '../../context';
 
 const { neutral0 } = color;
 const { form } = shadows;
@@ -201,4 +201,4 @@ const CreateSessionForm = (): ReactElement => {
   );
 };
 
-export default React.memo(CreateSessionForm);
+export default CreateSessionForm;

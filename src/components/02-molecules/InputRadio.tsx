@@ -111,4 +111,4 @@ function InputRadio({
   );
 }
 
-export default React.memo(InputRadio);
+export default InputRadio;

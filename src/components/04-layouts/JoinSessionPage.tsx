@@ -16,4 +16,4 @@ const JoinSessionPage = (): ReactElement => (
   </>
 );
 
-export default React.memo(JoinSessionPage);
+export default JoinSessionPage;

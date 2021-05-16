@@ -4,10 +4,10 @@ import React, {
   forwardRef,
   MutableRefObject,
   ReactElement,
-  useCallback,
   useState,
 } from 'react';
 import styled from '@emotion/styled';
+
 import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 
@@ -93,18 +93,15 @@ const ButtonToggle = forwardRef(
     ref: MutableRefObject<HTMLButtonElement>
   ): ReactElement => {
     const [state, setState] = useState(initialState);
-    const toggleState = useCallback(() => {
+    const toggleState = () => {
       setState(!state);
       typeof onChange === 'function' && onChange({ state: !state, value });
-    }, [state]);
-    const handleClick = useCallback(() => {
-      toggleState();
-    }, [state]);
+    };
 
     return (
       <Button
         aria-pressed={state}
-        onClick={handleClick}
+        onClick={toggleState}
         role={role}
         type='button'
         value={value}
@@ -118,4 +115,4 @@ const ButtonToggle = forwardRef(
   }
 );
 
-export default React.memo(ButtonToggle);
+export default ButtonToggle;

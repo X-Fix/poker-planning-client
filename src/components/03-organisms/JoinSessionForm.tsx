@@ -152,4 +152,4 @@ const JoinSessionForm = (): ReactElement => {
   );
 };
 
-export default React.memo(JoinSessionForm);
+export default JoinSessionForm;

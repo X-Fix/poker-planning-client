@@ -16,4 +16,4 @@ const HomePage = (): ReactElement => (
   </>
 );
 
-export default React.memo(HomePage);
+export default HomePage;

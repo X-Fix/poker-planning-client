@@ -9,12 +9,12 @@ import React, {
 } from 'react';
 import styled from '@emotion/styled';
 
-import { fixedInFooter, font, srOnly } from '../00-base/utils';
-import { Icon } from '../01-atoms';
-import { Button, PokerCard } from '../02-molecules';
 import { SessionContext } from '../../context';
 import { emitSetVote } from '../../services/socket';
 import { SessionPhase } from '../../types';
+import { fixedInFooter, font, srOnly } from '../00-base/utils';
+import { Icon } from '../01-atoms';
+import { Button, PokerCard } from '../02-molecules';
 
 const Form = styled.form<{ isActive: boolean }>`
   height: calc(100vh - 8rem);
@@ -176,4 +176,4 @@ function VoteForm(): ReactElement {
   );
 }
 
-export default React.memo(VoteForm);
+export default VoteForm;

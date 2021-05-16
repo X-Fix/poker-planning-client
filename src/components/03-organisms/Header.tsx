@@ -9,10 +9,10 @@ import { matchPath, useHistory, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { setupMenuActions } from '../../a11y';
-import { Button } from '../02-molecules';
 import { Icon } from '../01-atoms';
 import { color, shadows } from '../00-base/variables';
 import { font, srOnly } from '../00-base/utils';
+import { Button } from '../02-molecules';
 import { Menu } from '.';
 
 const { blue800, neutral0 } = color;
@@ -196,4 +196,4 @@ const Header = (): ReactElement => {
   );
 };
 
-export default React.memo(Header);
+export default Header;

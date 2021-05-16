@@ -1,11 +1,11 @@
 import React, { ReactElement, useCallback, useContext } from 'react';
 import styled from '@emotion/styled';
 
+import { Participant } from '../../types';
+import { NotificationContext } from '../../context';
 import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
-import { Participant } from '../../types';
-import { NotificationContext, SessionContext } from '../../context';
 
 const Lobby = styled.div`
   border-bottom: 0.0625rem solid ${color.neutral200};
@@ -108,4 +108,4 @@ const SessionLobby = ({
   );
 };
 
-export default React.memo(SessionLobby);
+export default SessionLobby;

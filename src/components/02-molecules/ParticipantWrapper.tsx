@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from '@emotion/styled';
+
 import { color } from '../00-base/variables';
 
 type WrapperProps = {
@@ -48,4 +49,4 @@ const ParticipantWrapper: React.FC<ParticipantWrapperProps> = ({
   ...props
 }): ReactElement => <Wrapper {...props}>{children}</Wrapper>;
 
-export default React.memo(ParticipantWrapper);
+export default ParticipantWrapper;

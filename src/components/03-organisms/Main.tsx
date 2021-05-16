@@ -22,4 +22,4 @@ const Main: React.FC<MainProps> = ({ children, className }) => (
   <StyledMain className={className}>{children}</StyledMain>
 );
 
-export default React.memo(Main);
+export default Main;

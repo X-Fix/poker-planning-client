@@ -69,4 +69,4 @@ function ParticipantPanel(): ReactElement {
   );
 }
 
-export default React.memo(ParticipantPanel);
+export default ParticipantPanel;

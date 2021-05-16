@@ -6,15 +6,15 @@ import React, {
   useState,
 } from 'react';
 import styled from '@emotion/styled';
+import { useHistory } from 'react-router';
 
+import { MenuItem } from '../../a11y/setupMenuActions';
+import { NotificationContext, SessionContext } from '../../context';
+import { disconnectSocket } from '../../services/socket';
 import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { ButtonToggle } from '../02-molecules';
-import { MenuItem } from '../../a11y/setupMenuActions';
-import { NotificationContext, SessionContext } from '../../context';
-import { useHistory } from 'react-router';
-import { disconnectSocket } from '../../services/socket';
 
 type ContainerProps = {
   isOpen?: boolean;
@@ -223,4 +223,4 @@ const Menu = ({
   );
 };
 
-export default React.memo(Menu);
+export default Menu;

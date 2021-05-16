@@ -130,4 +130,4 @@ const PokerCard = ({
   </Container>
 );
 
-export default React.memo(PokerCard);
+export default PokerCard;

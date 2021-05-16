@@ -101,4 +101,4 @@ const InputSwitch = ({
   </Field>
 );
 
-export default React.memo(InputSwitch);
+export default InputSwitch;

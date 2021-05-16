@@ -47,4 +47,4 @@ const ParticipantStatus = ({
   </>
 );
 
-export default React.memo(ParticipantStatus);
+export default ParticipantStatus;

@@ -70,4 +70,4 @@ function NextTopicActions(): ReactElement {
   );
 }
 
-export default React.memo(NextTopicActions);
+export default NextTopicActions;

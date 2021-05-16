@@ -221,4 +221,4 @@ function CreateTopicForm(): ReactElement {
   );
 }
 
-export default React.memo(CreateTopicForm);
+export default CreateTopicForm;

@@ -4,9 +4,10 @@ import { css, Global } from '@emotion/react';
 import isEmpty from 'lodash/isEmpty';
 
 import { NotificationContext, SessionContext } from '../../context';
-import { Participant, Session, SessionToken } from '../../types';
+import { useQueryParams } from '../../hooks';
 import { connectSocket, disconnectSocket } from '../../services/socket';
 import { parseToSessionContext } from '../../services/utils';
+import { Participant, Session, SessionToken } from '../../types';
 import { color } from '../00-base/variables';
 import {
   Footer,
@@ -15,7 +16,6 @@ import {
   Main,
   VoteForm,
 } from '../03-organisms';
-import { useQueryParams } from '../../hooks';
 
 const TWO_MINUTES = 1000 * 60 * 2;
 let _condemnTimeout: NodeJS.Timeout;
@@ -116,4 +116,4 @@ function SessionPage(): ReactElement {
   );
 }
 
-export default React.memo(SessionPage);
+export default SessionPage;

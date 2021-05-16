@@ -23,4 +23,4 @@ const ParticipantList: React.FC<ParticipantListProps> = ({
   className,
 }) => <List className={className}>{children}</List>;
 
-export default React.memo(ParticipantList);
+export default ParticipantList;

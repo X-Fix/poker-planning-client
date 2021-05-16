@@ -94,4 +94,4 @@ const ChooseForm = (): ReactElement => (
   </Navigation>
 );
 
-export default React.memo(ChooseForm);
+export default ChooseForm;
