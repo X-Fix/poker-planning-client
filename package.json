@@ -59,5 +59,9 @@
   },
   "resolutions": {
     "chokidar": "^3"
-  }
+  },
+  "files": [
+    "/dist",
+    "!/dist/bundle-report.html"
+  ]
 }
