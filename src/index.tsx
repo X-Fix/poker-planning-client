@@ -1,4 +1,4 @@
-import React, { Reducer, useReducer, useState } from 'react';
+import React, { Reducer, useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Global, css } from '@emotion/react';
