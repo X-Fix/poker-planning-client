@@ -3,6 +3,5 @@ node_modules
 dist
 serve
 
-yarn.lock
 **.log
 .DS_Store
