@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "author": "Cameron Stroebel <cameron.stroebel08@gmail.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "build": "webpack --env NODE_ENV=production",
     "check-types": "tsc --noEmit",
