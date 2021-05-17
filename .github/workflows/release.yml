@@ -7,7 +7,13 @@ on:
         description: 'Release version'
 
 jobs:
-  publish-gpr:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: TODO
+        run: exit 0
+
+  publish:
     runs-on: ubuntu-latest
     permissions:
       packages: write
