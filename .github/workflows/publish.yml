@@ -1,6 +1,8 @@
 name: Node.js Package
 
-on: push
+on:
+  release:
+    types: [created]
 
 jobs:
   publish-gpr:
@@ -14,8 +16,8 @@ jobs:
         with:
           node-version: 14
           registry-url: https://npm.pkg.github.com/
+          scope: '@x-fix'
       - run: yarn
-      - run: echo "$(cat .npmrc)"
       - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
