@@ -3,7 +3,7 @@ name: Playground
 on:
   push:
   release:
-    - created
+    types: [created]
 
 jobs:
   play_around:
