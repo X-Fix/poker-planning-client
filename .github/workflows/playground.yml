@@ -14,5 +14,4 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Print the version
-        run: echo ${{ steps.get_version.outputs.VERSION }}
-        run: echo github.events.inputs.version
+        run: echo ${{ steps.get_version.outputs.VERSION }} && echo ${{ github.events.inputs.version }}
