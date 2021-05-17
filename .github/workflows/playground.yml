@@ -1,8 +1,10 @@
 name: Playground
 
 on:
-  push:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
 
 jobs:
   play_around:
@@ -13,3 +15,4 @@ jobs:
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Print the version
         run: echo ${{ steps.get_version.outputs.VERSION }}
+        run: echo github.events.inputs.version
