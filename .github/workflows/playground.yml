@@ -1,0 +1,16 @@
+name: Playground
+
+on:
+  push:
+  release:
+    - created
+
+jobs:
+  play_around:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Print the version
+        run: echo ${{ steps.get_version.outputs.VERSION }}
