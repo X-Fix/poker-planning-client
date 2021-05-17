@@ -26,6 +26,8 @@ jobs:
           yarn build
       - name: Version
         run: |
+          git config user.email ${{ secrets.AUTHOR_EMAIL }}
+          git config user.name ${{ secrets.AUTHOR_NAME }}
           yarn version --new-version ${{ github.event.inputs.version }}
       - run: yarn publish
         env:
