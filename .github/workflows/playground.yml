@@ -18,4 +18,4 @@ jobs:
           git config user.name ${{ secrets.AUTHOR_NAME }}
           yarn version --new-version ${{ github.event.inputs.version }}
           git tag -a 'v${{ github.event.inputs.version }}' -m 'Release v${{ github.event.inputs.version }}'
-          git push origin main
+          git push origin main --folow-tags
