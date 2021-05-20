@@ -35,6 +35,10 @@ jobs:
           git config user.email ${{ secrets.AUTHOR_EMAIL }}
           git config user.name ${{ secrets.AUTHOR_NAME }}
           yarn version --new-version ${{ github.event.inputs.version }}
-      - run: yarn publish
+      - name: Publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Save
+        run: |
+          git push origin main
