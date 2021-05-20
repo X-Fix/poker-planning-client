@@ -10,10 +10,9 @@ jobs:
   play_around:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Print the version
+      - name: Version
         run: |
-          echo ${{ steps.get_version.outputs.VERSION }}
-          echo "${{ github.event.inputs.version }}"
+          git config user.email ${{ secrets.AUTHOR_EMAIL }}
+          git config user.name ${{ secrets.AUTHOR_NAME }}
+          yarn version --new-version ${{ github.event.inputs.version }}
+          git push origin main
