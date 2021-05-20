@@ -18,7 +18,7 @@ async function post(
   body: JoinSessionPayload | CreateSessionPayload,
   endpoint: string
 ): Promise<SessionToken> {
-  const response = await fetch(`http://192.168.2.159:3000/api/${endpoint}`, {
+  const response = await fetch(`${window.location.origin}/api/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

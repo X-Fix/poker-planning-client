@@ -37,7 +37,7 @@ export function connectSocket({
    */
   const staleSocket = _socket;
 
-  _socket = io('http://192.168.2.159:3000', {
+  _socket = io(window.location.origin, {
     autoConnect: false,
     query: {
       sessionId,

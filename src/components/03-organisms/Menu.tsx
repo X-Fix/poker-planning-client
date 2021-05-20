@@ -166,7 +166,7 @@ const Menu = ({
     escapeMenu();
 
     navigator.clipboard.writeText(
-      `http://192.168.2.159:8080/join-session?id=${sessionId}`
+      `${window.location.origin}/join-session?id=${sessionId}`
     );
     enqueue({
       message: 'Session link copied!',
