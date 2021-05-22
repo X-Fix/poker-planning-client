@@ -4,7 +4,7 @@
   "author": "Cameron Stroebel <cameron.stroebel08@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --env NODE_ENV=production && mkdir dist/public && cp -a public dist/public",
+    "build": "webpack --env NODE_ENV=production && mkdir dist/public && cp -a public dist",
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ && stylelint src/",
     "start": "webpack serve --env NODE_ENV=development",
