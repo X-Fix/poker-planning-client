@@ -1,3 +1,5 @@
+import { SERVER_ORIGIN } from '../constants/env';
+
 type JoinSessionPayload = {
   participantName?: string;
   sessionId: string;
@@ -18,7 +20,7 @@ async function post(
   body: JoinSessionPayload | CreateSessionPayload,
   endpoint: string
 ): Promise<SessionToken> {
-  const response = await fetch(`${window.location.origin}/api/${endpoint}`, {
+  const response = await fetch(`${SERVER_ORIGIN}/api/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

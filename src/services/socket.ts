@@ -1,4 +1,5 @@
 import io, { Socket } from 'socket.io-client';
+import { SERVER_ORIGIN } from '../constants/env';
 import {
   EmitNewTopicPayload,
   EmitRemoveParticipantPayload,
@@ -37,7 +38,7 @@ export function connectSocket({
    */
   const staleSocket = _socket;
 
-  _socket = io(window.location.origin, {
+  _socket = io(SERVER_ORIGIN, {
     autoConnect: false,
     query: {
       sessionId,
