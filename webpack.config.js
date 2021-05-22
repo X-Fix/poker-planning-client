@@ -66,6 +66,8 @@ module.exports = (env) => {
       : {
           // Only log to browser console if there's an error
           clientLogLevel: 'error',
+          contentBase: path.join(__dirname, 'public'),
+          contentBasePublicPath: '/public',
           historyApiFallback: true,
           // Open in browser once server has started
           open: false,

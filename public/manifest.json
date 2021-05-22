@@ -1,0 +1,30 @@
+{
+  "name": "Exfix Poker Planning",
+  "short_name": "Poker Planning",
+  "description": "A poker planning SPA for teams estimating task complexity. Commonly used by teams following the SCRUM methodology, or similar strategies",
+  "icons": [
+    {
+      "src": "/public/favicon.svg",
+      "purpose": "maskable any",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/public/favicon.svg",
+      "purpose": "maskable any",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/public/favicon.svg",
+      "purpose": "maskable any",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "https://poker-planning.dev",
+  "theme_color": "#1d60be",
+  "background_color": "#1d60be",
+  "orientation": "portrait",
+  "display": "standalone"
+}
