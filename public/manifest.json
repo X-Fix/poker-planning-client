@@ -5,19 +5,19 @@
   "icons": [
     {
       "src": "/public/favicon.svg",
-      "purpose": "maskable any",
+      "purpose": "any",
       "sizes": "any",
       "type": "image/svg+xml"
     },
     {
       "src": "/public/favicon.svg",
-      "purpose": "maskable any",
+      "purpose": "any",
       "sizes": "192x192",
       "type": "image/svg+xml"
     },
     {
       "src": "/public/favicon.svg",
-      "purpose": "maskable any",
+      "purpose": "any",
       "sizes": "512x512",
       "type": "image/svg+xml"
     }
