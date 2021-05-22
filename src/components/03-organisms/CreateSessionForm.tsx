@@ -18,9 +18,6 @@ import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 import { Button, InputRadio, InputText } from '../02-molecules';
 
-const { neutral0 } = color;
-const { form } = shadows;
-
 const Form = styled.form`
   box-sizing: border-box;
   height: 560px;
@@ -29,8 +26,8 @@ const Form = styled.form`
   width: 356px;
 
   @media screen and (min-width: 758px) {
-    background-color: ${neutral0};
-    box-shadow: ${form};
+    background-color: ${color.neutral0};
+    box-shadow: ${shadows.form};
   }
 `;
 

@@ -13,21 +13,18 @@ type ChatBubbleProps = {
   participant: string;
 } & ContainerProps;
 
-const { blue50, blue900, neutral100 } = color;
-const { chatBubble } = shadows;
-
 const Container = styled.li<ContainerProps>`
   ${font('body')};
 
-  background-color: ${neutral100};
+  background-color: ${color.neutral100};
   border-radius: 8px;
-  box-shadow: 1px 1px 0 ${chatBubble};
+  box-shadow: 1px 1px 0 ${shadows.chatBubble};
   margin: 0 1.5rem 0.5rem 1rem;
   padding: 0.5rem;
   position: relative; /* Necessary to use position: absolute; in pseudo-elements */
 
   &::before {
-    border-bottom: 8px solid ${neutral100};
+    border-bottom: 8px solid ${color.neutral100};
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-style: solid;
@@ -42,7 +39,7 @@ const Container = styled.li<ContainerProps>`
   }
 
   &::after {
-    border-bottom: 1px solid ${chatBubble};
+    border-bottom: 1px solid ${shadows.chatBubble};
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
     bottom: -1px;
@@ -56,11 +53,11 @@ const Container = styled.li<ContainerProps>`
   ${({ self }) =>
     self &&
     `
-    background-color: ${blue50}
+    background-color: ${color.blue50}
     margin: 0 1rem 0.5rem 1.5rem;
 
     &::before {
-      border-bottom: 8px solid ${blue50};
+      border-bottom: 8px solid ${color.blue50};
       left: auto;
       right: -8px;
     }
@@ -73,7 +70,7 @@ const Container = styled.li<ContainerProps>`
 `;
 
 const Participant = styled.span`
-  color: ${blue900};
+  color: ${color.blue900};
   display: block;
   margin-bottom: 0.25rem;
 `;

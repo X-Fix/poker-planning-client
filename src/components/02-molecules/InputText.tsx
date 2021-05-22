@@ -4,9 +4,6 @@ import styled from '@emotion/styled';
 import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 
-const { blue800, neutral0, neutral200, neutral900 } = color;
-const { tertiary } = shadows;
-
 interface InputTextProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'placeholder' | 'type'> {
   label: string;
@@ -26,12 +23,12 @@ const Label = styled.p`
 const Input = styled.input`
   ${font('title')};
 
-  background-color: ${neutral0};
-  border: 1px solid ${neutral200};
+  background-color: ${color.neutral0};
+  border: 1px solid ${color.neutral200};
   border-radius: 2px;
-  box-shadow: ${tertiary};
+  box-shadow: ${shadows.tertiary};
   box-sizing: border-box;
-  color: ${neutral900};
+  color: ${color.neutral900};
   height: 3rem;
 
   /* Placeholder text won't vertically align middle on Firefox so have to go with this weird top/bottom padding */
@@ -45,13 +42,13 @@ const Input = styled.input`
 
   &:hover,
   &:focus {
-    border-color: ${blue800};
+    border-color: ${color.blue800};
   }
 
   &::placeholder {
     ${font('title')};
 
-    color: ${neutral200};
+    color: ${color.neutral200};
     margin: 0;
   }
 `;

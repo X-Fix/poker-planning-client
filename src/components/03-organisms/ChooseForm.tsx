@@ -6,9 +6,6 @@ import { color, shadows } from '../00-base/variables';
 import { font } from '../00-base/utils';
 import { Icon } from '../01-atoms';
 
-const { blue800, neutral0, neutral100, neutral700 } = color;
-const { buttonPrimary, primary } = shadows;
-
 const Navigation = styled.nav`
   align-items: center;
   display: flex;
@@ -23,11 +20,11 @@ const Navigation = styled.nav`
 `;
 
 const StyledLink = styled(Link)`
-  background-color: ${blue800};
+  background-color: ${color.blue800};
   border-radius: 16px;
-  box-shadow: ${primary};
+  box-shadow: ${shadows.primary};
   box-sizing: border-box;
-  color: ${neutral0};
+  color: ${color.neutral0};
   cursor: pointer;
   height: 160px;
   margin: 40px;
@@ -37,8 +34,8 @@ const StyledLink = styled(Link)`
   width: 160px;
 
   &:disabled {
-    background-color: ${neutral100};
-    color: ${neutral700};
+    background-color: ${color.neutral100};
+    color: ${color.neutral700};
     cursor: default;
   }
 
@@ -60,11 +57,11 @@ const StyledLink = styled(Link)`
     }
 
     & > svg {
-      filter: drop-shadow(${buttonPrimary});
+      filter: drop-shadow(${shadows.buttonPrimary});
     }
 
     & > span {
-      text-shadow: ${buttonPrimary};
+      text-shadow: ${shadows.buttonPrimary};
     }
   }
 `;

@@ -4,9 +4,6 @@ import styled from '@emotion/styled';
 import { font, srOnly } from '../00-base/utils';
 import { color, shadows } from '../00-base/variables';
 
-const { blue700, blue800, neutral0, neutral300 } = color;
-const { secondary } = shadows;
-
 interface InputSwitchProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label: string;
@@ -45,7 +42,7 @@ const Switch = styled.span`
   width: 48px;
 
   &::before {
-    background-color: ${neutral300};
+    background-color: ${color.neutral300};
     border-radius: 6px;
     content: '';
     display: block;
@@ -55,9 +52,9 @@ const Switch = styled.span`
   }
 
   &::after {
-    background-color: ${neutral0};
+    background-color: ${color.neutral0};
     border-radius: 50%;
-    box-shadow: ${secondary};
+    box-shadow: ${shadows.secondary};
     content: '';
     height: 24px;
     position: absolute;
@@ -79,11 +76,11 @@ const Switch = styled.span`
 
   ${Input}:checked + & {
     &::before {
-      background-color: ${blue700};
+      background-color: ${color.blue700};
     }
 
     &::after {
-      background-color: ${blue800};
+      background-color: ${color.blue800};
       transform: translateX(12px);
     }
   }

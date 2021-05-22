@@ -4,9 +4,6 @@ import styled from '@emotion/styled';
 import { font, srOnly } from '../00-base/utils';
 import { color, shadows } from '../00-base/variables';
 
-const { blue800, neutral0 } = color;
-const { primary, tertiary } = shadows;
-
 interface InputRadioProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label: string;
@@ -37,10 +34,10 @@ const Radio = styled.span`
   width: 24px;
 
   &::before {
-    background: ${neutral0};
-    border: 1px solid ${blue800};
+    background: ${color.neutral0};
+    border: 1px solid ${color.blue800};
     border-radius: 50%;
-    box-shadow: ${tertiary};
+    box-shadow: ${shadows.tertiary};
     box-sizing: border-box;
     content: '';
     display: block;
@@ -49,11 +46,11 @@ const Radio = styled.span`
   }
 
   &::after {
-    background: ${neutral0};
+    background: ${color.neutral0};
     border-radius: 50%;
     content: '';
     display: block;
-    filter: drop-shadow(${primary});
+    filter: drop-shadow(${shadows.primary});
     height: 12px;
     opacity: 0;
     position: absolute;
@@ -73,7 +70,7 @@ const Radio = styled.span`
 
   ${Input}:checked + & {
     &::before {
-      background: ${blue800};
+      background: ${color.blue800};
       border: none;
 
       /* Only animate on the way in */

@@ -15,12 +15,9 @@ import { font, srOnly } from '../00-base/utils';
 import { Button } from '../02-molecules';
 import { Menu } from '.';
 
-const { blue800, neutral0 } = color;
-const { header } = shadows;
-
 const Container = styled.header`
-  background-color: ${blue800};
-  box-shadow: ${header};
+  background-color: ${color.blue800};
+  box-shadow: ${shadows.header};
   font-weight: 400;
   height: 64px;
   left: 0;
@@ -42,7 +39,7 @@ const Wrapper = styled.section`
 const Heading = styled.h1`
   ${font('title')};
 
-  color: ${neutral0};
+  color: ${color.neutral0};
   flex: 1;
   font-weight: bold;
 `;

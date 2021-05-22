@@ -19,9 +19,6 @@ import { joinSession } from '../../services/http';
 import { NotificationContext } from '../../context';
 import { useQueryParams } from '../../hooks';
 
-const { neutral0 } = color;
-const { form } = shadows;
-
 const Form = styled.form`
   box-sizing: border-box;
   height: 344px;
@@ -30,8 +27,8 @@ const Form = styled.form`
   width: 360px;
 
   @media screen and (min-width: 758px) {
-    background-color: ${neutral0};
-    box-shadow: ${form};
+    background-color: ${color.neutral0};
+    box-shadow: ${shadows.form};
   }
 `;
 
