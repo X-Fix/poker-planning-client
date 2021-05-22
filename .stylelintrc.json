@@ -3,7 +3,7 @@
   "plugins": ["stylelint-order"],
   "ignoreFiles": "./src/index.ejs",
   "rules": {
-    "indentation": 2,
+    "indentation": null,
     "function-name-case": null,
     "no-eol-whitespace": [
       true,
