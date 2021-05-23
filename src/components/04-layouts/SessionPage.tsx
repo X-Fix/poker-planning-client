@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import { NotificationContext, SessionContext } from '../../context';
 import { useQueryParams } from '../../hooks';
 import { connectSocket, disconnectSocket } from '../../services/socket';
+import { setFaviconStatus } from '../../services/favicon';
 import { parseToSessionContext } from '../../services/utils';
 import { Participant, Session, SessionToken } from '../../types';
 import { color } from '../00-base/variables';
@@ -92,6 +93,10 @@ function SessionPage(): ReactElement {
       }, TWO_MINUTES);
     };
   }, []);
+
+  useEffect(() => {
+    setFaviconStatus(sessionContext.sessionPhase);
+  }, [sessionContext.sessionPhase]);
 
   if (isEmpty(sessionContext)) {
     return null;
