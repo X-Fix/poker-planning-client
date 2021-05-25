@@ -40,6 +40,10 @@ const Topic = styled.h2<{ hasOwnerActions: boolean; isOwner: boolean }>`
       text-align: left;
       transform: none;
       width: calc(50vw - 2rem);
+
+      @media screen and (min-width: 1023px) {
+        width: 480px;
+      }
     `
       : `
       text-align: center;
@@ -49,7 +53,7 @@ const Topic = styled.h2<{ hasOwnerActions: boolean; isOwner: boolean }>`
   box-sizing: border-box;
   font-weight: normal;
   margin-bottom: 1.25rem;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
